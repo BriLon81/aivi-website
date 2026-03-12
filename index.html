@@ -855,7 +855,6 @@
   </a>
   <div class="nav-links">
     <a href="#how">How it works</a>
-    <a href="#checks">The audit</a>
     <a href="#pricing">Pricing</a>
     <button class="btn-nav" onclick="openModal()">Get your audit — $149</button>
   </div>
@@ -866,7 +865,7 @@
   <div class="hero">
     <div class="badge"><span class="dot"></span>AI search is replacing traditional local discovery</div>
     <h1>Is your practice <em>visible</em><br>to AI search?</h1>
-    <p class="hero-sub">When patients ask ChatGPT or Google AI who to book with — does your practice show up? Get your AI visibility score in minutes.</p>
+    <p class="hero-sub">When patients ask ChatGPT or Google Gemini who to book with — does your practice show up? Get your AI visibility score in minutes.</p>
     <div class="hero-cta">
       <button class="btn-primary" onclick="openModal()">Get your audit — $149</button>
       <a href="#how" class="btn-ghost">See how it works</a>
@@ -917,98 +916,115 @@
   <div class="steps-grid">
     <div class="step-card">
       <div class="step-num">01</div>
-      <h3>Enter your website</h3>
-      <p>We crawl your site and score it against 12 AI visibility signals — schema, credentials, FAQs, reviews, and more.</p>
+      <h3>Check your score</h3>
+      <p>Enter your practice website below to instantly see your AI visibility score and where you rank against local competitors.</p>
     </div>
     <div class="step-card">
       <div class="step-num">02</div>
-      <h3>See your city ranking</h3>
-      <p>Your score is compared against every similar practice in your city. See exactly where you stand.</p>
+      <h3>Understand the gap</h3>
+      <p>See exactly which signals are holding you back and how you compare to the practices AI search is recommending instead.</p>
     </div>
     <div class="step-card">
       <div class="step-num">03</div>
-      <h3>Unlock your full report</h3>
-      <p>Choose your plan to get the complete breakdown, competitor analysis, and ready-to-use fix packs — delivered in 24 hours.</p>
+      <h3>Get your fix pack</h3>
+      <p>Purchase your full report and receive ready-to-use fix packs — FAQ content, bio templates, review scripts — within 24 hours.</p>
     </div>
   </div>
 </div>
 
-<!-- SCORE HOOK -->
-<div class="section" style="padding-top:0;">
-  <div class="section-label">City comparison</div>
-  <h2>See how your city stacks up</h2>
-  <p class="section-intro">See your city's average score, the top 3 competitors, and what sets them apart.</p>
+<!-- URL LOOKUP -->
+<div class="section" id="lookup" style="padding-top:0;">
+  <div class="section-label">Score lookup</div>
+  <h2>See where you rank</h2>
+  <p class="section-intro">Peterborough, Ontario — 23 practices scanned. Enter your website to see your score instantly.</p>
 
-  <div class="hook-box">
-    <!-- City market stats -->
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-bottom:1px solid var(--navy-border);">
-      <div style="background:var(--navy-mid); padding:28px 32px; text-align:center;">
-        <div style="font-family:'DM Serif Display',serif; font-size:44px; line-height:1; color:var(--amber); margin-bottom:4px;">59</div>
-        <div style="font-size:13px; color:var(--text-muted); font-weight:300;">City avg. score</div>
-      </div>
-      <div style="background:var(--navy-mid); padding:28px 32px; text-align:center;">
-        <div style="font-family:'DM Serif Display',serif; font-size:44px; line-height:1; color:var(--white); margin-bottom:4px;">23</div>
-        <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
-      </div>
-      <div style="background:var(--navy-mid); padding:28px 32px; text-align:center;">
-        <div style="font-family:'DM Serif Display',serif; font-size:44px; line-height:1; color:var(--teal); margin-bottom:4px;">84</div>
-        <div style="font-size:13px; color:var(--text-muted); font-weight:300;">City leader score</div>
-      </div>
+  <!-- City stats -->
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
+    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
+      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">59.6</div>
+      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">City avg. score</div>
     </div>
-
-    <!-- Top 3 + locked your score -->
-    <div class="comp-section">
-      <div class="comp-header">
-        <h4>Top practices — Peterborough, Ontario</h4>
-        <span>Sorted by AI visibility score · <em style="color:var(--amber); font-style:normal;">Example data — for illustration only</em></span>
-      </div>
-      <div class="comp-row">
-        <div class="comp-name">Practice A</div>
-        <div class="bar-wrap"><div class="bar" style="width:84%; background:var(--teal);"></div></div>
-        <div class="comp-score" style="color:var(--teal);">84</div>
-        <div class="delta up">Leader</div>
-      </div>
-      <div class="comp-row">
-        <div class="comp-name">Practice B</div>
-        <div class="bar-wrap"><div class="bar" style="width:78%; background:var(--teal);"></div></div>
-        <div class="comp-score" style="color:var(--teal);">78</div>
-        <div class="delta up">#2</div>
-      </div>
-      <div class="comp-row">
-        <div class="comp-name">Practice C</div>
-        <div class="bar-wrap"><div class="bar" style="width:71%; background:var(--amber);"></div></div>
-        <div class="comp-score" style="color:var(--amber);">71</div>
-        <div class="delta neutral">#3</div>
-      </div>
-      <div class="comp-row" style="border-left:2px solid var(--teal); background:rgba(0,201,167,0.04);">
-        <div class="comp-name" style="color:var(--teal); font-weight:500;">Your practice</div>
-        <div class="bar-wrap" style="background:repeating-linear-gradient(90deg,rgba(0,201,167,0.3) 0,rgba(0,201,167,0.3) 6px,transparent 6px,transparent 10px);"></div>
-        <div class="comp-score" style="color:var(--text-dim);">—</div>
-        <div class="delta" style="background:var(--teal);color:var(--navy);font-size:10px;white-space:nowrap;">Unlock</div>
-      </div>
+    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
+      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">23</div>
+      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
     </div>
+    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
+      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">11</div>
+      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Score below average</div>
+    </div>
+  </div>
 
-    <!-- Locked full report -->
-    <div class="hook-locked">
-      <div class="blurred">
-        <div style="margin-bottom:10px; font-size:13px; font-weight:500; color:var(--text-muted);">Full 12-point breakdown</div>
-        <div class="check-preview">
-          <div class="check-p"><div class="cdot pass"></div><div class="cname">Name, Address & Phone (NAP) consistency</div><div class="cstatus pass">Pass</div></div>
-          <div class="check-p"><div class="cdot fail"></div><div class="cname">Schema markup (LocalBusiness structured data)</div><div class="cstatus fail">Fail</div></div>
-          <div class="check-p"><div class="cdot fail"></div><div class="cname">Provider bios with professional credentials</div><div class="cstatus fail">Fail</div></div>
-          <div class="check-p"><div class="cdot partial"></div><div class="cname">FAQ quality and machine readability</div><div class="cstatus partial">Partial</div></div>
-          <div class="check-p"><div class="cdot pass"></div><div class="cname">Review signals and validation</div><div class="cstatus pass">Pass</div></div>
+  <!-- URL input box -->
+  <div style="background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; padding:32px 36px;">
+    <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:14px;">Enter your practice website</div>
+    <div style="display:flex; gap:12px;">
+      <input type="text" id="lookup-url" class="url-input" placeholder="https://yourpractice.com" style="flex:1;" onkeydown="if(event.key==='Enter') runLookup()">
+      <button class="btn-primary" onclick="runLookup()" style="white-space:nowrap; padding:13px 24px;">Check my score</button>
+    </div>
+    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Currently available for Peterborough, Ontario. More cities coming soon.</div>
+  </div>
+
+  <!-- Result panel (hidden, slides open on match) -->
+  <div id="lookup-result" style="overflow:hidden; max-height:0; transition:max-height 0.55s ease; margin-top:0;">
+    <div style="margin-top:20px; background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; overflow:hidden;">
+
+      <!-- Score card -->
+      <div style="padding:36px 40px; border-bottom:1px solid var(--navy-border); display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;">
+        <div style="display:flex; align-items:center; gap:24px;">
+          <div id="result-score-num" style="font-family:'DM Serif Display',serif; font-size:80px; line-height:1; color:var(--coral);">—</div>
+          <div>
+            <div id="result-practice-name" style="font-size:16px; font-weight:500; color:var(--white); margin-bottom:8px;"></div>
+            <div id="result-label-badge" style="display:inline-block; padding:4px 12px; border-radius:100px; font-size:12px; font-weight:500; letter-spacing:0.04em;"></div>
+            <div id="result-message" style="font-size:13px; color:var(--text-muted); margin-top:8px; font-weight:300; line-height:1.55;"></div>
+          </div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">vs. city avg.</div>
+          <div id="result-vs-avg" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
         </div>
       </div>
-      <div class="lock-overlay">
-        <div class="lock-icon">🔐</div>
-        <div class="lock-text">
-          <h4>Your score is ready to unlock</h4>
-          <p>See your exact ranking, all 12 checks,<br>fix recommendations, and competitor detail.</p>
+
+      <!-- Competitor rows -->
+      <div style="padding:28px 40px; border-bottom:1px solid var(--navy-border);">
+        <div style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;">Nearby competitors</div>
+        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="comp-name" id="comp1-name"></div>
+          <div class="bar-wrap"><div class="bar" id="comp1-bar"></div></div>
+          <div class="comp-score" id="comp1-score"></div>
         </div>
-        <button class="btn-primary" style="padding:11px 24px; font-size:14px;" onclick="openModal()">Get your audit — $149</button>
+        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="comp-name" id="comp2-name"></div>
+          <div class="bar-wrap"><div class="bar" id="comp2-bar"></div></div>
+          <div class="comp-score" id="comp2-score"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-left:2px solid var(--teal); padding-left:10px;">
+          <div class="comp-name" id="you-name" style="color:var(--teal); font-weight:500;"></div>
+          <div class="bar-wrap"><div class="bar" id="you-bar"></div></div>
+          <div class="comp-score" id="you-score"></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="padding:28px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:15px; font-weight:500; color:var(--white); margin-bottom:4px;">Your full report is ready</div>
+          <div style="font-size:13px; color:var(--text-muted); font-weight:300;">All 12 checks, your exact ranking, and fix packs — delivered in 24 hours.</div>
+        </div>
+        <button class="btn-primary" onclick="openModal()" style="white-space:nowrap; flex-shrink:0;">Get your full report — $149</button>
       </div>
     </div>
+  </div>
+
+  <!-- Not-found panel (hidden by default) -->
+  <div id="lookup-notfound" style="display:none; margin-top:20px; background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; padding:32px 36px;">
+    <div style="font-size:15px; font-weight:500; color:var(--white); margin-bottom:6px;">We haven't scanned this city yet</div>
+    <div style="font-size:14px; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:20px;">Enter your email and we'll notify you when your city is live.</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <input type="email" id="notify-email" class="url-input" placeholder="you@yourpractice.com" style="flex:1; min-width:200px;">
+      <button class="btn-primary" onclick="submitNotify()" style="white-space:nowrap;">Notify me</button>
+    </div>
+    <div id="notify-confirm" style="display:none; margin-top:12px; font-size:13px; color:var(--teal); font-weight:300;">Done — we'll be in touch when your city goes live.</div>
   </div>
 </div>
 
@@ -1063,27 +1079,6 @@
   </div>
 </div>
 
-<!-- WHAT WE CHECK -->
-<div class="section" id="checks" style="padding-top:0;">
-  <div class="section-label">The audit</div>
-  <h2>12 signals AI search actually uses</h2>
-  <p class="section-intro">These are the factors that determine whether AI recommends your practice — or your competitor's.</p>
-
-  <div class="checks-grid">
-    <div class="check-item"><div class="check-icon">🏷️</div><div><h4>Practice name clarity</h4><p>Machine-readable brand signals so AI can confidently name and cite your practice.</p></div></div>
-    <div class="check-item"><div class="check-icon">📍</div><div><h4>NAP consistency</h4><p>Name, address, and phone number consistent across every page and directory listing.</p></div></div>
-    <div class="check-item"><div class="check-icon">🗂️</div><div><h4>Schema markup</h4><p>Structured data that tells AI exactly what type of practice you are and where you're located.</p></div></div>
-    <div class="check-item"><div class="check-icon">👤</div><div><h4>Provider credentials</h4><p>Practitioner bios with full credentials — AI skips businesses that appear unlicensed.</p></div></div>
-    <div class="check-item"><div class="check-icon">❓</div><div><h4>FAQ quality & coverage</h4><p>Machine-readable FAQ content gives AI something to cite when answering patient questions.</p></div></div>
-    <div class="check-item"><div class="check-icon">⭐</div><div><h4>Review signals</h4><p>Review volume and recency — AI deprioritizes unvalidated businesses in competitive markets.</p></div></div>
-    <div class="check-item"><div class="check-icon">🔍</div><div><h4>Indexability</h4><p>Ensuring your core pages are actually crawlable and accessible to AI and search systems.</p></div></div>
-    <div class="check-item"><div class="check-icon">🚨</div><div><h4>Emergency & urgent intent</h4><p>Coverage for urgent appointment queries — high-conversion traffic most practices miss.</p></div></div>
-    <div class="check-item"><div class="check-icon">💳</div><div><h4>Insurance & payment clarity</h4><p>Clear payment information removes friction and improves AI recommendation confidence.</p></div></div>
-    <div class="check-item"><div class="check-icon">🩺</div><div><h4>Service coverage</h4><p>Specific services clearly described — required for AI to match your offering to patient searches.</p></div></div>
-    <div class="check-item"><div class="check-icon">📞</div><div><h4>Contact & location page</h4><p>A clear, dedicated location page is fundamental for local AI discovery.</p></div></div>
-    <div class="check-item"><div class="check-icon">🏆</div><div><h4>Title & location signals</h4><p>Homepage titles that include your specialty and location — essential for geographic relevance.</p></div></div>
-  </div>
-</div>
 
 <div style="border-top: 1px solid var(--navy-border);">
   <footer>
@@ -1306,28 +1301,28 @@
           </div>
         </div>
 
-        <div class="leaderboard-label">Top practices in Peterborough, Ontario · <span style="color:var(--amber); font-weight:300; text-transform:none; letter-spacing:0;">Example data — for illustration only</span></div>
+        <div class="leaderboard-label">Top practices in Peterborough, Ontario</div>
         <div class="lb">
           <div class="lb-head">
             <span>#</span><span>Practice</span><span>Score</span><span>Rating</span>
           </div>
           <div class="lb-row">
             <div class="lb-rank">1</div>
-            <div class="lb-name">Practice A</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:84%;background:var(--teal);"></div></div>
-            <div class="lb-score" style="color:var(--teal);">84</div>
+            <div class="lb-name">Peterborough Dental Clinic</div>
+            <div class="lb-bar-w"><div class="lb-bar" style="width:90%;background:var(--teal);"></div></div>
+            <div class="lb-score" style="color:var(--teal);">90</div>
           </div>
           <div class="lb-row">
             <div class="lb-rank">2</div>
-            <div class="lb-name">Practice B</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:78%;background:var(--teal);"></div></div>
-            <div class="lb-score" style="color:var(--teal);">78</div>
+            <div class="lb-name">Maple Leaf Dentistry</div>
+            <div class="lb-bar-w"><div class="lb-bar" style="width:85%;background:var(--teal);"></div></div>
+            <div class="lb-score" style="color:var(--teal);">85</div>
           </div>
           <div class="lb-row">
             <div class="lb-rank">3</div>
-            <div class="lb-name">Practice C</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:71%;background:var(--amber);"></div></div>
-            <div class="lb-score" style="color:var(--amber);">71</div>
+            <div class="lb-name">Lily Lake Dental</div>
+            <div class="lb-bar-w"><div class="lb-bar" style="width:82.5%;background:var(--teal);"></div></div>
+            <div class="lb-score" style="color:var(--teal);">82.5</div>
           </div>
           <div class="lb-row locked-row" style="border-left:2px solid var(--teal); padding-left:18px;">
             <div class="lb-rank" style="color:var(--teal);">?</div>
@@ -1947,6 +1942,157 @@
   function simulatePayment() {
     setTimeout(() => onFastSpringClosed({ id: 'SIM-ORDER-' + Date.now() }), 3000);
   }
+
+  // ============================================================
+  // PRACTICE DATABASE (Peterborough, ON — 23 practices)
+  // ============================================================
+  const PRACTICE_DB = {
+    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Grand Village Dental', c2s: 67.5 },
+    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: '2032 Dentistry', c2s: 52.5 },
+    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles', score: 40.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
+    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: '2032 Dentistry', c2s: 52.5 },
+    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: 'East City Dental', c2s: 57.5 },
+    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
+    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Kawartha Orthodontics', c1s: 52.5, c2: 'East City Dental', c2s: 57.5 },
+    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'East City Dental', c2s: 57.5 },
+    '2032dentistry.com': { name: '2032 Dentistry', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Maple Leaf Dentistry', c1s: 85.0, c2: 'Cottage Country Smiles', c2s: 40.0 },
+    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza', score: 55.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Grand Village Dental', c2s: 67.5 },
+    'eastcitydental.com': { name: 'East City Dental', score: 57.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'Kawartha Orthodontics', c2s: 52.5 },
+    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
+    'peterboroughsmiles.ca': { name: 'Peterborough Smiles', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Brookdale Dental Clinic', c2s: 60.0 },
+    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Peterborough Smiles', c2s: 60.0 },
+    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Lily Lake Dental', c1s: 82.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
+    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry', score: 65.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Louis Diamandakos, DDS', c2s: 50.0 },
+    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: 'Dr. Annabel Braganza', c2s: 55.0 },
+    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Bruce Cole, DDS', c2s: 80.0 },
+    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Specialty Endodontics by Dr. Rita', c1s: 37.5, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
+    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Dentistry on Sherbrooke', c1s: 62.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
+    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Cottage Country Smiles', c1s: 40.0, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
+    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry', score: 85.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Cottage Country Smiles', c2s: 40.0 },
+    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Park Street Dentistry', c1s: 45.0, c2: 'Grand Village Dental', c2s: 67.5 },
+  };
+
+  // ============================================================
+  // LABEL STYLING
+  // ============================================================
+  const LABEL_STYLE = {
+    'PREFERRED':  { color: 'var(--teal)',   bg: 'rgba(0,201,167,0.12)',   msg: 'Your practice is highly findable by AI search.' },
+    'VISIBLE':    { color: 'var(--teal)',   bg: 'rgba(0,201,167,0.10)',   msg: 'Your practice is visible — but there's room to reach the top tier.' },
+    'UNRELIABLE': { color: 'var(--amber)',  bg: 'rgba(255,197,66,0.12)',  msg: 'AI search may not consistently recommend your practice.' },
+    'INVISIBLE':  { color: 'var(--coral)',  bg: 'rgba(255,95,109,0.12)', msg: 'Your practice is largely invisible to AI search.' },
+  };
+
+  // ============================================================
+  // URL NORMALISATION
+  // ============================================================
+  function normalizeUrl(input) {
+    let url = input.trim().toLowerCase();
+    // Strip UTM and other query params
+    url = url.split('?')[0];
+    // Add protocol if missing
+    if (!url.startsWith('http')) url = 'https://' + url;
+    try {
+      const parsed = new URL(url);
+      let host = parsed.hostname;
+      // Remove www.
+      if (host.startsWith('www.')) host = host.slice(4);
+      return host;
+    } catch(e) {
+      return url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].split('?')[0];
+    }
+  }
+
+  // ============================================================
+  // SCORE COLOUR HELPER
+  // ============================================================
+  function scoreColor(score) {
+    if (score >= 85) return 'var(--teal)';
+    if (score >= 70) return 'var(--teal)';
+    if (score >= 50) return 'var(--amber)';
+    return 'var(--coral)';
+  }
+
+  // ============================================================
+  // LOOKUP
+  // ============================================================
+  function runLookup() {
+    const raw = document.getElementById('lookup-url').value;
+    if (!raw.trim()) return;
+
+    const domain = normalizeUrl(raw);
+    const practice = PRACTICE_DB[domain];
+
+    // Hide both panels first
+    document.getElementById('lookup-result').style.maxHeight = '0';
+    document.getElementById('lookup-notfound').style.display = 'none';
+
+    if (!practice) {
+      // Not found
+      document.getElementById('lookup-notfound').style.display = 'block';
+      document.getElementById('lookup-notfound').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    // Populate score card
+    const style = LABEL_STYLE[practice.label] || LABEL_STYLE['INVISIBLE'];
+    const scoreEl = document.getElementById('result-score-num');
+    scoreEl.textContent = practice.score;
+    scoreEl.style.color = style.color;
+
+    document.getElementById('result-practice-name').textContent = practice.name;
+
+    const badge = document.getElementById('result-label-badge');
+    badge.textContent = practice.label;
+    badge.style.color = style.color;
+    badge.style.background = style.bg;
+
+    document.getElementById('result-message').textContent = style.msg;
+
+    const diff = practice.score - practice.city_avg;
+    const diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(1);
+    const vsEl = document.getElementById('result-vs-avg');
+    vsEl.textContent = diffStr;
+    vsEl.style.color = diff >= 0 ? 'var(--teal)' : 'var(--coral)';
+
+    // Competitor 1
+    document.getElementById('comp1-name').textContent = practice.c1;
+    document.getElementById('comp1-bar').style.width = practice.c1s + '%';
+    document.getElementById('comp1-bar').style.background = scoreColor(practice.c1s);
+    document.getElementById('comp1-score').textContent = practice.c1s;
+    document.getElementById('comp1-score').style.color = scoreColor(practice.c1s);
+
+    // Competitor 2
+    document.getElementById('comp2-name').textContent = practice.c2;
+    document.getElementById('comp2-bar').style.width = practice.c2s + '%';
+    document.getElementById('comp2-bar').style.background = scoreColor(practice.c2s);
+    document.getElementById('comp2-score').textContent = practice.c2s;
+    document.getElementById('comp2-score').style.color = scoreColor(practice.c2s);
+
+    // Your practice
+    document.getElementById('you-name').textContent = practice.name + ' ← you';
+    document.getElementById('you-bar').style.width = practice.score + '%';
+    document.getElementById('you-bar').style.background = style.color;
+    document.getElementById('you-score').textContent = practice.score;
+    document.getElementById('you-score').style.color = style.color;
+
+    // Slide open result panel
+    const resultPanel = document.getElementById('lookup-result');
+    resultPanel.style.maxHeight = '800px';
+    setTimeout(() => resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+  }
+
+  // ============================================================
+  // NOTIFY (not-found email capture)
+  // ============================================================
+  function submitNotify() {
+    const email = document.getElementById('notify-email').value.trim();
+    if (!email || !email.includes('@')) return;
+    // Production: POST to GHL or Make.com webhook
+    console.log('[AIVI] Notify request:', email);
+    document.getElementById('notify-confirm').style.display = 'block';
+    document.getElementById('notify-email').disabled = true;
+  }
+
 </script>
 
 </body>
