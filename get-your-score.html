@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your AI Visibility Report — AIVI Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:        #0d1425;
+    --navy-mid:    #131d35;
+    --navy-light:  #1a2640;
+    --navy-border: #1f2e4a;
+    --teal:        #00c9a7;
+    --teal-dim:    rgba(0,201,167,0.12);
+    --coral:       #ff5f6d;
+    --amber:       #ffc542;
+    --text:        #e8edf7;
+    --text-muted:  #7a8fab;
+    --text-dim:    #4a5a74;
+    --white:       #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    background: var(--navy);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* NAV — logo only */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 48px;
+    background: rgba(13,20,37,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 500; font-size: 17px;
+    letter-spacing: -0.02em; color: var(--white);
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--teal), #00a8d9);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 12px; color: var(--navy);
+  }
+
+  .logo .accent { color: var(--teal); }
+
+  /* MAIN */
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 32px 80px;
+  }
+
+  /* SCORE HERO */
+  .score-hero {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards 0.1s;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .score-top {
+    padding: 40px 44px;
+    border-bottom: 1px solid var(--navy-border);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 3px solid;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .score-circle-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px; line-height: 1;
+  }
+
+  .score-circle-denom {
+    font-size: 12px; color: var(--text-dim);
+    font-weight: 300; margin-top: 2px;
+  }
+
+  .score-right {}
+
+  .practice-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--white); line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .label-badge {
+    display: inline-block;
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .score-message {
+    font-size: 14px; color: var(--text-muted);
+    font-weight: 300; line-height: 1.65;
+  }
+
+  /* CITY CONTEXT */
+  .city-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--navy-border);
+  }
+
+  .city-stat {
+    background: var(--navy-mid);
+    padding: 20px 24px; text-align: center;
+  }
+
+  .city-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; line-height: 1;
+    display: block; margin-bottom: 4px;
+  }
+
+  .city-stat-label {
+    font-size: 12px; color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .comp-row.avg {
+    border-top: 1px solid var(--navy-border);
+    opacity: 0.6;
+  }
+
+  .comp-row.avg .comp-name {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .bar.dashed {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--text-dim) 0px,
+      var(--text-dim) 6px,
+      transparent 6px,
+      transparent 10px
+    );
+  }
+
+  /* COMPETITORS */
+  .competitors {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards 0.25s;
+  }
+
+  .comp-head {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--navy-border);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1fr 200px 52px;
+    gap: 16px; align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .comp-row:last-child { border-bottom: none; }
+
+  .comp-row.you {
+    border-left: 2px solid var(--teal);
+    padding-left: 26px;
+    background: rgba(0,201,167,0.03);
+  }
+
+  .comp-name {
+    font-size: 14px; color: var(--text); font-weight: 400;
+  }
+
+  .comp-name.you-label {
+    color: var(--teal); font-weight: 500;
+  }
+
+  .bar-wrap {
+    height: 4px; background: var(--navy);
+    border-radius: 2px; overflow: hidden;
+  }
+
+  .bar { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+
+  .comp-score {
+    font-size: 14px; font-weight: 500;
+    text-align: right;
+  }
+
+  /* COPY SECTION */
+  .copy-block {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 20px;
+    padding: 36px 44px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards 0.38s;
+  }
+
+  .copy-block h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 400; line-height: 1.2;
+    color: var(--white); margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .copy-block p {
+    font-size: 15px; color: var(--text-muted);
+    font-weight: 300; line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .copy-block p:last-child { margin-bottom: 0; }
+
+  /* CTA */
+  .cta-block {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 20px;
+    padding: 36px 44px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards 0.5s;
+  }
+
+  .btn-primary {
+    display: block; width: 100%;
+    padding: 16px 32px; border-radius: 12px;
+    font-size: 16px; font-weight: 500;
+    background: var(--teal); color: var(--navy);
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; text-align: center;
+    text-decoration: none;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover {
+    background: #00e0bc;
+    transform: translateY(-1px);
+  }
+
+  .what-you-get {
+    display: flex; flex-direction: column; gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--navy-border);
+  }
+
+  .get-item {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+
+  .get-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal); flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .get-text {
+    font-size: 14px; color: var(--text-muted);
+    font-weight: 300; line-height: 1.5;
+  }
+
+  .get-text strong {
+    color: var(--text); font-weight: 500;
+  }
+
+  .reassurance {
+    text-align: center;
+    font-size: 12px; color: var(--text-dim);
+    font-weight: 300; margin-top: 16px;
+    letter-spacing: 0.01em;
+  }
+
+  /* FALLBACK — no params */
+  .fallback {
+    text-align: center;
+    padding: 80px 32px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards 0.1s;
+  }
+
+  .fallback h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px; font-weight: 400;
+    color: var(--white); margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .fallback p {
+    font-size: 16px; color: var(--text-muted);
+    font-weight: 300; line-height: 1.75;
+    max-width: 440px; margin: 0 auto 32px;
+  }
+
+  .btn-ghost {
+    display: inline-block;
+    padding: 13px 28px; border-radius: 10px;
+    font-size: 15px; font-weight: 400;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--navy-border);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--text);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 16px 24px; }
+    .page { padding: 100px 20px 60px; }
+    .score-top {
+      grid-template-columns: 1fr;
+      padding: 28px 24px;
+      gap: 20px;
+    }
+    .score-circle { margin: 0 auto; }
+    .practice-name { font-size: 19px; }
+    .comp-row { grid-template-columns: 1fr 120px 44px; padding: 12px 20px; }
+    .comp-row.you { padding-left: 18px; }
+    .copy-block, .cta-block { padding: 28px 24px; }
+    .city-stat { padding: 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+<a href="https://aivilabs.io" class="logo">
+<div class="logo-mark">AI</div>
+    AIVI <span class="accent">Labs</span>
+</a>
+</nav>
+
+<div class="page" id="page-content">
+<!-- Populated by JS below -->
+</div>
+
+<script>
+  // ============================================================
+  // PARSE URL PARAMS
+  // ============================================================
+  function getParams() {
+    const p = new URLSearchParams(window.location.search);
+    return {
+      practice: p.get('practice') || '',
+      score:    parseFloat(p.get('score')) || null,
+      label:    (p.get('label') || '').toUpperCase(),
+      segment:  (p.get('segment') || '').toLowerCase(),
+      city:     p.get('city') || 'Peterborough, ON',
+      cityAvg:  parseFloat(p.get('cityavg')) || 59.6,
+      c1:       p.get('c1') || '',
+      c1score:  parseFloat(p.get('c1score')) || null,
+      c2:       p.get('c2') || '',
+      c2score:  parseFloat(p.get('c2score')) || null,
+    };
+  }
+
+  // ============================================================
+  // COLOUR HELPERS
+  // ============================================================
+  const LABEL_STYLE = {
+    'PREFERRED':  { color: '#00c9a7', bg: 'rgba(0,201,167,0.12)',  border: 'rgba(0,201,167,0.3)'  },
+    'VISIBLE':    { color: '#00c9a7', bg: 'rgba(0,201,167,0.10)',  border: 'rgba(0,201,167,0.25)' },
+    'UNRELIABLE': { color: '#ffc542', bg: 'rgba(255,197,66,0.12)', border: 'rgba(255,197,66,0.3)' },
+    'INVISIBLE':  { color: '#ff5f6d', bg: 'rgba(255,95,109,0.12)', border: 'rgba(255,95,109,0.3)' },
+  };
+
+  function scoreColor(score) {
+    if (score >= 80) return '#00c9a7';
+    if (score >= 60) return '#00c9a7';
+    if (score >= 50) return '#ffc542';
+    return '#ff5f6d';
+  }
+
+  // ============================================================
+  // COPY VARIANTS
+  // ============================================================
+  function getCopy(p) {
+    const score    = p.score;
+    const practice = p.practice || 'Your practice';
+    const city     = p.city;
+    const cityAvg  = p.cityAvg;
+    const c1       = p.c1;
+    const c1s      = p.c1score;
+    const c2       = p.c2;
+    const c2s      = p.c2score;
+    const diff     = score !== null ? (score - cityAvg).toFixed(1) : null;
+    const diffStr  = diff !== null ? (diff >= 0 ? '+' + diff : diff) : '';
+
+    if (p.segment === 'urgent' || (score !== null && score < 60)) {
+      return {
+        headline: 'Your practice is largely invisible to AI search.',
+        body: `
+          <p>You scored <strong>${score}/100</strong> on AI visibility. The city average is ${cityAvg}. The top practice in ${city.split(',')[0]} scores 90. That gap is where new patients are going instead of to you.</p>
+          <p>This isn't about your website looking good. It's about whether AI search can find you, trust you, and recommend you with confidence. Right now, it can't — not reliably.</p>
+          <p>For $149, you get a full 12-point audit that shows exactly what's broken and why, plus ready-to-use fix packs so you don't have to figure out the fixes yourself.</p>
+        `
+      };
+    }
+
+    if (p.segment === 'leader' || (score !== null && score >= 80)) {
+      return {
+        headline: `You're one of the strongest practices in ${city.split(',')[0]} for AI visibility.`,
+        body: `
+          <p>You scored <strong>${score}/100</strong> — that puts you near the top of the 23 practices we scanned in ${city.split(',')[0]}. AI search is more likely to recommend you than most of your competitors, and that's a real advantage as more patients rely on ChatGPT and Google Gemini to choose a provider.</p>
+          <p>But visibility at this level requires maintenance. Competitors are improving, signals change, and a few weak spots in your current profile could cost you that edge. Your full report shows you precisely where you stand across all 12 signals — and what to protect.</p>
+        `
+      };
+    }
+
+    // Growth (default)
+    return {
+      headline: `You're above average. The top practices are still well ahead.`,
+      body: `
+        <p>You scored <strong>${score}/100</strong> — above the city average of ${cityAvg}. But the top practice in ${city.split(',')[0]} scores 90, and practices at that level are being recommended by ChatGPT and Google Gemini while practices in your range are getting passed over.</p>
+        <p>The difference usually comes down to 3 or 4 specific signals — structured data, credential visibility, FAQ coverage. Small fixes with outsized impact on whether AI recommends you or your competitor.</p>
+        <p>For $149, your report shows you exactly which signals are holding you back and gives you ready-to-use content to fix them — delivered within 24 hours.</p>
+      `
+    };
+  }
+
+  // ============================================================
+  // RENDER
+  // ============================================================
+  function render() {
+    const p      = getParams();
+    const page   = document.getElementById('page-content');
+    const style  = LABEL_STYLE[p.label] || LABEL_STYLE['INVISIBLE'];
+    const copy   = getCopy(p);
+    const diff   = p.score !== null ? (p.score - p.cityAvg) : null;
+    const diffStr = diff !== null
+      ? (diff >= 0 ? `+${diff.toFixed(1)} vs avg` : `${diff.toFixed(1)} vs avg`)
+      : '';
+    const diffColor = diff !== null ? (diff >= 0 ? 'var(--teal)' : 'var(--coral)') : 'var(--text-dim)';
+
+    // No params — show fallback
+    if (!p.practice || p.score === null) {
+      page.innerHTML = `
+        <div class="fallback">
+          <h1>Your report link may have expired.</h1>
+          <p>This page is personalised for each practice. If you received an email from Jessica at AIVI Labs, use the link in that email to view your score.</p>
+          <a href="https://aivilabs.io" class="btn-ghost">Go to aivilabs.io</a>
+        </div>
+      `;
+      return;
+    }
+
+    // Competitor rows
+    const compRows = [];
+
+    if (p.c1 && p.c1score !== null) {
+      compRows.push(`
+        <div class="comp-row">
+          <div class="comp-name">${esc(p.c1)}</div>
+          <div class="bar-wrap"><div class="bar" style="width:${p.c1score}%; background:${scoreColor(p.c1score)};"></div></div>
+          <div class="comp-score" style="color:${scoreColor(p.c1score)};">${p.c1score}</div>
+        </div>
+      `);
+    }
+
+    if (p.c2 && p.c2score !== null) {
+      compRows.push(`
+        <div class="comp-row">
+          <div class="comp-name">${esc(p.c2)}</div>
+          <div class="bar-wrap"><div class="bar" style="width:${p.c2score}%; background:${scoreColor(p.c2score)};"></div></div>
+          <div class="comp-score" style="color:${scoreColor(p.c2score)};">${p.c2score}</div>
+        </div>
+      `);
+    }
+
+    compRows.push(`
+      <div class="comp-row avg">
+        <div class="comp-name">City average</div>
+        <div class="bar-wrap"><div class="bar dashed" style="width:${p.cityAvg}%;"></div></div>
+        <div class="comp-score" style="color:var(--text-dim);">${p.cityAvg}</div>
+      </div>
+    `);
+
+    compRows.push(`
+      <div class="comp-row you">
+        <div class="comp-name you-label">${esc(p.practice)} ← you</div>
+        <div class="bar-wrap"><div class="bar" style="width:${p.score}%; background:${style.color};"></div></div>
+        <div class="comp-score" style="color:${style.color};">${p.score}</div>
+      </div>
+    `);
+
+    page.innerHTML = `
+      <!-- SCORE HERO -->
+      <div class="score-hero">
+        <div class="score-top">
+          <div class="score-circle" style="border-color:${style.color};">
+            <div class="score-circle-num" style="color:${style.color};">${p.score}</div>
+            <div class="score-circle-denom">out of 100</div>
+          </div>
+          <div class="score-right">
+            <div class="practice-name">${esc(p.practice)}</div>
+            <div class="label-badge" style="color:${style.color}; background:${style.bg};">${p.label}</div>
+            <div class="score-message" style="color:var(--text-muted);">${esc(p.city)}</div>
+          </div>
+        </div>
+        <div class="city-bar">
+          <div class="city-stat">
+            <span class="city-stat-num" style="color:var(--amber);">${p.cityAvg}</span>
+            <span class="city-stat-label">City avg. score</span>
+          </div>
+          <div class="city-stat">
+            <span class="city-stat-num" style="color:var(--white);">23</span>
+            <span class="city-stat-label">Practices scanned</span>
+          </div>
+          <div class="city-stat">
+            <span class="city-stat-num" style="color:var(--text-muted); font-size:18px;">${esc(p.city.split(',')[0])}</span>
+            <span class="city-stat-label">Ontario, Canada</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPETITORS -->
+      ${compRows.length > 0 ? `
+      <div class="competitors">
+        <div class="comp-head">Nearby competitors · ${esc(p.city)}</div>
+        ${compRows.join('')}
+      </div>
+      ` : ''}
+
+      <!-- COPY -->
+      <div class="copy-block">
+        <h2>${copy.headline}</h2>
+        ${copy.body}
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-block">
+        <a href="https://aivilabs.io#pricing" class="btn-primary">Get your full report — $149</a>
+        <div class="what-you-get">
+          <div class="get-item">
+            <div class="get-dot"></div>
+            <div class="get-text"><strong>Full 12-point AI audit</strong> — every signal scored with pass, partial, or fail</div>
+          </div>
+          <div class="get-item">
+            <div class="get-dot"></div>
+            <div class="get-text"><strong>PDF scorecard</strong> — your score, your ranking, your city context</div>
+          </div>
+          <div class="get-item">
+            <div class="get-dot"></div>
+            <div class="get-text"><strong>Ready-to-use fix packs</strong> — FAQ content, provider bio templates, review request scripts</div>
+          </div>
+          <div class="get-item">
+            <div class="get-dot"></div>
+            <div class="get-text"><strong>Delivered within 24 hours</strong> — no subscription, no agency required</div>
+          </div>
+        </div>
+        <div class="reassurance">PDF report · One-time payment · Secure checkout via FastSpring</div>
+      </div>
+    `;
+  }
+
+  // Simple HTML escape
+  function esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  render();
+</script>
+
+</body>
+</html>
