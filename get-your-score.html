@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   :root {
     --navy:        #0d1425;
     --navy-mid:    #131d35;
@@ -24,9 +24,9 @@
     --text-dim:    #4a5a74;
     --white:       #ffffff;
   }
- 
+
   html { scroll-behavior: smooth; }
- 
+
   body {
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
@@ -37,7 +37,7 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
- 
+
   /* NAV — logo only */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -47,14 +47,14 @@
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
- 
+
   .logo {
     display: flex; align-items: center; gap: 10px;
     font-weight: 500; font-size: 17px;
     letter-spacing: -0.02em; color: var(--white);
     text-decoration: none;
   }
- 
+
   .logo-mark {
     width: 30px; height: 30px;
     background: linear-gradient(135deg, var(--teal), #00a8d9);
@@ -62,16 +62,16 @@
     display: flex; align-items: center; justify-content: center;
     font-weight: 600; font-size: 12px; color: var(--navy);
   }
- 
+
   .logo .accent { color: var(--teal); }
- 
+
   /* MAIN */
   .page {
     max-width: 720px;
     margin: 0 auto;
     padding: 120px 32px 80px;
   }
- 
+
   /* SCORE HERO */
   .score-hero {
     background: var(--navy-mid);
@@ -83,11 +83,11 @@
     transform: translateY(16px);
     animation: fadeUp 0.5s ease forwards 0.1s;
   }
- 
+
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
- 
+
   .score-top {
     padding: 40px 44px;
     border-bottom: 1px solid var(--navy-border);
@@ -96,7 +96,7 @@
     gap: 32px;
     align-items: center;
   }
- 
+
   .score-circle {
     width: 120px; height: 120px;
     border-radius: 50%;
@@ -106,19 +106,19 @@
     flex-shrink: 0;
     position: relative;
   }
- 
+
   .score-circle-num {
     font-family: 'DM Serif Display', serif;
     font-size: 42px; line-height: 1;
   }
- 
+
   .score-circle-denom {
     font-size: 12px; color: var(--text-dim);
     font-weight: 300; margin-top: 2px;
   }
- 
+
   .score-right {}
- 
+
   .practice-name {
     font-family: 'DM Serif Display', serif;
     font-size: 22px; font-weight: 400;
@@ -126,7 +126,7 @@
     margin-bottom: 10px;
     letter-spacing: -0.02em;
   }
- 
+
   .label-badge {
     display: inline-block;
     padding: 5px 14px; border-radius: 100px;
@@ -134,12 +134,12 @@
     letter-spacing: 0.08em; text-transform: uppercase;
     margin-bottom: 12px;
   }
- 
+
   .score-message {
     font-size: 14px; color: var(--text-muted);
     font-weight: 300; line-height: 1.65;
   }
- 
+
   /* CITY CONTEXT */
   .city-bar {
     display: grid;
@@ -147,23 +147,44 @@
     gap: 1px;
     background: var(--navy-border);
   }
- 
+
   .city-stat {
     background: var(--navy-mid);
     padding: 20px 24px; text-align: center;
   }
- 
+
   .city-stat-num {
     font-family: 'DM Serif Display', serif;
     font-size: 28px; line-height: 1;
     display: block; margin-bottom: 4px;
   }
- 
+
   .city-stat-label {
     font-size: 12px; color: var(--text-muted);
     font-weight: 300;
   }
- 
+
+  .comp-row.avg {
+    border-top: 1px solid var(--navy-border);
+    opacity: 0.6;
+  }
+
+  .comp-row.avg .comp-name {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .bar.dashed {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--text-dim) 0px,
+      var(--text-dim) 6px,
+      transparent 6px,
+      transparent 10px
+    );
+  }
+
   /* COMPETITORS */
   .competitors {
     background: var(--navy-mid);
@@ -175,7 +196,7 @@
     transform: translateY(16px);
     animation: fadeUp 0.5s ease forwards 0.25s;
   }
- 
+
   .comp-head {
     padding: 20px 28px;
     border-bottom: 1px solid var(--navy-border);
@@ -183,7 +204,7 @@
     letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--text-dim);
   }
- 
+
   .comp-row {
     display: grid;
     grid-template-columns: 1fr 200px 52px;
@@ -191,35 +212,35 @@
     padding: 14px 28px;
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
- 
+
   .comp-row:last-child { border-bottom: none; }
- 
+
   .comp-row.you {
     border-left: 2px solid var(--teal);
     padding-left: 26px;
     background: rgba(0,201,167,0.03);
   }
- 
+
   .comp-name {
     font-size: 14px; color: var(--text); font-weight: 400;
   }
- 
+
   .comp-name.you-label {
     color: var(--teal); font-weight: 500;
   }
- 
+
   .bar-wrap {
     height: 4px; background: var(--navy);
     border-radius: 2px; overflow: hidden;
   }
- 
+
   .bar { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
- 
+
   .comp-score {
     font-size: 14px; font-weight: 500;
     text-align: right;
   }
- 
+
   /* COPY SECTION */
   .copy-block {
     background: var(--navy-mid);
@@ -231,7 +252,7 @@
     transform: translateY(16px);
     animation: fadeUp 0.5s ease forwards 0.38s;
   }
- 
+
   .copy-block h2 {
     font-family: 'DM Serif Display', serif;
     font-size: clamp(22px, 3vw, 30px);
@@ -239,15 +260,15 @@
     color: var(--white); margin-bottom: 16px;
     letter-spacing: -0.02em;
   }
- 
+
   .copy-block p {
     font-size: 15px; color: var(--text-muted);
     font-weight: 300; line-height: 1.8;
     margin-bottom: 14px;
   }
- 
+
   .copy-block p:last-child { margin-bottom: 0; }
- 
+
   /* CTA */
   .cta-block {
     background: var(--navy-mid);
@@ -258,7 +279,7 @@
     transform: translateY(16px);
     animation: fadeUp 0.5s ease forwards 0.5s;
   }
- 
+
   .btn-primary {
     display: block; width: 100%;
     padding: 16px 32px; border-radius: 12px;
@@ -271,44 +292,44 @@
     margin-bottom: 20px;
     letter-spacing: -0.01em;
   }
- 
+
   .btn-primary:hover {
     background: #00e0bc;
     transform: translateY(-1px);
   }
- 
+
   .what-you-get {
     display: flex; flex-direction: column; gap: 12px;
     padding-top: 20px;
     border-top: 1px solid var(--navy-border);
   }
- 
+
   .get-item {
     display: flex; align-items: flex-start; gap: 12px;
   }
- 
+
   .get-dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--teal); flex-shrink: 0;
     margin-top: 7px;
   }
- 
+
   .get-text {
     font-size: 14px; color: var(--text-muted);
     font-weight: 300; line-height: 1.5;
   }
- 
+
   .get-text strong {
     color: var(--text); font-weight: 500;
   }
- 
+
   .reassurance {
     text-align: center;
     font-size: 12px; color: var(--text-dim);
     font-weight: 300; margin-top: 16px;
     letter-spacing: 0.01em;
   }
- 
+
   /* FALLBACK — no params */
   .fallback {
     text-align: center;
@@ -316,20 +337,20 @@
     opacity: 0;
     animation: fadeUp 0.5s ease forwards 0.1s;
   }
- 
+
   .fallback h1 {
     font-family: 'DM Serif Display', serif;
     font-size: 36px; font-weight: 400;
     color: var(--white); margin-bottom: 16px;
     letter-spacing: -0.02em;
   }
- 
+
   .fallback p {
     font-size: 16px; color: var(--text-muted);
     font-weight: 300; line-height: 1.75;
     max-width: 440px; margin: 0 auto 32px;
   }
- 
+
   .btn-ghost {
     display: inline-block;
     padding: 13px 28px; border-radius: 10px;
@@ -340,12 +361,12 @@
     text-decoration: none;
     transition: all 0.2s;
   }
- 
+
   .btn-ghost:hover {
     border-color: rgba(255,255,255,0.2);
     color: var(--text);
   }
- 
+
   /* RESPONSIVE */
   @media (max-width: 600px) {
     nav { padding: 16px 24px; }
@@ -365,18 +386,18 @@
 </style>
 </head>
 <body>
- 
+
 <nav>
   <a href="https://aivilabs.io" class="logo">
     <div class="logo-mark">AI</div>
     AIVI <span class="accent">Labs</span>
   </a>
 </nav>
- 
+
 <div class="page" id="page-content">
   <!-- Populated by JS below -->
 </div>
- 
+
 <script>
   // ============================================================
   // PARSE URL PARAMS
@@ -396,7 +417,7 @@
       c2score:  parseFloat(p.get('c2score')) || null,
     };
   }
- 
+
   // ============================================================
   // COLOUR HELPERS
   // ============================================================
@@ -406,14 +427,14 @@
     'UNRELIABLE': { color: '#ffc542', bg: 'rgba(255,197,66,0.12)', border: 'rgba(255,197,66,0.3)' },
     'INVISIBLE':  { color: '#ff5f6d', bg: 'rgba(255,95,109,0.12)', border: 'rgba(255,95,109,0.3)' },
   };
- 
+
   function scoreColor(score) {
     if (score >= 80) return '#00c9a7';
     if (score >= 60) return '#00c9a7';
     if (score >= 50) return '#ffc542';
     return '#ff5f6d';
   }
- 
+
   // ============================================================
   // COPY VARIANTS
   // ============================================================
@@ -428,7 +449,7 @@
     const c2s      = p.c2score;
     const diff     = score !== null ? (score - cityAvg).toFixed(1) : null;
     const diffStr  = diff !== null ? (diff >= 0 ? '+' + diff : diff) : '';
- 
+
     if (p.segment === 'urgent' || (score !== null && score < 60)) {
       return {
         headline: 'Your practice is largely invisible to AI search.',
@@ -439,7 +460,7 @@
         `
       };
     }
- 
+
     if (p.segment === 'leader' || (score !== null && score >= 80)) {
       return {
         headline: `You're one of the strongest practices in ${city.split(',')[0]} for AI visibility.`,
@@ -449,7 +470,7 @@
         `
       };
     }
- 
+
     // Growth (default)
     return {
       headline: `You're above average. The top practices are still well ahead.`,
@@ -460,7 +481,7 @@
       `
     };
   }
- 
+
   // ============================================================
   // RENDER
   // ============================================================
@@ -474,7 +495,7 @@
       ? (diff >= 0 ? `+${diff.toFixed(1)} vs avg` : `${diff.toFixed(1)} vs avg`)
       : '';
     const diffColor = diff !== null ? (diff >= 0 ? 'var(--teal)' : 'var(--coral)') : 'var(--text-dim)';
- 
+
     // No params — show fallback
     if (!p.practice || p.score === null) {
       page.innerHTML = `
@@ -486,10 +507,10 @@
       `;
       return;
     }
- 
+
     // Competitor rows
     const compRows = [];
- 
+
     if (p.c1 && p.c1score !== null) {
       compRows.push(`
         <div class="comp-row">
@@ -499,7 +520,7 @@
         </div>
       `);
     }
- 
+
     if (p.c2 && p.c2score !== null) {
       compRows.push(`
         <div class="comp-row">
@@ -509,7 +530,15 @@
         </div>
       `);
     }
- 
+
+    compRows.push(`
+      <div class="comp-row avg">
+        <div class="comp-name">City average</div>
+        <div class="bar-wrap"><div class="bar dashed" style="width:${p.cityAvg}%;"></div></div>
+        <div class="comp-score" style="color:var(--text-dim);">${p.cityAvg}</div>
+      </div>
+    `);
+
     compRows.push(`
       <div class="comp-row you">
         <div class="comp-name you-label">${esc(p.practice)} ← you</div>
@@ -517,7 +546,7 @@
         <div class="comp-score" style="color:${style.color};">${p.score}</div>
       </div>
     `);
- 
+
     page.innerHTML = `
       <!-- SCORE HERO -->
       <div class="score-hero">
@@ -529,7 +558,7 @@
           <div class="score-right">
             <div class="practice-name">${esc(p.practice)}</div>
             <div class="label-badge" style="color:${style.color}; background:${style.bg};">${p.label}</div>
-            <div class="score-message" style="color:${diffColor};">${diffStr} · ${esc(p.city)}</div>
+            <div class="score-message" style="color:var(--text-muted);">${esc(p.city)}</div>
           </div>
         </div>
         <div class="city-bar">
@@ -542,12 +571,12 @@
             <span class="city-stat-label">Practices scanned</span>
           </div>
           <div class="city-stat">
-            <span class="city-stat-num" style="color:${diffColor};">${diffStr || '—'}</span>
-            <span class="city-stat-label">Your gap</span>
+            <span class="city-stat-num" style="color:var(--text-muted); font-size:18px;">${esc(p.city.split(',')[0])}</span>
+            <span class="city-stat-label">Ontario, Canada</span>
           </div>
         </div>
       </div>
- 
+
       <!-- COMPETITORS -->
       ${compRows.length > 0 ? `
       <div class="competitors">
@@ -555,13 +584,13 @@
         ${compRows.join('')}
       </div>
       ` : ''}
- 
+
       <!-- COPY -->
       <div class="copy-block">
         <h2>${copy.headline}</h2>
         ${copy.body}
       </div>
- 
+
       <!-- CTA -->
       <div class="cta-block">
         <a href="https://aivilabs.io#pricing" class="btn-primary">Get your full report — $149</a>
@@ -587,7 +616,7 @@
       </div>
     `;
   }
- 
+
   // Simple HTML escape
   function esc(str) {
     return String(str)
@@ -596,9 +625,9 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
- 
+
   render();
 </script>
- 
+
 </body>
 </html>
