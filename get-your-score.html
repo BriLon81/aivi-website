@@ -166,7 +166,7 @@
 
   .comp-row.avg {
     border-top: 1px solid var(--navy-border);
-    opacity: 0.6;
+    opacity: 0.85;
   }
 
   .comp-row.avg .comp-name {
@@ -178,8 +178,8 @@
   .bar.dashed {
     background: repeating-linear-gradient(
       90deg,
-      var(--text-dim) 0px,
-      var(--text-dim) 6px,
+      #8a9bb8 0px,
+      #8a9bb8 6px,
       transparent 6px,
       transparent 10px
     );
@@ -508,44 +508,48 @@
       return;
     }
 
-    // Competitor rows
-    const compRows = [];
+    // Build all entries, sort by score descending, then render
+    const cityName = esc(p.city.split(',')[0]);
+    const entries = [];
 
     if (p.c1 && p.c1score !== null) {
-      compRows.push(`
+      entries.push({ score: p.c1score, html: `
         <div class="comp-row">
           <div class="comp-name">${esc(p.c1)}</div>
           <div class="bar-wrap"><div class="bar" style="width:${p.c1score}%; background:${scoreColor(p.c1score)};"></div></div>
           <div class="comp-score" style="color:${scoreColor(p.c1score)};">${p.c1score}</div>
         </div>
-      `);
+      `});
     }
 
     if (p.c2 && p.c2score !== null) {
-      compRows.push(`
+      entries.push({ score: p.c2score, html: `
         <div class="comp-row">
           <div class="comp-name">${esc(p.c2)}</div>
           <div class="bar-wrap"><div class="bar" style="width:${p.c2score}%; background:${scoreColor(p.c2score)};"></div></div>
           <div class="comp-score" style="color:${scoreColor(p.c2score)};">${p.c2score}</div>
         </div>
-      `);
+      `});
     }
 
-    compRows.push(`
+    entries.push({ score: p.cityAvg, html: `
       <div class="comp-row avg">
-        <div class="comp-name">City average</div>
+        <div class="comp-name">${cityName} Average</div>
         <div class="bar-wrap"><div class="bar dashed" style="width:${p.cityAvg}%;"></div></div>
-        <div class="comp-score" style="color:var(--text-dim);">${p.cityAvg}</div>
+        <div class="comp-score" style="color:#8a9bb8;">${p.cityAvg}</div>
       </div>
-    `);
+    `});
 
-    compRows.push(`
+    entries.push({ score: p.score, html: `
       <div class="comp-row you">
         <div class="comp-name you-label">${esc(p.practice)} ← you</div>
         <div class="bar-wrap"><div class="bar" style="width:${p.score}%; background:${style.color};"></div></div>
         <div class="comp-score" style="color:${style.color};">${p.score}</div>
       </div>
-    `);
+    `});
+
+    entries.sort((a, b) => b.score - a.score);
+    const compRows = entries.map(e => e.html);
 
     page.innerHTML = `
       <!-- SCORE HERO -->
