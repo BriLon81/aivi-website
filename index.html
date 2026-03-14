@@ -978,31 +978,24 @@
             <div id="result-message" style="font-size:13px; color:var(--text-muted); margin-top:8px; font-weight:300; line-height:1.55;"></div>
           </div>
         </div>
-        <div style="text-align:right; flex-shrink:0;">
-          <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">vs. city avg.</div>
-          <div id="result-vs-avg" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
+        <div style="display:flex; gap:24px; flex-shrink:0; text-align:center;">
+          <div>
+            <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">City avg.</div>
+            <div style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--amber); line-height:1;">59.6</div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
+          </div>
+          <div>
+            <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">Your rank</div>
+            <div id="result-rank" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">of 23 practices</div>
+          </div>
         </div>
       </div>
 
       <!-- Competitor rows -->
       <div style="padding:28px 40px; border-bottom:1px solid var(--navy-border);">
         <div style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;">Nearby competitors</div>
-        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-          <div class="comp-name" id="comp1-name"></div>
-          <div class="bar-wrap"><div class="bar" id="comp1-bar"></div></div>
-          <div class="comp-score" id="comp1-score"></div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-          <div class="comp-name" id="comp2-name"></div>
-          <div class="bar-wrap"><div class="bar" id="comp2-bar"></div></div>
-          <div class="comp-score" id="comp2-score"></div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 160px 48px; gap:16px; align-items:center; padding:10px 0; border-left:2px solid var(--teal); padding-left:10px;">
-          <div class="comp-name" id="you-name" style="color:var(--teal); font-weight:500;"></div>
-          <div class="bar-wrap"><div class="bar" id="you-bar"></div></div>
-          <div class="comp-score" id="you-score"></div>
-        </div>
+        <div id="comp-rows"></div>
       </div>
 
       <!-- CTA -->
@@ -2048,32 +2041,38 @@
 
     document.getElementById('result-message').textContent = style.msg;
 
-    const diff = practice.score - practice.city_avg;
-    const diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(1);
-    const vsEl = document.getElementById('result-vs-avg');
-    vsEl.textContent = diffStr;
-    vsEl.style.color = diff >= 0 ? 'var(--teal)' : 'var(--coral)';
+    // Compute rank from all practice scores
+    const allScores = Object.values(PRACTICES).map(p => p.score).sort((a, b) => b - a);
+    const rank = allScores.indexOf(practice.score) + 1;
+    document.getElementById('result-rank').textContent = '#' + rank;
 
-    // Competitor 1
-    document.getElementById('comp1-name').textContent = practice.c1;
-    document.getElementById('comp1-bar').style.width = practice.c1s + '%';
-    document.getElementById('comp1-bar').style.background = scoreColor(practice.c1s);
-    document.getElementById('comp1-score').textContent = practice.c1s;
-    document.getElementById('comp1-score').style.color = scoreColor(practice.c1s);
+    // Build competitor rows — names and position only, no scores
+    const entries = [
+      { name: practice.c1, score: practice.c1s, you: false },
+      { name: practice.c2, score: practice.c2s, you: false },
+      { name: practice.name, score: practice.score, you: true },
+    ];
+    entries.sort((a, b) => b.score - a.score);
 
-    // Competitor 2
-    document.getElementById('comp2-name').textContent = practice.c2;
-    document.getElementById('comp2-bar').style.width = practice.c2s + '%';
-    document.getElementById('comp2-bar').style.background = scoreColor(practice.c2s);
-    document.getElementById('comp2-score').textContent = practice.c2s;
-    document.getElementById('comp2-score').style.color = scoreColor(practice.c2s);
-
-    // Your practice
-    document.getElementById('you-name').textContent = practice.name + ' ← you';
-    document.getElementById('you-bar').style.width = practice.score + '%';
-    document.getElementById('you-bar').style.background = style.color;
-    document.getElementById('you-score').textContent = practice.score;
-    document.getElementById('you-score').style.color = style.color;
+    document.getElementById('comp-rows').innerHTML = entries.map((e) => {
+      if (e.you) {
+        return `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-left:2px solid var(--teal); padding-left:10px;">
+            <div class="comp-name" style="color:var(--teal); font-weight:500;">${e.name} &#8592; you</div>
+            <div style="font-size:12px; font-weight:500; color:var(--teal); letter-spacing:0.04em;">${practice.score}</div>
+          </div>
+        `;
+      }
+      const ahead = e.score > practice.score;
+      const posLabel = ahead ? 'ahead of you' : 'behind you';
+      const posColor = ahead ? 'var(--text-muted)' : 'var(--text-dim)';
+      return `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <div class="comp-name">${e.name}</div>
+          <div style="font-size:12px; color:${posColor}; font-weight:300; font-style:italic;">${posLabel}</div>
+        </div>
+      `;
+    }).join('');
 
     // Slide open result panel
     const resultPanel = document.getElementById('lookup-result');
