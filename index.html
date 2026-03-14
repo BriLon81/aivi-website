@@ -2042,7 +2042,7 @@
     document.getElementById('result-message').textContent = style.msg;
 
     // Compute rank from all practice scores
-    const allScores = Object.values(PRACTICES).map(p => p.score).sort((a, b) => b - a);
+    const allScores = Object.values(PRACTICE_DB).map(p => p.score).sort((a, b) => b - a);
     const rank = allScores.indexOf(practice.score) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
 
