@@ -2374,22 +2374,28 @@
     document.getElementById('result-city-name').textContent = cityName;
     document.getElementById('result-city-count').textContent = 'of ' + cityPractices.length + ' practices';
 
-    // Pick two competitors: one ahead, one behind (within same city)
-    const sorted = [...cityPractices].sort((a, b) => a.score - b.score);
+    // Pick two competitors: one ahead (higher score), one behind (lower score)
+    // sorted descending so index 0 = highest score
+    const sorted = [...cityPractices].sort((a, b) => b.score - a.score);
     const myIdx = sorted.findIndex(p => p.name === practice.name);
-    const comp1 = myIdx < sorted.length - 1 ? sorted[myIdx + 1] : sorted[myIdx - 1];
-    const comp2 = myIdx > 0 ? sorted[myIdx - 1] : sorted[myIdx + 1];
+    const comps = [];
+    // One ahead (lower index = higher score)
+    if (myIdx > 0) comps.push(sorted[myIdx - 1]);
+    // One behind (higher index = lower score)
+    if (myIdx < sorted.length - 1) comps.push(sorted[myIdx + 1]);
+    // If practice is #1, show two behind; if last, show two ahead
+    if (comps.length < 2) {
+      if (myIdx === 0 && sorted.length > 2) comps.push(sorted[myIdx + 2]);
+      if (myIdx === sorted.length - 1 && sorted.length > 2) comps.unshift(sorted[myIdx - 2]);
+    }
 
-    // Combine all entries including city average and sort by score
+    // Combine all entries including city average and sort by score desc
     const allEntries = [
       { name: practice.name, score: practice.score, type: 'you' },
       { name: cityName + ' average', score: cityAvg, type: 'avg' },
     ];
-    if (comp1 && comp1.name !== practice.name) allEntries.push({ name: comp1.name, score: comp1.score, type: 'comp' });
-    if (comp2 && comp2.name !== practice.name && (!comp1 || comp2.name !== comp1.name)) allEntries.push({ name: comp2.name, score: comp2.score, type: 'comp' });
+    comps.forEach(c => allEntries.push({ name: c.name, score: c.score, type: 'comp' }));
     allEntries.sort((a, b) => b.score - a.score);
-
-    const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
 
     let rows = allEntries.map(e => {
       if (e.type === 'you') {
@@ -2407,7 +2413,7 @@
           </div>`;
       }
       const ahead = e.score > practice.score;
-      const posLabel = ahead ? 'ahead' : 'behind';
+      const posLabel = ahead ? fmt(e.score) : 'behind';
       const posColor = ahead ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)';
       const posBg = ahead ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)';
       return `
