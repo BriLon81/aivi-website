@@ -981,7 +981,7 @@
         <div style="display:flex; gap:24px; flex-shrink:0; text-align:center;">
           <div>
             <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">City avg.</div>
-            <div style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--amber); line-height:1;">59.6</div>
+            <div style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">59.6</div>
             <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
           </div>
           <div>
@@ -2041,38 +2041,50 @@
 
     document.getElementById('result-message').textContent = style.msg;
 
-    // Compute rank from all practice scores
-    const allScores = Object.values(PRACTICE_DB).map(p => p.score).sort((a, b) => b - a);
-    const rank = allScores.indexOf(practice.score) + 1;
+    // Build full ranked list of all practices
+    const allPractices = Object.values(PRACTICE_DB).sort((a, b) => b.score - a.score);
+    const rank = allPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
 
-    // Build competitor rows — names and position only, no scores
-    const entries = [
-      { name: practice.c1, score: practice.c1s, you: false },
-      { name: practice.c2, score: practice.c2s, you: false },
-      { name: practice.name, score: practice.score, you: true },
-    ];
-    entries.sort((a, b) => b.score - a.score);
+    // Find immediate neighbours
+    const above = rank > 1 ? allPractices[rank - 2] : null;
+    const below = rank < allPractices.length ? allPractices[rank] : null;
 
-    document.getElementById('comp-rows').innerHTML = entries.map((e) => {
-      if (e.you) {
-        return `
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-left:2px solid var(--teal); padding-left:10px;">
-            <div class="comp-name" style="color:var(--teal); font-weight:500;">${e.name} &#8592; you</div>
-            <div style="font-size:12px; font-weight:500; color:var(--teal); letter-spacing:0.04em;">${practice.score}</div>
-          </div>
-        `;
-      }
-      const ahead = e.score > practice.score;
-      const posLabel = ahead ? 'ahead of you' : 'behind you';
-      const posColor = ahead ? 'var(--text-muted)' : 'var(--text-dim)';
-      return `
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-          <div class="comp-name">${e.name}</div>
-          <div style="font-size:12px; color:${posColor}; font-weight:300; font-style:italic;">${posLabel}</div>
-        </div>
-      `;
-    }).join('');
+    const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
+    const youStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-left:2px solid var(--teal); padding-left:10px;';
+
+    let rows = '';
+
+    if (above) {
+      rows += `
+        <div style="${rowStyle}">
+          <div class="comp-name">${above.name}</div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">ahead of you</div>
+        </div>`;
+    }
+
+    rows += `
+      <div style="${youStyle}">
+        <div class="comp-name" style="color:var(--teal); font-weight:500;">${practice.name} &#8592; you</div>
+        <div style="font-size:12px; font-weight:500; color:var(--teal);">${practice.score}</div>
+      </div>`;
+
+    if (below) {
+      rows += `
+        <div style="${rowStyle} border-bottom:none;">
+          <div class="comp-name">${below.name}</div>
+          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">behind you</div>
+        </div>`;
+    }
+
+    // City average row
+    rows += `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-top:1px solid var(--navy-border); margin-top:4px;">
+        <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
+        <div style="font-size:13px; font-weight:500; color:var(--amber);">59.6</div>
+      </div>`;
+
+    document.getElementById('comp-rows').innerHTML = rows;
 
     // Slide open result panel
     const resultPanel = document.getElementById('lookup-result');
