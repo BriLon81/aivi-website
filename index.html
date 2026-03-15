@@ -873,7 +873,7 @@
     <div class="hero-stats">
       <div class="stat"><span class="n">12</span><span class="l">visibility checks</span></div>
       <div class="divider"></div>
-      <div class="stat"><span class="n">59</span><span class="l">avg. city score</span></div>
+      <div class="stat"><span class="n">6</span><span class="l">cities scanned</span></div>
       <div class="divider"></div>
       <div class="stat"><span class="n">24hr</span><span class="l">full report delivery</span></div>
     </div>
@@ -936,20 +936,20 @@
 <div class="section" id="lookup" style="padding-top:0;">
   <div class="section-label">Score lookup</div>
   <h2>See where you rank</h2>
-  <p class="section-intro">Peterborough, Ontario — 23 practices scanned. Enter your website to see your score instantly.</p>
+  <p class="section-intro" id="lookup-intro">6 cities scanned. Enter your website to see your score instantly.</p>
 
-  <!-- City stats -->
-  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
+  <!-- City stats (updated dynamically on lookup) -->
+  <div id="city-stats-panel" style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">59.6</div>
+      <div id="stat-city-avg" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">—</div>
       <div style="font-size:13px; color:var(--text-muted); font-weight:300;">City avg. score</div>
     </div>
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">23</div>
+      <div id="stat-practices-count" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">—</div>
       <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
     </div>
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">11</div>
+      <div id="stat-below-avg" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">—</div>
       <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Score below average</div>
     </div>
   </div>
@@ -961,7 +961,7 @@
       <input type="text" id="lookup-url" class="url-input" placeholder="https://yourpractice.com" style="flex:1;" onkeydown="if(event.key==='Enter') runLookup()">
       <button class="btn-primary" onclick="runLookup()" style="white-space:nowrap; padding:13px 24px;">Check my score</button>
     </div>
-    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Currently available for Peterborough, Ontario. More cities coming soon.</div>
+    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Available in Peterborough, Kingston, Austin, Charlotte, Scottsdale, and Naples.</div>
   </div>
 
   <!-- Result panel (hidden, slides open on match) -->
@@ -984,13 +984,13 @@
         <div style="display:flex; gap:24px; flex-shrink:0; text-align:center;">
           <div>
             <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">City avg.</div>
-            <div style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">59.6</div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
+            <div id="result-city-avg" style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">—</div>
+            <div id="result-city-name" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
           </div>
           <div>
             <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">Your rank</div>
             <div id="result-rank" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">of 23 practices</div>
+            <div id="result-rank-total" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
           </div>
         </div>
       </div>
@@ -1250,7 +1250,7 @@
         </div>
         <div class="city-detected" id="city-detected" style="display:none;">
           <div class="city-dot"></div>
-          <span id="city-detected-text">City detected: Peterborough, Ontario</span>
+          <span id="city-detected-text">City detected: your city</span>
           <button onclick="showCityInput()">Not right?</button>
         </div>
         <p style="font-size:12px; color:var(--text-dim); margin-top:12px; font-weight:300;">🔒 We only scan publicly available website content.</p>
@@ -1263,7 +1263,7 @@
         </p>
         <div class="city-input-wrap">
           <label>Your city or suburb</label>
-          <input type="text" class="url-input" id="city-field" placeholder="e.g. Peterborough, Ontario">
+          <input type="text" class="url-input" id="city-field" placeholder="e.g. Austin, TX">
         </div>
         <p style="font-size:12px; color:var(--text-dim); margin-top:14px; font-weight:300;">We use this to find comparable practices in your area.</p>
       </div>
@@ -1297,7 +1297,7 @@
           </div>
         </div>
 
-        <div class="leaderboard-label">Top practices in Peterborough, Ontario</div>
+        <div class="leaderboard-label" id="leaderboard-city-label">Top practices in your city</div>
         <div class="lb">
           <div class="lb-head">
             <span>#</span><span>Practice</span><span>Score</span><span>Rating</span>
@@ -1390,7 +1390,7 @@
           </div>
           <div>
             <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Practice name</label>
-            <input type="text" id="f-practice" class="url-input" placeholder="Peterborough Smiles" autocomplete="organization">
+            <input type="text" id="f-practice" class="url-input" placeholder="Your Practice Name" autocomplete="organization">
           </div>
           <div>
             <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Phone <span style="color:var(--text-dim); font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
@@ -1642,6 +1642,12 @@
     if (el) el.classList.add('active');
     pips(id);
 
+    // Update leaderboard city label and city-detected text when showing results
+    if (id === 's2' && detectedCity) {
+      document.getElementById('leaderboard-city-label').textContent = 'Top practices in ' + detectedCity;
+      document.getElementById('city-detected-text').textContent = 'City detected: ' + detectedCity;
+    }
+
     // Pre-load FS embed when entering s35 so iframe is ready by s4
     if (id === 's35') preloadFSEmbed();
   }
@@ -1681,7 +1687,10 @@
         cityDetected = false; goTo('s1b');
       } else {
         cityDetected = true;
-        detectedCity = 'Peterborough, Ontario'; // prod: from your scan API
+        // Try to detect city from PRACTICE_DB
+        const modalDomain = normalizeUrl(scannedUrl);
+        const modalPractice = PRACTICE_DB[modalDomain];
+        detectedCity = modalPractice ? (CITY_DISPLAY[modalPractice.city] || modalPractice.city) : 'your city';
         runScan();
       }
     } else if (step === 's1b') {
@@ -1940,33 +1949,102 @@
   }
 
   // ============================================================
-  // PRACTICE DATABASE (Peterborough, ON — 23 practices)
+  // PRACTICE DATABASE — 6 cities
+  // Each entry: domain -> { name, score, label, city }
+  // city_avg, rank, and competitors are computed dynamically.
   // ============================================================
   const PRACTICE_DB = {
-    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Grand Village Dental', c2s: 67.5 },
-    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: '2032 Dentistry', c2s: 52.5 },
-    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles', score: 40.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
-    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: '2032 Dentistry', c2s: 52.5 },
-    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: 'East City Dental', c2s: 57.5 },
-    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Kawartha Orthodontics', c1s: 52.5, c2: 'East City Dental', c2s: 57.5 },
-    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'East City Dental', c2s: 57.5 },
-    '2032dentistry.com': { name: '2032 Dentistry', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Maple Leaf Dentistry', c1s: 85.0, c2: 'Cottage Country Smiles', c2s: 40.0 },
-    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza', score: 55.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Grand Village Dental', c2s: 67.5 },
-    'eastcitydental.com': { name: 'East City Dental', score: 57.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'Kawartha Orthodontics', c2s: 52.5 },
-    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'peterboroughsmiles.ca': { name: 'Peterborough Smiles', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Brookdale Dental Clinic', c2s: 60.0 },
-    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Peterborough Smiles', c2s: 60.0 },
-    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Lily Lake Dental', c1s: 82.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
-    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry', score: 65.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Louis Diamandakos, DDS', c2s: 50.0 },
-    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: 'Dr. Annabel Braganza', c2s: 55.0 },
-    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Bruce Cole, DDS', c2s: 80.0 },
-    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Specialty Endodontics by Dr. Rita', c1s: 37.5, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Dentistry on Sherbrooke', c1s: 62.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
-    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Cottage Country Smiles', c1s: 40.0, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
-    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry', score: 85.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Cottage Country Smiles', c2s: 40.0 },
-    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Park Street Dentistry', c1s: 45.0, c2: 'Grand Village Dental', c2s: 67.5 },
+    // --- Peterborough, ON (23 practices) ---
+    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, city: 'Peterborough' },
+    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, city: 'Peterborough' },
+    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles', score: 40.0, city: 'Peterborough' },
+    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, city: 'Peterborough' },
+    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, city: 'Peterborough' },
+    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, city: 'Peterborough' },
+    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, city: 'Peterborough' },
+    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, city: 'Peterborough' },
+    '2032dentistry.com': { name: '2032 Dentistry', score: 52.5, city: 'Peterborough' },
+    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza', score: 55.0, city: 'Peterborough' },
+    'eastcitydental.com': { name: 'East City Dental', score: 57.5, city: 'Peterborough' },
+    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, city: 'Peterborough' },
+    'peterboroughsmiles.ca': { name: 'Peterborough Smiles', score: 60.0, city: 'Peterborough' },
+    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, city: 'Peterborough' },
+    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, city: 'Peterborough' },
+    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry', score: 65.0, city: 'Peterborough' },
+    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, city: 'Peterborough' },
+    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, city: 'Peterborough' },
+    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, city: 'Peterborough' },
+    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, city: 'Peterborough' },
+    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, city: 'Peterborough' },
+    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry', score: 85.0, city: 'Peterborough' },
+    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, city: 'Peterborough' },
+
+    // --- Kingston, ON ---
+    // TODO: Populate from aivi_index.db — run the SQL query for city='Kingston'
+
+    // --- Austin, TX ---
+    // TODO: Populate from aivi_index.db — run the SQL query for city='Austin'
+
+    // --- Charlotte, NC ---
+    // TODO: Populate from aivi_index.db — run the SQL query for city='Charlotte'
+
+    // --- Scottsdale, AZ ---
+    // TODO: Populate from aivi_index.db — run the SQL query for city='Scottsdale'
+
+    // --- Naples, FL ---
+    // TODO: Populate from aivi_index.db — run the SQL query for city='Naples'
   };
+
+  // ============================================================
+  // CITY METADATA — computed from PRACTICE_DB at load time
+  // ============================================================
+  const CITY_META = {};
+  const CITY_DISPLAY = {
+    'Peterborough': 'Peterborough, ON',
+    'Kingston': 'Kingston, ON',
+    'Austin': 'Austin, TX',
+    'Charlotte': 'Charlotte, NC',
+    'Scottsdale': 'Scottsdale, AZ',
+    'Naples': 'Naples, FL',
+  };
+
+  // Build city metadata: avg score, practice count, below-average count
+  (function buildCityMeta() {
+    const byCity = {};
+    for (const [domain, p] of Object.entries(PRACTICE_DB)) {
+      if (!byCity[p.city]) byCity[p.city] = [];
+      byCity[p.city].push({ ...p, domain });
+    }
+    for (const [city, practices] of Object.entries(byCity)) {
+      const scores = practices.map(p => p.score);
+      const avg = +(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+      const belowAvg = scores.filter(s => s < avg).length;
+      CITY_META[city] = { avg, count: practices.length, belowAvg, practices };
+    }
+  })();
+
+  // Assign label based on score bands
+  function getLabel(score) {
+    if (score >= 80) return 'PREFERRED';
+    if (score >= 60) return 'VISIBLE';
+    if (score >= 40) return 'UNRELIABLE';
+    return 'INVISIBLE';
+  }
+
+  // Find two nearest competitors by score (one above, one below if possible)
+  function findCompetitors(practice, cityPractices) {
+    const sorted = [...cityPractices].sort((a, b) => a.score - b.score);
+    const idx = sorted.findIndex(p => p.domain === practice.domain);
+    let c1 = null, c2 = null;
+    // Look for nearest below
+    if (idx > 0) c1 = sorted[idx - 1];
+    // Look for nearest above
+    if (idx < sorted.length - 1) c2 = sorted[idx + 1];
+    // If only one direction available, pick two from that side
+    if (!c1 && sorted.length > 2) c1 = sorted[idx + 2];
+    if (!c2 && sorted.length > 2) c2 = sorted[idx - 2];
+    return { c1, c2 };
+  }
 
   // ============================================================
   // LABEL STYLING
@@ -2023,17 +2101,31 @@
     document.getElementById('lookup-notfound').style.display = 'none';
 
     if (!practice) {
-      // Not found
+      // Not found — show "not scanned" fallback
       document.getElementById('lookup-notfound').style.display = 'block';
       document.getElementById('lookup-notfound').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       return;
     }
 
-    // Format score — drop .0, keep .5
+    // City-specific data
+    const city = practice.city;
+    const meta = CITY_META[city];
+    const cityAvg = meta.avg;
+    const cityCount = meta.count;
+    const cityDisplayName = CITY_DISPLAY[city] || city;
+    const label = getLabel(practice.score);
+
+    // Update city stats panel
+    document.getElementById('stat-city-avg').textContent = cityAvg;
+    document.getElementById('stat-practices-count').textContent = cityCount;
+    document.getElementById('stat-below-avg').textContent = meta.belowAvg;
+    document.getElementById('lookup-intro').textContent = cityDisplayName + ' — ' + cityCount + ' practices scanned. Enter your website to see your score instantly.';
+
+    // Format score
     const fmt = s => Number.isInteger(s) ? String(s) : String(s);
 
     // Populate score card
-    const style = LABEL_STYLE[practice.label] || LABEL_STYLE['INVISIBLE'];
+    const style = LABEL_STYLE[label] || LABEL_STYLE['INVISIBLE'];
     const scoreEl = document.getElementById('result-score-num');
     scoreEl.textContent = fmt(practice.score);
     scoreEl.style.color = style.color;
@@ -2041,28 +2133,34 @@
     document.getElementById('result-practice-name').textContent = practice.name;
 
     const badge = document.getElementById('result-label-badge');
-    badge.textContent = practice.label;
+    badge.textContent = label;
     badge.style.color = style.color;
     badge.style.background = style.bg;
 
     document.getElementById('result-message').textContent = style.msg;
 
-    // Build full ranked list for rank calculation only
-    const allPractices = Object.values(PRACTICE_DB).sort((a, b) => b.score - a.score);
-    const rank = allPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
+    // City avg and city name in result card
+    document.getElementById('result-city-avg').textContent = cityAvg;
+    document.getElementById('result-city-name').textContent = cityDisplayName;
+
+    // Rank within same city only
+    const cityPractices = meta.practices.sort((a, b) => b.score - a.score);
+    const rank = cityPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
+    document.getElementById('result-rank-total').textContent = 'of ' + cityCount + ' practices';
 
-    // Combine all entries including city average and sort by score
-    const cityAvg = 59.6;
+    // Find competitors within the same city
+    const practiceWithDomain = { ...practice, domain };
+    const { c1, c2 } = findCompetitors(practiceWithDomain, meta.practices);
+
+    // Combine entries: you + competitors + city average, sorted by score
     const allEntries = [
-      { name: practice.c1, score: practice.c1s, type: 'comp' },
-      { name: practice.c2, score: practice.c2s, type: 'comp' },
       { name: practice.name, score: practice.score, type: 'you' },
-      { name: 'Peterborough average', score: cityAvg, type: 'avg' },
+      { name: cityDisplayName + ' average', score: cityAvg, type: 'avg' },
     ];
+    if (c1) allEntries.push({ name: c1.name, score: c1.score, type: 'comp' });
+    if (c2) allEntries.push({ name: c2.name, score: c2.score, type: 'comp' });
     allEntries.sort((a, b) => b.score - a.score);
-
-    const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
 
     let rows = allEntries.map(e => {
       if (e.type === 'you') {
@@ -2075,7 +2173,7 @@
       if (e.type === 'avg') {
         return `
           <div style="display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-            <div style="flex:1; font-size:13px; font-weight:300; color:var(--text-dim); font-style:italic;">Peterborough average</div>
+            <div style="flex:1; font-size:13px; font-weight:300; color:var(--text-dim); font-style:italic;">${e.name}</div>
             <div style="font-size:12px; font-weight:500; color:#ffc542; background:rgba(255,197,66,0.1); padding:3px 10px; border-radius:100px; white-space:nowrap;">${fmt(e.score)}</div>
           </div>`;
       }
