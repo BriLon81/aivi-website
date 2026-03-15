@@ -844,8 +844,6 @@
     .lb-head, .lb-row { grid-template-columns: 24px 1fr 80px 44px; }
     footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
   }
-
-  #lookup-notfound { display: none; }
 </style>
 </head>
 <body>
@@ -912,6 +910,16 @@
       <button class="btn-primary" onclick="runLookup()" style="white-space:nowrap; padding:13px 24px;">Check my score</button>
     </div>
     <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Available in Austin, Charlotte, Kingston, Naples, Peterborough, and Scottsdale.</div>
+
+    <!-- Inline not-found message (hidden by default) -->
+    <div id="lookup-notfound" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--navy-border);">
+      <div style="font-size:13px; color:var(--text-muted); font-weight:300; margin-bottom:12px;">We don't have data for this practice yet. Enter your email to get notified when we add your city.</div>
+      <div style="display:flex; gap:12px; align-items:center;">
+        <input type="email" id="notify-email" class="url-input" placeholder="you@yourpractice.com" style="flex:1;">
+        <button class="btn-primary" onclick="submitNotify()" style="white-space:nowrap; padding:13px 24px;">Notify me</button>
+      </div>
+      <div id="notify-confirm" style="display:none; margin-top:10px; font-size:13px; color:var(--teal); font-weight:300;">Done — we'll be in touch when your city goes live.</div>
+    </div>
   </div>
 
   <!-- Result panel (hidden, slides open on match) -->
@@ -962,16 +970,6 @@
     </div>
   </div>
 
-  <!-- Not-found panel (hidden by default) -->
-  <div id="lookup-notfound" class="lookup-notfound-panel" style="margin-top:20px; background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; padding:32px 36px;">
-    <div style="font-size:15px; font-weight:500; color:var(--white); margin-bottom:6px;">We haven't scanned this city yet</div>
-    <div style="font-size:14px; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:20px;">Enter your email and we'll notify you when your city is live.</div>
-    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-      <input type="email" id="notify-email" class="url-input" placeholder="you@yourpractice.com" style="flex:1; min-width:200px;">
-      <button class="btn-primary" onclick="submitNotify()" style="white-space:nowrap;">Notify me</button>
-    </div>
-    <div id="notify-confirm" style="display:none; margin-top:12px; font-size:13px; color:var(--teal); font-weight:300;">Done — we'll be in touch when your city goes live.</div>
-  </div>
 </div>
 
 <!-- THE SHIFT -->
@@ -2256,15 +2254,19 @@
   // ============================================================
   // AGGREGATE STATS (computed at page load)
   // ============================================================
-  (function initAggregateStats() {
+  function showAggregateStats() {
     const all = Object.values(PRACTICE_DB);
     const total = all.length;
     const avg = Math.round(all.reduce((s, p) => s + p.score, 0) / total * 10) / 10;
     const belowPct = Math.round(all.filter(p => p.score < 60).length / total * 100);
     document.getElementById('stat-avg-score').textContent = avg;
+    document.getElementById('stat-avg-label').textContent = 'Avg. AI visibility score';
     document.getElementById('stat-count').textContent = total;
+    document.getElementById('stat-count-label').textContent = 'Practices scanned';
     document.getElementById('stat-below').textContent = belowPct + '%';
-  })();
+    document.getElementById('stat-below-label').textContent = 'Score below average';
+  }
+  showAggregateStats();
 
   // ============================================================
   // LABEL STYLING
@@ -2321,9 +2323,11 @@
     document.getElementById('lookup-notfound').style.display = 'none';
 
     if (!practice) {
-      // Not found
+      // Not found — show inline message and reset stats to aggregate
       document.getElementById('lookup-notfound').style.display = 'block';
-      document.getElementById('lookup-notfound').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      document.getElementById('notify-email').disabled = false;
+      document.getElementById('notify-confirm').style.display = 'none';
+      showAggregateStats();
       return;
     }
 
