@@ -2062,10 +2062,12 @@
     const behind = neighbours.filter(n => n.score <= practice.score);
 
     ahead.forEach(n => {
+      const aboveAvg = n.score >= 59.6;
+      const tag = aboveAvg ? 'ahead of you · above city average' : 'ahead of you';
       rows += `
         <div style="${rowStyle}">
           <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">ahead of you</div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">${tag}</div>
         </div>`;
     });
 
@@ -2076,10 +2078,12 @@
       </div>`;
 
     behind.forEach(n => {
+      const belowAvg = n.score < 59.6;
+      const tag = belowAvg ? 'behind you · below city average' : 'behind you';
       rows += `
         <div style="${rowStyle}">
           <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">behind you</div>
+          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">${tag}</div>
         </div>`;
     });
 
