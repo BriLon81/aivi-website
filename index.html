@@ -2062,12 +2062,10 @@
     const behind = neighbours.filter(n => n.score <= practice.score);
 
     ahead.forEach(n => {
-      const aboveAvg = n.score >= 59.6;
-      const tag = aboveAvg ? 'ahead of you · above city average' : 'ahead of you';
       rows += `
         <div style="${rowStyle}">
           <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">${tag}</div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">ahead of you</div>
         </div>`;
     });
 
@@ -2077,22 +2075,31 @@
         <div style="font-size:12px; font-weight:500; color:var(--teal);">${practice.score}</div>
       </div>`;
 
+    // Insert city average in the right position among "behind" neighbours
+    const cityAvg = 59.6;
+    let avgInserted = false;
     behind.forEach(n => {
-      const belowAvg = n.score < 59.6;
-      const tag = belowAvg ? 'behind you · below city average' : 'behind you';
+      if (!avgInserted && cityAvg > n.score) {
+        rows += `
+          <div style="${rowStyle}">
+            <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
+            <div style="font-size:13px; font-weight:500; color:#ffc542;">${cityAvg}</div>
+          </div>`;
+        avgInserted = true;
+      }
       rows += `
         <div style="${rowStyle}">
           <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">${tag}</div>
+          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">behind you</div>
         </div>`;
     });
-
-    // City average row
-    rows += `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-top:1px solid var(--navy-border); margin-top:4px;">
-        <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
-        <div style="font-size:13px; font-weight:500; color:#ffc542;">59.6</div>
-      </div>`;
+    if (!avgInserted) {
+      rows += `
+        <div style="${rowStyle} border-bottom:none;">
+          <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
+          <div style="font-size:13px; font-weight:500; color:#ffc542;">${cityAvg}</div>
+        </div>`;
+    }
 
     document.getElementById('comp-rows').innerHTML = rows;
 
