@@ -2046,60 +2046,42 @@
     const rank = allPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
 
-    // Use geographic nearest neighbours (c1/c2) from database
-    const neighbours = [
-      { name: practice.c1, score: practice.c1s },
-      { name: practice.c2, score: practice.c2s },
+    // Combine all entries including city average and sort by score
+    const cityAvg = 59.6;
+    const allEntries = [
+      { name: practice.c1, score: practice.c1s, type: 'comp' },
+      { name: practice.c2, score: practice.c2s, type: 'comp' },
+      { name: practice.name, score: practice.score, type: 'you' },
+      { name: 'Peterborough average', score: cityAvg, type: 'avg' },
     ];
+    allEntries.sort((a, b) => b.score - a.score);
 
     const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
-    const youStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-left:2px solid var(--teal); padding-left:10px; border-bottom:1px solid rgba(255,255,255,0.04);';
 
-    let rows = '';
-
-    // Sort neighbours so "ahead" appears above "you", "behind" appears below
-    const ahead = neighbours.filter(n => n.score > practice.score);
-    const behind = neighbours.filter(n => n.score <= practice.score);
-
-    ahead.forEach(n => {
-      rows += `
-        <div style="${rowStyle}">
-          <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">ahead of you</div>
-        </div>`;
-    });
-
-    rows += `
-      <div style="${youStyle}">
-        <div class="comp-name" style="color:var(--teal); font-weight:500;">${practice.name} &#8592; you</div>
-        <div style="font-size:12px; font-weight:500; color:var(--teal);">${practice.score}</div>
-      </div>`;
-
-    // Insert city average in the right position among "behind" neighbours
-    const cityAvg = 59.6;
-    let avgInserted = false;
-    behind.forEach(n => {
-      if (!avgInserted && cityAvg > n.score) {
-        rows += `
+    let rows = allEntries.map(e => {
+      if (e.type === 'you') {
+        return `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-left:2px solid var(--teal); padding-left:10px; border-bottom:1px solid rgba(255,255,255,0.04);">
+            <div class="comp-name" style="color:var(--teal); font-weight:500;">${e.name} &#8592; you</div>
+            <div style="font-size:12px; font-weight:500; color:var(--teal);">${e.score}</div>
+          </div>`;
+      }
+      if (e.type === 'avg') {
+        return `
           <div style="${rowStyle}">
             <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
-            <div style="font-size:13px; font-weight:500; color:#ffc542;">${cityAvg}</div>
+            <div style="font-size:13px; font-weight:500; color:#ffc542;">${e.score}</div>
           </div>`;
-        avgInserted = true;
       }
-      rows += `
+      const ahead = e.score > practice.score;
+      const posLabel = ahead ? 'ahead of you' : 'behind you';
+      const posColor = ahead ? 'var(--text-muted)' : 'var(--text-dim)';
+      return `
         <div style="${rowStyle}">
-          <div class="comp-name">${n.name}</div>
-          <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">behind you</div>
+          <div class="comp-name">${e.name}</div>
+          <div style="font-size:12px; color:${posColor}; font-weight:300; font-style:italic;">${posLabel}</div>
         </div>`;
-    });
-    if (!avgInserted) {
-      rows += `
-        <div style="${rowStyle} border-bottom:none;">
-          <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
-          <div style="font-size:13px; font-weight:500; color:#ffc542;">${cityAvg}</div>
-        </div>`;
-    }
+    }).join('');
 
     document.getElementById('comp-rows').innerHTML = rows;
 
