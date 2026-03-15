@@ -936,7 +936,7 @@
 <div class="section" id="lookup" style="padding-top:0;">
   <div class="section-label">Score lookup</div>
   <h2>See where you rank</h2>
-  <p class="section-intro">Peterborough, Ontario — 23 practices scanned. Enter your website to see your score instantly.</p>
+  <p class="section-intro">288 practices scanned across 6 cities. Enter your website to see your score instantly.</p>
 
   <!-- City stats -->
   <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
@@ -984,13 +984,13 @@
         <div style="display:flex; gap:24px; flex-shrink:0; text-align:center;">
           <div>
             <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">City avg.</div>
-            <div style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">59.6</div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">Peterborough, ON</div>
+            <div id="result-city-avg" style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">—</div>
+            <div id="result-city-name" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
           </div>
           <div>
             <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">Your rank</div>
             <div id="result-rank" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
-            <div style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;">of 23 practices</div>
+            <div id="result-city-count" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
           </div>
         </div>
       </div>
@@ -1599,7 +1599,7 @@
   const config = {
     s1:  { title: 'Scan your website',          sub: 'See how the top practices in your city score.',         note: 'Secure checkout via FastSpring',                 btn: 'Start my audit →',       back: false, hideNext: false, pip: 1 },
     s1b: { title: 'Confirm your location',      sub: 'We couldn\'t detect your city — just takes a second.', note: 'Secure checkout via FastSpring',                 btn: 'Continue →',             back: true,  hideNext: false, pip: 1 },
-    s2:  { title: 'Your city\'s AI landscape',  sub: 'Here\'s how the top practices in your city score.',    note: '23 practices scanned in your city',              btn: 'Unlock my score →',      back: false, hideNext: false, pip: 2 },
+    s2:  { title: 'Your city\'s AI landscape',  sub: 'Here\'s how the top practices in your city score.',    note: 'Practices scanned in your city',              btn: 'Unlock my score →',      back: false, hideNext: false, pip: 2 },
     s3:  { title: 'Choose your report',         sub: 'Your site has been scanned — your score is ready.',    note: 'Secure checkout via FastSpring',                 btn: null,                     back: true,  hideNext: true,  pip: 3 },
     s35: { title: 'Where to send your report',  sub: 'Enter your details — we\'ll deliver your report here.',note: 'Your data is never shared with third parties',   btn: 'Continue to payment →',  back: true,  hideNext: false, pip: 4 },
     s4:  { title: 'Complete your payment',      sub: 'Secured by FastSpring · PCI DSS Level 1 compliant.',   note: 'Card data never touches our servers',            btn: null,                     back: false, hideNext: true,  pip: 4 },
@@ -1940,32 +1940,315 @@
   }
 
   // ============================================================
-  // PRACTICE DATABASE (Peterborough, ON — 23 practices)
+  // PRACTICE DATABASE (288 practices across 6 cities)
   // ============================================================
   const PRACTICE_DB = {
-    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Grand Village Dental', c2s: 67.5 },
-    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: '2032 Dentistry', c2s: 52.5 },
-    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles', score: 40.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
-    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, label: 'INVISIBLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: '2032 Dentistry', c2s: 52.5 },
-    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, label: 'INVISIBLE', city_avg: 59.6, c1: 'Bruce Cole, DDS', c1s: 80.0, c2: 'East City Dental', c2s: 57.5 },
-    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Kawartha Orthodontics', c1s: 52.5, c2: 'East City Dental', c2s: 57.5 },
-    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'East City Dental', c2s: 57.5 },
-    '2032dentistry.com': { name: '2032 Dentistry', score: 52.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Maple Leaf Dentistry', c1s: 85.0, c2: 'Cottage Country Smiles', c2s: 40.0 },
-    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza', score: 55.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Horizon Family Dentistry', c1s: 65.0, c2: 'Grand Village Dental', c2s: 67.5 },
-    'eastcitydental.com': { name: 'East City Dental', score: 57.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Periodontics', c1s: 50.0, c2: 'Kawartha Orthodontics', c2s: 52.5 },
-    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'peterboroughsmiles.ca': { name: 'Peterborough Smiles', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Everes Dentistry', c1s: 60.0, c2: 'Brookdale Dental Clinic', c2s: 60.0 },
-    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Peterborough Smiles', c2s: 60.0 },
-    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Lily Lake Dental', c1s: 82.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
-    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry', score: 65.0, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Dr. Annabel Braganza', c1s: 55.0, c2: 'Louis Diamandakos, DDS', c2s: 50.0 },
-    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, label: 'UNRELIABLE', city_avg: 59.6, c1: 'Peterborough Dental Clinic', c1s: 90.0, c2: 'Dr. Annabel Braganza', c2s: 55.0 },
-    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Brookdale Dental Clinic', c1s: 60.0, c2: 'Bruce Cole, DDS', c2s: 80.0 },
-    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, label: 'VISIBLE', city_avg: 59.6, c1: 'Specialty Endodontics by Dr. Rita', c1s: 37.5, c2: 'Cornerstone Family Dentistry', c2s: 70.0 },
-    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Dentistry on Sherbrooke', c1s: 62.5, c2: 'Horizon Family Dentistry', c2s: 65.0 },
-    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, label: 'VISIBLE', city_avg: 59.6, c1: 'Cottage Country Smiles', c1s: 40.0, c2: 'Maple Leaf Dentistry', c2s: 85.0 },
-    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry', score: 85.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Christopher Moore, DDS', c1s: 82.5, c2: 'Cottage Country Smiles', c2s: 40.0 },
-    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, label: 'PREFERRED', city_avg: 59.6, c1: 'Park Street Dentistry', c1s: 45.0, c2: 'Grand Village Dental', c2s: 67.5 },
+    // --- Peterborough (29 practices) ---
+    'lotusfamilydental.ca': { name: 'Lotus Family Dental Peterborough', score: 0.0, city: 'Peterborough' },
+    'komfs.com': { name: 'Dr. Jokay', score: 0.0, city: 'Peterborough' },
+    'davincidentalcentre.com': { name: 'DaVinci Dental Centre', score: 0.0, city: 'Peterborough' },
+    'kawarthadentalclinic.com': { name: 'Kawartha Dental Clinic', score: 0.0, city: 'Peterborough' },
+    'chemongfamilydental.com': { name: 'Chemong Family Dental Peterborough', score: 0.0, city: 'Peterborough' },
+    'peterboroughfamilydentistry.com': { name: 'Peterborough Family Dentistry', score: 0.0, city: 'Peterborough' },
+    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, city: 'Peterborough' },
+    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, city: 'Peterborough' },
+    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles Dentistry', score: 40.0, city: 'Peterborough' },
+    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, city: 'Peterborough' },
+    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, city: 'Peterborough' },
+    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, city: 'Peterborough' },
+    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, city: 'Peterborough' },
+    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, city: 'Peterborough' },
+    '2032dentistry.com': { name: '2032 Dentistry - For Life', score: 52.5, city: 'Peterborough' },
+    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza - Peterborough Periodontist', score: 55.0, city: 'Peterborough' },
+    'eastcitydental.com': { name: 'East City Dental', score: 57.5, city: 'Peterborough' },
+    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, city: 'Peterborough' },
+    'peterboroughsmiles.ca': { name: 'Peterborough Smiles Dental Centre', score: 60.0, city: 'Peterborough' },
+    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, city: 'Peterborough' },
+    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, city: 'Peterborough' },
+    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry Peterborough', score: 65.0, city: 'Peterborough' },
+    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, city: 'Peterborough' },
+    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, city: 'Peterborough' },
+    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, city: 'Peterborough' },
+    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, city: 'Peterborough' },
+    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, city: 'Peterborough' },
+    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry: Dr Cam Crawford', score: 85.0, city: 'Peterborough' },
+    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, city: 'Peterborough' },
+    // --- Kingston (35 practices) ---
+    'audenparkfamilydentistry.com': { name: 'Auden Park Family Dentistry Kingston', score: 0.0, city: 'Kingston' },
+    'limestoneperio.com': { name: 'Limestone Periodontics', score: 0.0, city: 'Kingston' },
+    'kingstonwestdental.ca': { name: 'Kingston West Dental Centre', score: 0.0, city: 'Kingston' },
+    'cataraquiwoodsdentistry.com': { name: 'Cataraqui Woods Dentistry', score: 25.0, city: 'Kingston' },
+    'wajikhan.ca': { name: 'Dr Waji Khan', score: 30.0, city: 'Kingston' },
+    'tonguetieclinic.ca': { name: 'Kingston Tongue Tie Institute', score: 30.0, city: 'Kingston' },
+    'kingstonendodontics.com': { name: 'Kingston Endodontics', score: 37.5, city: 'Kingston' },
+    'davidcraigdds.com': { name: 'Dr. David Craig', score: 42.5, city: 'Kingston' },
+    'smithfamilyorthodontics.com': { name: 'Smith Family Orthodontics', score: 45.0, city: 'Kingston' },
+    'gillisdentistry.com': { name: 'Gillis Dentistry', score: 45.0, city: 'Kingston' },
+    'smilekingston.ca': { name: 'Nguyen Anh Dr', score: 45.0, city: 'Kingston' },
+    'hedgewoodhousedental.com': { name: 'Hedgewood House', score: 47.5, city: 'Kingston' },
+    'greenwoodparkdentistry.com': { name: 'Greenwood Park Dentistry', score: 50.0, city: 'Kingston' },
+    'andersondentistry.ca': { name: 'Anderson Dentistry', score: 52.5, city: 'Kingston' },
+    'westendental.ca': { name: 'Westend Dental Clinic', score: 55.0, city: 'Kingston' },
+    'cataraquidental.com': { name: 'Cataraqui Dental Centre', score: 55.0, city: 'Kingston' },
+    'wsmdentistry.com': { name: 'William S Motruk Dentistry', score: 55.0, city: 'Kingston' },
+    'bracesdoc.ca': { name: 'Dr. Timothy Agapas, Orthodontist, Kingston - East', score: 55.0, city: 'Kingston' },
+    'dentistryatkingston.ca': { name: 'Dentistry @ Palace Road', score: 62.5, city: 'Kingston' },
+    'gardinersdentalclinic.com': { name: 'Gardiners Dental Clinic', score: 65.0, city: 'Kingston' },
+    'limestonecitydental.com': { name: 'Limestone City Dental', score: 65.0, city: 'Kingston' },
+    'rideautowndentalcare.com': { name: 'Rideau Town Dental Care', score: 65.0, city: 'Kingston' },
+    'kingstoncreeksidedental.com': { name: 'Creekside Dental', score: 72.5, city: 'Kingston' },
+    'eastenddentalcentre.com': { name: 'East End Dental Centre', score: 72.5, city: 'Kingston' },
+    'drparkfamilydentistry.ca': { name: 'Dr. Park Family Dentistry', score: 75.0, city: 'Kingston' },
+    'harbourdentalkingston.ca': { name: 'Harbour Dental', score: 75.0, city: 'Kingston' },
+    'altimakingstondental.com': { name: 'Altima Kingston Dental Centre', score: 77.5, city: 'Kingston' },
+    'meadowbrookdentalcentre.ca': { name: 'Meadowbrook Dental Centre', score: 80.0, city: 'Kingston' },
+    'kmadental.ca': { name: 'KMA Dental Kingston', score: 80.0, city: 'Kingston' },
+    'dawsondental.ca': { name: 'Dawson Dental - Kingston', score: 80.0, city: 'Kingston' },
+    'smiledentalkingston.ca': { name: 'Smile Dental Centre', score: 85.0, city: 'Kingston' },
+    'dentistkingston.com': { name: 'Dentistry on Queen', score: 85.0, city: 'Kingston' },
+    'pearldentalcarekingston.ca': { name: 'Pearl Dental Care', score: 85.0, city: 'Kingston' },
+    'kingston.lighthousedental.ca': { name: 'LightHouse Dental Kingston', score: 90.0, city: 'Kingston' },
+    'cataraquifamilydental.ca': { name: 'Cataraqui Family Dental', score: 90.0, city: 'Kingston' },
+    // --- Austin (51 practices) ---
+    'swishsmiles.com': { name: 'Swish Dental South', score: 0.0, city: 'Austin' },
+    'castordds.com': { name: 'Sunset Hills Dentistry', score: 0.0, city: 'Austin' },
+    'bartonoaksdentalgroup.com': { name: 'Barton Oaks Dental Group', score: 0.0, city: 'Austin' },
+    'austinendo.com': { name: 'Austin Endodontics, LLP', score: 0.0, city: 'Austin' },
+    'littlehousedentistry.com': { name: 'little house dentistry', score: 0.0, city: 'Austin' },
+    'downtowndentaldesign.com': { name: 'Downtown Dental Design', score: 0.0, city: 'Austin' },
+    'westerntrailsdental.com': { name: 'Western Trails Dental', score: 15.0, city: 'Austin' },
+    'va.gov': { name: 'Burcin Jennifer DDS', score: 32.5, city: 'Austin' },
+    'nantzorthodontics.com': { name: 'Nantz Orthodontics', score: 35.0, city: 'Austin' },
+    'thielpediatricdentistry.com': { name: 'Thiel Pediatric Dentistry', score: 40.0, city: 'Austin' },
+    'periosurgicalarts.com': { name: 'Periodontal Surgical Arts', score: 42.5, city: 'Austin' },
+    'ianiroendo.com': { name: 'Ianiro Endodontics', score: 45.0, city: 'Austin' },
+    'lonestarcares.org': { name: 'Lone Star Circle of Care at Stassney', score: 45.0, city: 'Austin' },
+    'toothinctx.com': { name: 'The Tooth Inc', score: 45.0, city: 'Austin' },
+    'communitycaretx.org': { name: 'Carousel Pediatrics-Riverside', score: 47.5, city: 'Austin' },
+    'dentalrepublic.com': { name: 'Dental Republic - Riverside', score: 50.0, city: 'Austin' },
+    'dentalshub.com': { name: 'Kaelan Dental Care', score: 50.0, city: 'Austin' },
+    'eastaustindental.com': { name: 'East Austin Dental', score: 52.5, city: 'Austin' },
+    'naturaltoothfairy.com': { name: 'Dr. Margaret E. Rayne, DDS', score: 60.0, city: 'Austin' },
+    'emilyzaramelladds.com': { name: 'Emily Ianno Zaramella, DDS', score: 60.0, city: 'Austin' },
+    'glintatx.com': { name: 'Glint Dental Studio Austin', score: 62.5, city: 'Austin' },
+    'koladentistry.com': { name: 'KoLa Family & Cosmetic Dentistry', score: 62.5, city: 'Austin' },
+    'austinsmilefixer.com': { name: 'Becher & Gil Orthodontics', score: 65.0, city: 'Austin' },
+    'altadentalcare.com': { name: 'Alta Dental', score: 65.0, city: 'Austin' },
+    'belldentalstudio.com': { name: 'Bell Dental Studio', score: 65.0, city: 'Austin' },
+    'austinmicroendo.com': { name: 'South Austin Microendodontics', score: 70.0, city: 'Austin' },
+    'veneerloungeaustin.com': { name: 'Veneer Lounge Austin TX', score: 70.0, city: 'Austin' },
+    'hillcountryoralsurgery.com': { name: 'Hill Country Oral Surgery', score: 70.0, city: 'Austin' },
+    'westlakehillsdental.com': { name: 'West Lake Hills Dental', score: 72.5, city: 'Austin' },
+    'toothbar.com': { name: 'Toothbar', score: 72.5, city: 'Austin' },
+    'blvddentistry.com': { name: 'BLVD Dentistry & Orthodontics of 5th Street', score: 72.5, city: 'Austin' },
+    'lonestarpediatricdental.com': { name: 'Lone Star Pediatric Dental & Braces - South Austin', score: 75.0, city: 'Austin' },
+    'superkidsaustin.com': { name: 'Super Kids Austin', score: 75.0, city: 'Austin' },
+    'honestfamilydental.com': { name: 'Honest Family Dental', score: 75.0, city: 'Austin' },
+    'bossorthodontics.com': { name: 'Boss Orthodontics', score: 75.0, city: 'Austin' },
+    'riverrockdentalfamily.com': { name: 'River Rock Dental Austin - East Riverside', score: 77.5, city: 'Austin' },
+    'ladybirddental.com': { name: 'Lady Bird Dental', score: 77.5, city: 'Austin' },
+    'myavenuedental.com': { name: 'Avenue Dental of South Austin', score: 77.5, city: 'Austin' },
+    'smile360atx.com': { name: 'Smile 360', score: 77.5, city: 'Austin' },
+    'brident.com': { name: 'Brident Dental & Orthodontics', score: 80.0, city: 'Austin' },
+    'longhornpediatricdentist.com': { name: 'Longhorn Pediatric Dentistry and Orthodontics', score: 80.0, city: 'Austin' },
+    'carussouthcentral.com': { name: 'Carus Dental South Central', score: 82.5, city: 'Austin' },
+    'myidealdental.com': { name: 'Ideal Dental South Lamar', score: 82.5, city: 'Austin' },
+    'blunncreekdental.com': { name: 'Blunn Creek Family Dentistry', score: 82.5, city: 'Austin' },
+    'breezeoralcare.com': { name: 'Breeze Dental', score: 82.5, city: 'Austin' },
+    'enameldentistry.com': { name: 'Enamel Dentistry Saltillo (East Austin)', score: 82.5, city: 'Austin' },
+    'highpointsmilestx.com': { name: 'High Point Dentistry', score: 82.5, city: 'Austin' },
+    'southaustindentalassociates.com': { name: 'South Austin Dental Associates', score: 85.0, city: 'Austin' },
+    'daybreakdentalcare.com': { name: 'Daybreak Dental', score: 85.0, city: 'Austin' },
+    'midtowndentalassociates.com': { name: 'Midtown Dental Associates', score: 87.5, city: 'Austin' },
+    'elite-dentistry.net': { name: 'Elite Dentistry ATX', score: 90.0, city: 'Austin' },
+    // --- Charlotte (76 practices) ---
+    'charlotteendodontics.com': { name: 'Charlotte Endodontics', score: 0.0, city: 'Charlotte' },
+    'linebergerorthodontics.com': { name: 'Lineberger Orthodontics - Charlotte', score: 0.0, city: 'Charlotte' },
+    'kalonsandglidewell.com': { name: 'Kalons, Glidewell & Grewal DDS PA', score: 0.0, city: 'Charlotte' },
+    'charlotteorthodontists.com': { name: 'Lume Orthodontics - Eastover', score: 10.0, city: 'Charlotte' },
+    'premiersmilesnc.com': { name: 'Dr. Marcus Jean', score: 10.0, city: 'Charlotte' },
+    'goldnerdental.com': { name: 'Preston Jan Goldner, DDS', score: 15.0, city: 'Charlotte' },
+    'cotswold.alliancedentalgroupnc.com': { name: 'Alliance Dental Group - Cotswold', score: 20.0, city: 'Charlotte' },
+    'sackstederorthodontics.com': { name: 'Sacksteder Orthodontics', score: 30.0, city: 'Charlotte' },
+    'linebergerdentistry.com': { name: 'Lineberger Dentistry', score: 30.0, city: 'Charlotte' },
+    'dualimagesmiles.com': { name: 'Dual Image Dentistry and Orthodontics', score: 32.5, city: 'Charlotte' },
+    'wirysmilesnc.com': { name: 'Wiry Smiles Orthodontics', score: 35.0, city: 'Charlotte' },
+    'lakepointedentistry.com': { name: 'Dr. Naureen Qazi, DDS', score: 37.5, city: 'Charlotte' },
+    'tranquilfamilydentistry.com': { name: 'Tranquil Family Dentistry', score: 37.5, city: 'Charlotte' },
+    'robertscottcharlottenc.com': { name: 'Robert E. Scott, D.M.D.', score: 37.5, city: 'Charlotte' },
+    'smilecharlotte.com': { name: 'Smile Charlotte', score: 47.5, city: 'Charlotte' },
+    'hannonorthodontics.com': { name: 'Hannon Orthodontics', score: 50.0, city: 'Charlotte' },
+    'webberdentistry.com': { name: 'Webber Dentistry', score: 50.0, city: 'Charlotte' },
+    'smilestarterdental.com': { name: 'Dr. Jeffrey F. Zieziula, DDS', score: 50.0, city: 'Charlotte' },
+    'smilestartersdental.com': { name: 'Dr. MI H. Kim, DDS', score: 52.5, city: 'Charlotte' },
+    'bubblespediatricdentistry.com': { name: 'Bubbles Pediatric Dentistry', score: 52.5, city: 'Charlotte' },
+    'bloomingsmilespd.com': { name: 'Blooming Smiles Pediatric Dentistry', score: 55.0, city: 'Charlotte' },
+    'teamfinancials.com': { name: 'TEAM Financials CPA', score: 55.0, city: 'Charlotte' },
+    'pearlcharlotte.com': { name: 'Pearl. Dentistry Reimagined', score: 60.0, city: 'Charlotte' },
+    'drrobertwatson.com': { name: 'Robert Watson Jr., DDS, PA', score: 60.0, city: 'Charlotte' },
+    'citydentalclt.com': { name: 'City Dental', score: 60.0, city: 'Charlotte' },
+    'mf-dentistry.com': { name: 'Merlo & Fahrney Dentistry', score: 60.0, city: 'Charlotte' },
+    'beacondentalcharlotte.com': { name: 'Beacon Dental Center', score: 60.0, city: 'Charlotte' },
+    'drlinger.com': { name: 'William Linger, DDS, MAGD & Barlan Barrero, DDS', score: 62.5, city: 'Charlotte' },
+    'eastoverdental.com': { name: 'Eastover Dental', score: 62.5, city: 'Charlotte' },
+    'dualimagedentistry.com': { name: 'Dual Image Dentistry', score: 62.5, city: 'Charlotte' },
+    'growingsmilesnc.com': { name: 'Growing Smiles Pediatric Dentistry - Madison Park', score: 65.0, city: 'Charlotte' },
+    'charlottedentalpro.com': { name: 'Charlotte DentalPro', score: 65.0, city: 'Charlotte' },
+    'charlotteperio.com': { name: 'CharlottePerio', score: 65.0, city: 'Charlotte' },
+    'bwilliamsdds.com': { name: 'D. Brian Williams, DDS, PA', score: 65.0, city: 'Charlotte' },
+    'districtdentistryclt.com': { name: 'District Dentistry', score: 65.0, city: 'Charlotte' },
+    'dentistryontheplaza.com': { name: 'Dentistry on The Plaza', score: 65.0, city: 'Charlotte' },
+    'dentistryofthecarolinas.com': { name: 'Dentistry of the Carolinas - Dilworth/South End', score: 67.5, city: 'Charlotte' },
+    'cltpediatricdentistry.com': { name: 'Lume Pediatric Dentistry & Orthodontics - Cotswold', score: 67.5, city: 'Charlotte' },
+    'charlottedentist.org': { name: 'Nelsen Dental Excellence', score: 67.5, city: 'Charlotte' },
+    'smilesatisfaction.com': { name: 'Advanced Dentistry of Charlotte - Dr Chris Bowman', score: 70.0, city: 'Charlotte' },
+    'southendpremierdentistry.com': { name: 'SouthEnd Premier Dentistry', score: 70.0, city: 'Charlotte' },
+    'belvederedentistry.com': { name: 'Belvedere Family Dentistry', score: 70.0, city: 'Charlotte' },
+    'charlottedentistry.com': { name: 'Charlotte Dentistry', score: 72.5, city: 'Charlotte' },
+    'clearsmilecharlotte.com': { name: 'Clearsmile Orthodontics (South End)', score: 72.5, city: 'Charlotte' },
+    'affordabledentures.com': { name: 'C Gregory Martin PA', score: 72.5, city: 'Charlotte' },
+    'genesisfamilydentistrync.com': { name: 'Genesis Family Dentistry - Plaza Midwood', score: 72.5, city: 'Charlotte' },
+    'premierdentalnc.com': { name: 'Premier Dental Noda', score: 72.5, city: 'Charlotte' },
+    'akasmiles.com': { name: 'All Kids Pediatric Dentistry', score: 72.5, city: 'Charlotte' },
+    'citypark.dental': { name: 'City Park Dental of Charlotte', score: 75.0, city: 'Charlotte' },
+    'charlottedentalcare.com': { name: 'Porter Dental Group', score: 75.0, city: 'Charlotte' },
+    'dentistryatcotswold.com': { name: 'Dentistry at Cotswold', score: 75.0, city: 'Charlotte' },
+    'skyviewdentistrycharlotte.com': { name: 'Skyview Dentistry', score: 75.0, city: 'Charlotte' },
+    'kidzdentalsouth.com': { name: 'Kidz Dental South', score: 77.5, city: 'Charlotte' },
+    'cltfamilydentistry.com': { name: 'Charlotte Family Dentistry', score: 77.5, city: 'Charlotte' },
+    'flossflossfloss.com': { name: 'Eastover Pediatric Dentistry', score: 77.5, city: 'Charlotte' },
+    'kidzdentalcentral.com': { name: 'Kidz Dental Central', score: 77.5, city: 'Charlotte' },
+    'pmdent.com': { name: 'Plaza Midwood Dentistry', score: 77.5, city: 'Charlotte' },
+    'smilesbypayet.com': { name: 'Smiles By Payet Dentistry', score: 80.0, city: 'Charlotte' },
+    'randolphdentalcare.com': { name: 'Randolph Dental Care', score: 80.0, city: 'Charlotte' },
+    'urbanfamilydental.com': { name: 'Urban Family Dental', score: 80.0, city: 'Charlotte' },
+    'dentistryatsouthend.com': { name: 'Dentistry at South End', score: 80.0, city: 'Charlotte' },
+    'friendlydentalgroup.com': { name: 'Friendly Dental', score: 82.5, city: 'Charlotte' },
+    'vayadental.com': { name: 'Vaya Dental - Madison Park', score: 82.5, city: 'Charlotte' },
+    'southviewdentistrycharlotte.com': { name: 'SouthView Dentistry', score: 82.5, city: 'Charlotte' },
+    'queensroaddentistry.com': { name: 'Queens Road Dentistry', score: 82.5, city: 'Charlotte' },
+    'dentistryonmonroe.com': { name: 'Dentistry On Monroe', score: 82.5, city: 'Charlotte' },
+    'seitlindental.com': { name: 'Seitlin Dental', score: 85.0, city: 'Charlotte' },
+    'providencepdo.com': { name: 'Providence Pediatric Dentistry & Orthodontics', score: 85.0, city: 'Charlotte' },
+    'cotswoldfamilydentistry.com': { name: 'Cotswold Family Dentistry', score: 85.0, city: 'Charlotte' },
+    'mydentists.org': { name: 'My Dentists', score: 85.0, city: 'Charlotte' },
+    'fourthwarddentistry.com': { name: 'Fourth Ward Dentistry', score: 85.0, city: 'Charlotte' },
+    'centralavenuedental.com': { name: 'Central Avenue Dental', score: 85.0, city: 'Charlotte' },
+    'thelandmarksmile.com': { name: 'LandMark Dentistry Charlotte', score: 87.5, city: 'Charlotte' },
+    'stewartdentalgroupcharlotte.com': { name: 'Stewart Dental Group', score: 90.0, city: 'Charlotte' },
+    'charlotteemergencydental.com': { name: 'Charlotte Emergency Dental', score: 92.5, city: 'Charlotte' },
+    'harlowdentalnc.com': { name: 'Harlow Dental at 7th Street', score: 95.0, city: 'Charlotte' },
+    // --- Scottsdale (45 practices) ---
+    'scottsdaletrailsdentistry.com': { name: 'Scottsdale Trails Dentistry', score: 0.0, city: 'Scottsdale' },
+    'toothologydental.com': { name: 'Toothology Dental', score: 0.0, city: 'Scottsdale' },
+    'dentistsonchaparral.com': { name: 'Dentists on Chaparral', score: 0.0, city: 'Scottsdale' },
+    'scottsdalefamilysmiles.com': { name: 'Scottsdale Family Smiles', score: 0.0, city: 'Scottsdale' },
+    'aspendental.com': { name: 'John Snee', score: 0.0, city: 'Scottsdale' },
+    'denturecenterofarizona.com': { name: 'Denture Center of Arizona', score: 35.0, city: 'Scottsdale' },
+    'noahhelps.org': { name: 'Marianne Youssef, DMD', score: 42.5, city: 'Scottsdale' },
+    'azdentalwellness.com': { name: 'AZ Dental Wellness', score: 42.5, city: 'Scottsdale' },
+    'valleyendodontic.com': { name: 'Valley Endodontics & Oral Surgery', score: 45.0, city: 'Scottsdale' },
+    'owtadortho.com': { name: 'Owtad Orthodontics', score: 45.0, city: 'Scottsdale' },
+    'stiegandwachtel.com': { name: 'Stieg & Wachtel Orthodontics', score: 47.5, city: 'Scottsdale' },
+    'a101dentalcare.com': { name: 'A-101 Dental Care, PC', score: 47.5, city: 'Scottsdale' },
+    'arcadiapediatricdental.com': { name: 'Arcadia Pediatric Dental', score: 50.0, city: 'Scottsdale' },
+    'drbroermann.com': { name: 'Martin Broermann DDS pc', score: 50.0, city: 'Scottsdale' },
+    'arcadiaorthoaz.com': { name: 'Arcadia Orthodontics', score: 52.5, city: 'Scottsdale' },
+    'modestdentistry.com': { name: 'Modest Dentistry - Scottsdale', score: 52.5, city: 'Scottsdale' },
+    'omsphx.com': { name: 'Nicolas Bebeau MD, DDS, FACS: Oral & Maxillofacial Surgery of Phoenix', score: 52.5, city: 'Scottsdale' },
+    'sabaandfowler.com': { name: 'Fowler Christopher DDS', score: 52.5, city: 'Scottsdale' },
+    'childrens-dental.com': { name: 'Children\'s Dental Specialty', score: 55.0, city: 'Scottsdale' },
+    'sadlondentistry.com': { name: 'Dr. Scott D. Sadlon, DDS', score: 57.5, city: 'Scottsdale' },
+    'brattonryan.com': { name: 'Roy R. Bratton, DDS, PLLC', score: 57.5, city: 'Scottsdale' },
+    'kgndental.com': { name: 'Kathleen C Green Naughton, DMD, PC', score: 57.5, city: 'Scottsdale' },
+    'southscottsdaledentalcare.com': { name: 'South Scottsdale Dental Care', score: 60.0, city: 'Scottsdale' },
+    'wowsmilez.com': { name: 'Dr. Keiko H. Willcox, DDS', score: 60.0, city: 'Scottsdale' },
+    'fourpeaksdental.com': { name: 'Four Peaks Family Dentistry', score: 60.0, city: 'Scottsdale' },
+    'c-orthostudio.com': { name: 'Camelback Orthodontic Studio', score: 60.0, city: 'Scottsdale' },
+    'azoralhealth.com': { name: 'AZ Oral Health Center', score: 62.5, city: 'Scottsdale' },
+    'gentledental.interdent.com': { name: 'Gentle Dental Scottsdale', score: 65.0, city: 'Scottsdale' },
+    'alpersdentistry.com': { name: 'Alpers Family and Cosmetic Dentistry', score: 67.5, city: 'Scottsdale' },
+    'saltriverdental.com': { name: 'Salt River Dental Care', score: 70.0, city: 'Scottsdale' },
+    'scottsdaleperio.com': { name: 'Scottsdale Implants and Periodontics - Braydon Haskell, DMD, MS', score: 70.0, city: 'Scottsdale' },
+    'milldental.com': { name: 'Millennium Dental Associates', score: 72.5, city: 'Scottsdale' },
+    'pvsmiles.com': { name: 'PV Smiles Reem Kidess', score: 72.5, city: 'Scottsdale' },
+    'snldental.com': { name: 'S&L Dental', score: 75.0, city: 'Scottsdale' },
+    'scottsdaledentalcare.net': { name: 'Scottsdale Dental Care', score: 80.0, city: 'Scottsdale' },
+    'woodruffdental.com': { name: 'Woodruff Dental', score: 80.0, city: 'Scottsdale' },
+    'myradiantfamilydentistry.com': { name: 'Radiant Family Dentistry', score: 80.0, city: 'Scottsdale' },
+    'omnidds.com': { name: 'Omni Dental Studio', score: 80.0, city: 'Scottsdale' },
+    'happyfamilydentalcare.com': { name: 'Happy Family Dental Care', score: 82.5, city: 'Scottsdale' },
+    'southtowndentalcare.com': { name: 'Southtown Dental Care: Matthew E Nelson DDS', score: 85.0, city: 'Scottsdale' },
+    'smilearizonadentistry.com': { name: 'Smile Arizona Dentistry', score: 85.0, city: 'Scottsdale' },
+    'dentistryofoldtownscottsdale.com': { name: 'Dentistry of Old Town Scottsdale', score: 85.0, city: 'Scottsdale' },
+    'pristinedentalaz.com': { name: 'Pristine Dental', score: 85.0, city: 'Scottsdale' },
+    'mitchelldentalaz.com': { name: 'Mitchell Dental', score: 87.5, city: 'Scottsdale' },
+    'scottsdalesdentist.com': { name: 'Scottsdale\'s Dentist: Top Cosmetic & Emergency Care', score: 92.5, city: 'Scottsdale' },
+    // --- Naples (52 practices) ---
+    'mysagedental.com': { name: 'Sage Dental of East Naples', score: 0.0, city: 'Naples' },
+    'naplesbaydentalgroup.com': { name: 'Naples Bay Dental Group', score: 0.0, city: 'Naples' },
+    'daveyfamilydentistry.com': { name: 'Dr Davey Dental', score: 0.0, city: 'Naples' },
+    'cohendentalstudio.com': { name: 'Cohen Dental Studio', score: 0.0, city: 'Naples' },
+    'westshoreoms.com': { name: 'WestShore Oral and Maxillofacial Specialists', score: 0.0, city: 'Naples' },
+    'mydentaldesigns.com': { name: 'Dental Designs', score: 0.0, city: 'Naples' },
+    'pagefamilydentalgroup.com': { name: 'Page Family Dental Group', score: 0.0, city: 'Naples' },
+    'naplesendodontist.com': { name: 'Endodontic Specialists of Naples - Dr. Kevin R. Kunz', score: 0.0, city: 'Naples' },
+    'naplesdentists.com': { name: 'Jaime Davenport DMD', score: 10.0, city: 'Naples' },
+    'drkellidmdnaples.com': { name: 'Kelli Salomon, DMD', score: 10.0, city: 'Naples' },
+    'towncaredental.com': { name: 'Towncare Dental of Naples', score: 22.5, city: 'Naples' },
+    'dentalspecialtyflorida.com': { name: 'Dental Specialty Center of Naples', score: 22.5, city: 'Naples' },
+    'cpswfl.com': { name: 'Wilson Professional Center', score: 32.5, city: 'Naples' },
+    'meyerdentalcare.com': { name: 'Leigh T. Meyer, DMD', score: 40.0, city: 'Naples' },
+    'puredentalnaples.com': { name: 'Pure Dental Naples', score: 42.5, city: 'Naples' },
+    'harbordentalfl.com': { name: 'Harbor Dental', score: 47.5, city: 'Naples' },
+    'ayandentistry.com': { name: 'Ayan Dentistry', score: 47.5, city: 'Naples' },
+    'naplesdentalstudio.com': { name: 'Naples Dental Studio', score: 52.5, city: 'Naples' },
+    'precisiondentalcarenaples.com': { name: 'Dr. Fonseca', score: 57.5, city: 'Naples' },
+    'alexanderbraodds.com': { name: 'Alexander Brao, DDS', score: 57.5, city: 'Naples' },
+    'drtaranov.com': { name: 'Dr. Kristina Taranov, DDS', score: 60.0, city: 'Naples' },
+    'naples-smiles.com': { name: 'Naples General & Cosmetic Dentistry LLC', score: 60.0, city: 'Naples' },
+    'bayfrontdentistry.com': { name: 'Aesthetic Dentistry at Bayfront', score: 62.5, city: 'Naples' },
+    'engleimplantdentistry.com': { name: 'Engle Dentistry Naples', score: 65.0, city: 'Naples' },
+    'oldenaplesperio.com': { name: 'Olde Naples Periodontics - Denise C. Gay, D.D.S, M.D.S', score: 65.0, city: 'Naples' },
+    'dentistsnaples.com': { name: 'For Smiles Dentists', score: 65.0, city: 'Naples' },
+    'naplesperiodontist.com': { name: 'Naples Periodontist- Timothy Davis, D.D.S. and Miguel Jusino, D.M.D., M.S.', score: 65.0, city: 'Naples' },
+    'gulfsidedentalnaples.com': { name: 'Dr. Delia Reyes', score: 67.5, city: 'Naples' },
+    'drjbhansen.com': { name: 'Hansen II James B DDS PA', score: 67.5, city: 'Naples' },
+    'familyorthonaples.com': { name: 'Family Orthodontics of Naples', score: 67.5, city: 'Naples' },
+    'periodontistofnaples.com': { name: 'Periodontics and Implant Center of Naples: Dr. Jennifer Araya', score: 67.5, city: 'Naples' },
+    'townedentalnaples.com': { name: 'Towne Dental Naples', score: 70.0, city: 'Naples' },
+    'naplescomprehensivedentist.com': { name: 'Implant and Comprehensive Dentistry of Naples', score: 70.0, city: 'Naples' },
+    'myparkdental.com': { name: 'Park Family and Cosmetic Dentistry', score: 70.0, city: 'Naples' },
+    'healthcareswfl.org': { name: 'Network of Southwest Florida News', score: 72.5, city: 'Naples' },
+    'implantcenternearme.com': { name: 'Florida Dental Implant Institute', score: 77.5, city: 'Naples' },
+    'coastalsmilesfamilyorthodontics.com': { name: 'Coastal Smiles Family Orthodontics', score: 77.5, city: 'Naples' },
+    'castordentalassociates.com': { name: 'Castor Dental Associates', score: 77.5, city: 'Naples' },
+    'bayviewdentalarts.com': { name: 'BayView Dental Arts', score: 80.0, city: 'Naples' },
+    'childrensdentistryofnaples.com': { name: 'Children\'s Dentistry of Naples', score: 80.0, city: 'Naples' },
+    'zerocavity.com': { name: 'Gerardo Santiago DDS', score: 80.0, city: 'Naples' },
+    'palmroyaldentalcare.com': { name: 'Palm Royal Dental Care', score: 82.5, city: 'Naples' },
+    'camerondentalstudio.com': { name: 'Cameron Dental Studio', score: 82.5, city: 'Naples' },
+    'gulfviewdentistry.com': { name: 'Gulfview Dental', score: 82.5, city: 'Naples' },
+    'cosmeticdentistryofnaples.com': { name: 'Gulf Shore Cosmetic and Family Dentistry', score: 82.5, city: 'Naples' },
+    'hesterpediatricdentistry.com': { name: 'Hester Pediatric Dentistry', score: 82.5, city: 'Naples' },
+    'gatewayofnaplesdental.com': { name: 'Gateway of Naples Dental', score: 82.5, city: 'Naples' },
+    'altamardental.com': { name: 'Altamar Dental Studio | Naples', score: 85.0, city: 'Naples' },
+    'coastdental.com': { name: 'Coast Dental', score: 85.0, city: 'Naples' },
+    'naplesdentist.com': { name: 'Dr. Randold Binns DMD, MS', score: 87.5, city: 'Naples' },
+    'banyandentalcarenaples.com': { name: 'Banyan Dental Care', score: 87.5, city: 'Naples' },
+    'eastlakesdentalcare.com': { name: 'East Lakes Dental Care', score: 87.5, city: 'Naples' },
+  };
+
+  // ============================================================
+  // CITY DISPLAY NAMES
+  // ============================================================
+  const CITY_DISPLAY = {
+    'Peterborough': 'Peterborough, ON',
+    'Kingston': 'Kingston, ON',
+    'Austin': 'Austin, TX',
+    'Charlotte': 'Charlotte, NC',
+    'Scottsdale': 'Scottsdale, AZ',
+    'Naples': 'Naples, FL',
   };
 
   // ============================================================
@@ -2032,8 +2315,22 @@
     // Format score — drop .0, keep .5
     const fmt = s => Number.isInteger(s) ? String(s) : String(s);
 
+    // Derive label from score
+    function getLabel(score) {
+      if (score >= 85) return 'PREFERRED';
+      if (score >= 70) return 'VISIBLE';
+      if (score >= 50) return 'UNRELIABLE';
+      return 'INVISIBLE';
+    }
+    const label = getLabel(practice.score);
+
+    // Filter to same-city practices
+    const cityPractices = Object.values(PRACTICE_DB).filter(p => p.city === practice.city);
+    const cityAvg = Math.round(cityPractices.reduce((sum, p) => sum + p.score, 0) / cityPractices.length * 10) / 10;
+    const cityName = CITY_DISPLAY[practice.city] || practice.city;
+
     // Populate score card
-    const style = LABEL_STYLE[practice.label] || LABEL_STYLE['INVISIBLE'];
+    const style = LABEL_STYLE[label] || LABEL_STYLE['INVISIBLE'];
     const scoreEl = document.getElementById('result-score-num');
     scoreEl.textContent = fmt(practice.score);
     scoreEl.style.color = style.color;
@@ -2041,25 +2338,33 @@
     document.getElementById('result-practice-name').textContent = practice.name;
 
     const badge = document.getElementById('result-label-badge');
-    badge.textContent = practice.label;
+    badge.textContent = label;
     badge.style.color = style.color;
     badge.style.background = style.bg;
 
     document.getElementById('result-message').textContent = style.msg;
 
-    // Build full ranked list for rank calculation only
-    const allPractices = Object.values(PRACTICE_DB).sort((a, b) => b.score - a.score);
-    const rank = allPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
+    // Rank within same city
+    const cityRanked = cityPractices.sort((a, b) => b.score - a.score);
+    const rank = cityRanked.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
+    document.getElementById('result-city-avg').textContent = cityAvg;
+    document.getElementById('result-city-name').textContent = cityName;
+    document.getElementById('result-city-count').textContent = 'of ' + cityPractices.length + ' practices';
+
+    // Pick two competitors: one ahead, one behind (within same city)
+    const sorted = [...cityPractices].sort((a, b) => a.score - b.score);
+    const myIdx = sorted.findIndex(p => p.name === practice.name);
+    const comp1 = myIdx < sorted.length - 1 ? sorted[myIdx + 1] : sorted[myIdx - 1];
+    const comp2 = myIdx > 0 ? sorted[myIdx - 1] : sorted[myIdx + 1];
 
     // Combine all entries including city average and sort by score
-    const cityAvg = 59.6;
     const allEntries = [
-      { name: practice.c1, score: practice.c1s, type: 'comp' },
-      { name: practice.c2, score: practice.c2s, type: 'comp' },
       { name: practice.name, score: practice.score, type: 'you' },
-      { name: 'Peterborough average', score: cityAvg, type: 'avg' },
+      { name: cityName + ' average', score: cityAvg, type: 'avg' },
     ];
+    if (comp1 && comp1.name !== practice.name) allEntries.push({ name: comp1.name, score: comp1.score, type: 'comp' });
+    if (comp2 && comp2.name !== practice.name && (!comp1 || comp2.name !== comp1.name)) allEntries.push({ name: comp2.name, score: comp2.score, type: 'comp' });
     allEntries.sort((a, b) => b.score - a.score);
 
     const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
@@ -2075,7 +2380,7 @@
       if (e.type === 'avg') {
         return `
           <div style="display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-            <div style="flex:1; font-size:13px; font-weight:300; color:var(--text-dim); font-style:italic;">Peterborough average</div>
+            <div style="flex:1; font-size:13px; font-weight:300; color:var(--text-dim); font-style:italic;">${cityName} average</div>
             <div style="font-size:12px; font-weight:500; color:#ffc542; background:rgba(255,197,66,0.1); padding:3px 10px; border-radius:100px; white-space:nowrap;">${fmt(e.score)}</div>
           </div>`;
       }
