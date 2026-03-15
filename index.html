@@ -880,58 +880,6 @@
   </div>
 </div>
 
-<!-- THE SHIFT -->
-<div class="section" style="padding-top:0;">
-  <div class="section-label">The shift</div>
-  <h2>Search just changed — again.</h2>
-  <p class="section-intro">The way patients find and choose local providers has fundamentally shifted. Most practices haven't adapted yet.</p>
-  <div class="three-grid">
-    <div class="card">
-      <div class="era past">Yesterday</div>
-      <h3>Patients Googled and clicked</h3>
-      <p>Practices showed up based on keywords, backlinks, and page speed. SEO agencies had the playbook.</p>
-      <span class="tag dim">Traditional SEO</span>
-    </div>
-    <div class="card active">
-      <div class="era now">Today</div>
-      <h3>Patients ask AI and trust the answer</h3>
-      <p>ChatGPT, Claude, and Google Gemini answer directly — no clicking. AI picks winners based on signals most practices don't have.</p>
-      <span class="tag amber">AI answers directly</span>
-    </div>
-    <div class="card">
-      <div class="era future">Tomorrow</div>
-      <h3>AI agents book appointments for people</h3>
-      <p>If the AI doesn't know your practice exists with confidence, you won't even be considered.</p>
-      <span class="tag coral">Agentic booking</span>
-    </div>
-  </div>
-</div>
-
-<!-- HOW IT WORKS -->
-<div class="section" id="how" style="padding-top:0;">
-  <div class="section-label">How it works</div>
-  <h2>From invisible to recommended</h2>
-  <p class="section-intro">A clear, data-driven process that shows exactly what AI search needs to recommend your practice.</p>
-
-  <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">01</div>
-      <h3>Check your score</h3>
-      <p>Enter your practice website below to instantly see your AI visibility score and where you rank against local competitors.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">02</div>
-      <h3>Understand the gap</h3>
-      <p>See exactly which signals are holding you back and how you compare to the practices AI search is recommending instead.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">03</div>
-      <h3>Get your fix pack</h3>
-      <p>Purchase your full report and receive ready-to-use fix packs — FAQ content, bio templates, review scripts — within 24 hours.</p>
-    </div>
-  </div>
-</div>
-
 <!-- URL LOOKUP -->
 <div class="section" id="lookup" style="padding-top:0;">
   <div class="section-label">Score lookup</div>
@@ -941,16 +889,16 @@
   <!-- City stats -->
   <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">59.6</div>
-      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">City avg. score</div>
+      <div id="stat-avg-score" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">—</div>
+      <div id="stat-avg-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Avg. AI visibility score</div>
     </div>
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">23</div>
-      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
+      <div id="stat-count" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">—</div>
+      <div id="stat-count-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
     </div>
     <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">11</div>
-      <div style="font-size:13px; color:var(--text-muted); font-weight:300;">Score below average</div>
+      <div id="stat-below" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">—</div>
+      <div id="stat-below-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Score below average</div>
     </div>
   </div>
 
@@ -961,7 +909,7 @@
       <input type="text" id="lookup-url" class="url-input" placeholder="https://yourpractice.com" style="flex:1;" onkeydown="if(event.key==='Enter') runLookup()">
       <button class="btn-primary" onclick="runLookup()" style="white-space:nowrap; padding:13px 24px;">Check my score</button>
     </div>
-    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Currently available for Peterborough, Ontario. More cities coming soon.</div>
+    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Available in Austin, Charlotte, Kingston, Naples, Peterborough, and Scottsdale.</div>
   </div>
 
   <!-- Result panel (hidden, slides open on match) -->
@@ -1021,6 +969,58 @@
       <button class="btn-primary" onclick="submitNotify()" style="white-space:nowrap;">Notify me</button>
     </div>
     <div id="notify-confirm" style="display:none; margin-top:12px; font-size:13px; color:var(--teal); font-weight:300;">Done — we'll be in touch when your city goes live.</div>
+  </div>
+</div>
+
+<!-- THE SHIFT -->
+<div class="section" style="padding-top:0;">
+  <div class="section-label">The shift</div>
+  <h2>Search just changed — again.</h2>
+  <p class="section-intro">The way patients find and choose local providers has fundamentally shifted. Most practices haven't adapted yet.</p>
+  <div class="three-grid">
+    <div class="card">
+      <div class="era past">Yesterday</div>
+      <h3>Patients Googled and clicked</h3>
+      <p>Practices showed up based on keywords, backlinks, and page speed. SEO agencies had the playbook.</p>
+      <span class="tag dim">Traditional SEO</span>
+    </div>
+    <div class="card active">
+      <div class="era now">Today</div>
+      <h3>Patients ask AI and trust the answer</h3>
+      <p>ChatGPT, Claude, and Google Gemini answer directly — no clicking. AI picks winners based on signals most practices don't have.</p>
+      <span class="tag amber">AI answers directly</span>
+    </div>
+    <div class="card">
+      <div class="era future">Tomorrow</div>
+      <h3>AI agents book appointments for people</h3>
+      <p>If the AI doesn't know your practice exists with confidence, you won't even be considered.</p>
+      <span class="tag coral">Agentic booking</span>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how" style="padding-top:0;">
+  <div class="section-label">How it works</div>
+  <h2>From invisible to recommended</h2>
+  <p class="section-intro">A clear, data-driven process that shows exactly what AI search needs to recommend your practice.</p>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h3>Check your score</h3>
+      <p>Enter your practice website below to instantly see your AI visibility score and where you rank against local competitors.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h3>Understand the gap</h3>
+      <p>See exactly which signals are holding you back and how you compare to the practices AI search is recommending instead.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h3>Get your fix pack</h3>
+      <p>Purchase your full report and receive ready-to-use fix packs — FAQ content, bio templates, review scripts — within 24 hours.</p>
+    </div>
   </div>
 </div>
 
@@ -2252,6 +2252,19 @@
   };
 
   // ============================================================
+  // AGGREGATE STATS (computed at page load)
+  // ============================================================
+  (function initAggregateStats() {
+    const all = Object.values(PRACTICE_DB);
+    const total = all.length;
+    const avg = Math.round(all.reduce((s, p) => s + p.score, 0) / total * 10) / 10;
+    const belowPct = Math.round(all.filter(p => p.score < 60).length / total * 100);
+    document.getElementById('stat-avg-score').textContent = avg;
+    document.getElementById('stat-count').textContent = total;
+    document.getElementById('stat-below').textContent = belowPct + '%';
+  })();
+
+  // ============================================================
   // LABEL STYLING
   // ============================================================
   const LABEL_STYLE = {
@@ -2328,6 +2341,15 @@
     const cityPractices = Object.values(PRACTICE_DB).filter(p => p.city === practice.city);
     const cityAvg = Math.round(cityPractices.reduce((sum, p) => sum + p.score, 0) / cityPractices.length * 10) / 10;
     const cityName = CITY_DISPLAY[practice.city] || practice.city;
+
+    // Update stat boxes to city-specific stats
+    const cityBelowPct = Math.round(cityPractices.filter(p => p.score < 60).length / cityPractices.length * 100);
+    document.getElementById('stat-avg-score').textContent = cityAvg;
+    document.getElementById('stat-avg-label').textContent = cityName + ' avg. score';
+    document.getElementById('stat-count').textContent = cityPractices.length;
+    document.getElementById('stat-count-label').textContent = 'Practices scanned';
+    document.getElementById('stat-below').textContent = cityBelowPct + '%';
+    document.getElementById('stat-below-label').textContent = 'Score below average';
 
     // Populate score card
     const style = LABEL_STYLE[label] || LABEL_STYLE['INVISIBLE'];
