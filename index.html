@@ -2041,27 +2041,33 @@
 
     document.getElementById('result-message').textContent = style.msg;
 
-    // Build full ranked list of all practices
+    // Build full ranked list for rank calculation only
     const allPractices = Object.values(PRACTICE_DB).sort((a, b) => b.score - a.score);
     const rank = allPractices.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
     document.getElementById('result-rank').textContent = '#' + rank;
 
-    // Find immediate neighbours
-    const above = rank > 1 ? allPractices[rank - 2] : null;
-    const below = rank < allPractices.length ? allPractices[rank] : null;
+    // Use geographic nearest neighbours (c1/c2) from database
+    const neighbours = [
+      { name: practice.c1, score: practice.c1s },
+      { name: practice.c2, score: practice.c2s },
+    ];
 
     const rowStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);';
-    const youStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-left:2px solid var(--teal); padding-left:10px;';
+    const youStyle = 'display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-left:2px solid var(--teal); padding-left:10px; border-bottom:1px solid rgba(255,255,255,0.04);';
 
     let rows = '';
 
-    if (above) {
+    // Sort neighbours so "ahead" appears above "you", "behind" appears below
+    const ahead = neighbours.filter(n => n.score > practice.score);
+    const behind = neighbours.filter(n => n.score <= practice.score);
+
+    ahead.forEach(n => {
       rows += `
         <div style="${rowStyle}">
-          <div class="comp-name">${above.name}</div>
+          <div class="comp-name">${n.name}</div>
           <div style="font-size:12px; color:var(--text-muted); font-weight:300; font-style:italic;">ahead of you</div>
         </div>`;
-    }
+    });
 
     rows += `
       <div style="${youStyle}">
@@ -2069,19 +2075,19 @@
         <div style="font-size:12px; font-weight:500; color:var(--teal);">${practice.score}</div>
       </div>`;
 
-    if (below) {
+    behind.forEach(n => {
       rows += `
-        <div style="${rowStyle} border-bottom:none;">
-          <div class="comp-name">${below.name}</div>
+        <div style="${rowStyle}">
+          <div class="comp-name">${n.name}</div>
           <div style="font-size:12px; color:var(--text-dim); font-weight:300; font-style:italic;">behind you</div>
         </div>`;
-    }
+    });
 
     // City average row
     rows += `
       <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-top:1px solid var(--navy-border); margin-top:4px;">
         <div class="comp-name" style="color:var(--text-muted); font-style:italic; font-size:13px;">Peterborough average</div>
-        <div style="font-size:13px; font-weight:500; color:var(--amber);">59.6</div>
+        <div style="font-size:13px; font-weight:500; color:#ffc542;">59.6</div>
       </div>`;
 
     document.getElementById('comp-rows').innerHTML = rows;
