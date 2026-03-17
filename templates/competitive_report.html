@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIVI Labs — Competitive Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0d1425;
+  --navy-mid: #131d35;
+  --navy-light: #1a2640;
+  --navy-border: #1f2e4a;
+  --teal: #00c9a7;
+  --teal-dim: rgba(0,201,167,0.12);
+  --coral: #ff5f6d;
+  --amber: #ffc542;
+  --text: #e8edf7;
+  --text-muted: #7a8fab;
+  --text-dim: #4a5a74;
+  --white: #ffffff;
+}
+
+@page { size: A4; margin: 0; }
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  background: var(--navy);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  width: 794px;
+  margin: 0 auto;
+  padding: 40px 44px;
+}
+
+/* ── HEADER ── */
+.cr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--navy-border);
+}
+.cr-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.cr-logo span { color: var(--teal); }
+.cr-header-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+/* ── BUYER CARD ── */
+.cr-buyer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--navy-mid);
+  border: 1px solid var(--navy-border);
+  border-radius: 14px;
+  padding: 22px 26px;
+  margin-bottom: 12px;
+}
+.cr-score-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--coral);
+}
+.cr-buyer-info { flex: 1; }
+.cr-buyer-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+.cr-buyer-domain {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.cr-buyer-city {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ── COMPETITOR PILLS ── */
+.cr-comp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.cr-comp-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-right: 4px;
+}
+.cr-comp-pill {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* ── SIDE-BY-SIDE GRID ── */
+.cr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.cr-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--navy-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.cr-card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--navy-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cr-card-header h3 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white);
+}
+.cr-card-count {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.cr-card.strengths .cr-card-count {
+  background: rgba(0,201,167,0.1);
+  color: var(--teal);
+}
+.cr-card.gaps .cr-card-count {
+  background: rgba(255,95,109,0.1);
+  color: var(--coral);
+}
+
+/* ── ROW INSIDE CARD ── */
+.cr-row {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.cr-row:last-child { border-bottom: none; }
+
+.cr-check-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.cr-check-name small {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-top: 1px;
+}
+.cr-check-id {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.cr-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  display: inline-block;
+}
+.status-pill.pass { background: rgba(0,201,167,0.1); color: var(--teal); }
+.status-pill.fail { background: rgba(255,95,109,0.1); color: var(--coral); }
+.status-pill.partial { background: rgba(255,197,66,0.1); color: var(--amber); }
+
+.cr-comp-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* ── EMPTY STATE ── */
+.cr-empty {
+  padding: 24px 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+/* ── FOOTER ── */
+.cr-footer {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--navy-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cr-footer-left {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.cr-footer-right {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="cr-header">
+  <div class="cr-logo">AIVI<span>.</span></div>
+  <div class="cr-header-meta">Competitive Report<br>Generated March 2026</div>
+</div>
+
+<!-- BUYER CARD -->
+<div class="cr-buyer">
+  <div class="cr-score-big">{{buyer_score}}</div>
+  <div class="cr-buyer-info">
+    <div class="cr-buyer-name">{{buyer_name}}</div>
+    <div class="cr-buyer-domain">{{buyer_domain}}</div>
+    <div class="cr-buyer-city">{{buyer_city}}</div>
+  </div>
+</div>
+
+<!-- COMPETITOR PILLS -->
+<div class="cr-comp-header">
+  <span class="cr-comp-label">Compared against</span>
+  {{competitor_pills}}
+</div>
+
+<!-- SIDE-BY-SIDE: STRENGTHS + GAPS -->
+<div class="cr-grid">
+  <!-- LEFT: YOUR STRENGTHS -->
+  <div class="cr-card strengths">
+    <div class="cr-card-header">
+      <h3>Your Strengths</h3>
+      <span class="cr-card-count">{{num_strengths}}</span>
+    </div>
+    {{strength_rows}}
+  </div>
+
+  <!-- RIGHT: YOUR GAPS -->
+  <div class="cr-card gaps">
+    <div class="cr-card-header">
+      <h3>Your Gaps</h3>
+      <span class="cr-card-count">{{num_gaps}}</span>
+    </div>
+    {{gap_rows}}
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="cr-footer">
+  <div class="cr-footer-left">AIVI Labs &middot; AI Visibility Intelligence</div>
+  <div class="cr-footer-right">aivi.ca</div>
+</div>
+
+</body>
+</html>

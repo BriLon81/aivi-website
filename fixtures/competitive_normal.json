@@ -1,0 +1,111 @@
+{
+  "buyer": {
+    "name": "Cornerstone Family Dentistry",
+    "domain": "cornerstonefamilydentistry.ca",
+    "city": "Peterborough, ON",
+    "score": 70
+  },
+  "competitors": [
+    {
+      "name": "Peterborough Dental Clinic",
+      "domain": "ptbodental.com",
+      "score": 90
+    },
+    {
+      "name": "Maple Leaf Dentistry",
+      "domain": "mapleleafdentistry.com",
+      "score": 85
+    },
+    {
+      "name": "Bruce Cole, DDS",
+      "domain": "brucecoledentistrypeterborough.ca",
+      "score": 80
+    }
+  ],
+  "checks": [
+    {
+      "id": "practice-name",
+      "name": "Practice name clarity",
+      "description": "Machine-readable brand signals",
+      "buyer_status": "pass",
+      "competitor_statuses": ["pass", "pass", "fail"]
+    },
+    {
+      "id": "nap-consistency",
+      "name": "NAP consistency",
+      "description": "Name, address, phone across pages",
+      "buyer_status": "pass",
+      "competitor_statuses": ["pass", "fail", "fail"]
+    },
+    {
+      "id": "schema-markup",
+      "name": "Schema markup",
+      "description": "LocalBusiness structured data",
+      "buyer_status": "fail",
+      "competitor_statuses": ["pass", "pass", "pass"]
+    },
+    {
+      "id": "provider-credentials",
+      "name": "Provider credentials",
+      "description": "Practitioner bios with qualifications",
+      "buyer_status": "pass",
+      "competitor_statuses": ["partial", "fail", "pass"]
+    },
+    {
+      "id": "faq-quality",
+      "name": "FAQ quality & coverage",
+      "description": "Machine-readable Q&A content",
+      "buyer_status": "partial",
+      "competitor_statuses": ["pass", "pass", "partial"]
+    },
+    {
+      "id": "review-signals",
+      "name": "Review signals",
+      "description": "Volume, recency, validation",
+      "buyer_status": "pass",
+      "competitor_statuses": ["pass", "pass", "pass"]
+    },
+    {
+      "id": "indexability",
+      "name": "Indexability",
+      "description": "Crawlable by AI & search systems",
+      "buyer_status": "pass",
+      "competitor_statuses": ["pass", "partial", "fail"]
+    },
+    {
+      "id": "emergency-intent",
+      "name": "Emergency & urgent intent",
+      "description": "Urgent appointment query coverage",
+      "buyer_status": "fail",
+      "competitor_statuses": ["pass", "fail", "pass"]
+    },
+    {
+      "id": "insurance-payment",
+      "name": "Insurance & payment clarity",
+      "description": "Payment info removes AI friction",
+      "buyer_status": "pass",
+      "competitor_statuses": ["fail", "fail", "partial"]
+    },
+    {
+      "id": "service-coverage",
+      "name": "Service coverage",
+      "description": "Specific services clearly described",
+      "buyer_status": "partial",
+      "competitor_statuses": ["pass", "pass", "pass"]
+    },
+    {
+      "id": "contact-location",
+      "name": "Contact & location page",
+      "description": "Dedicated location page",
+      "buyer_status": "pass",
+      "competitor_statuses": ["pass", "pass", "pass"]
+    },
+    {
+      "id": "title-location",
+      "name": "Title & location signals",
+      "description": "Homepage titles with specialty + location",
+      "buyer_status": "fail",
+      "competitor_statuses": ["pass", "pass", "fail"]
+    }
+  ]
+}
