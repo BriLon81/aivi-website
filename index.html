@@ -2256,7 +2256,7 @@
   // ============================================================
   function showAggregateStats() {
     const all = Object.values(PRACTICE_DB).filter(p => p.score > 0);
-    const total = all.length;
+    const total = Object.keys(PRACTICE_DB).length;
     const avg = Math.round(all.reduce((s, p) => s + p.score, 0) / total * 10) / 10;
     const belowPct = Math.round(all.filter(p => p.score < 60).length / total * 100);
     document.getElementById('stat-avg-score').textContent = avg;
