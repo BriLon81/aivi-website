@@ -460,6 +460,82 @@
     font-weight: 300; line-height: 1.5;
   }
 
+  /* TIER SELECTOR */
+  .tier-selector {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tier-option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: 10px;
+    border: 1px solid var(--navy-border);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+  }
+
+  .tier-option:hover {
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  .tier-option.selected {
+    border-color: var(--teal);
+    background: rgba(0,201,167,0.06);
+  }
+
+  .tier-radio {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid var(--text-dim);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .tier-option.selected .tier-radio {
+    border-color: var(--teal);
+  }
+
+  .tier-radio-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--teal);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+  }
+
+  .tier-option.selected .tier-radio-dot {
+    transform: scale(1);
+  }
+
+  .tier-info {
+    flex: 1; min-width: 0;
+  }
+
+  .tier-name {
+    font-size: 13px; font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .tier-price-tag {
+    font-size: 12px; color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .tier-badge {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 100px;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: rgba(0,201,167,0.15);
+    color: var(--teal);
+    white-space: nowrap;
+  }
+
   /* MOBILE BOTTOM BAR */
   .mobile-cta {
     display: none;
@@ -522,10 +598,27 @@
     <!-- Desktop main: Populated by JS below -->
   </div>
   <div class="sticky-cta" id="sticky-cta" style="display:none;">
-    <div class="sticky-cta-price">$149</div>
+    <div class="tier-selector">
+      <button class="tier-option selected" data-tier="score" onclick="selectTier('score')">
+        <div class="tier-radio"><div class="tier-radio-dot"></div></div>
+        <div class="tier-info">
+          <div class="tier-name">Your Score</div>
+          <div class="tier-price-tag">$149</div>
+        </div>
+      </button>
+      <button class="tier-option" data-tier="competitive" onclick="selectTier('competitive')">
+        <div class="tier-radio"><div class="tier-radio-dot"></div></div>
+        <div class="tier-info">
+          <div class="tier-name">+ Competitive Report</div>
+          <div class="tier-price-tag">$299</div>
+        </div>
+        <div class="tier-badge">Best value</div>
+      </button>
+    </div>
+    <div class="sticky-cta-price" id="sticky-price">$149</div>
     <div class="sticky-cta-label">One-time payment</div>
-    <button class="btn-primary" onclick="document.querySelector('.cta-block .btn-primary').click()">Get your full report</button>
-    <div class="sticky-cta-items">
+    <button class="btn-primary" id="sticky-btn" onclick="document.querySelector('.cta-block .btn-primary').click()">Get your full report</button>
+    <div class="sticky-cta-items" id="sticky-items">
       <div class="sticky-cta-item"><div class="sticky-cta-dot"></div>Full 12-point AI audit</div>
       <div class="sticky-cta-item"><div class="sticky-cta-dot"></div>PDF scorecard + city ranking</div>
       <div class="sticky-cta-item"><div class="sticky-cta-dot"></div>Ready-to-use fix packs</div>
@@ -779,6 +872,92 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  // ============================================================
+  // TIER SELECTION
+  // ============================================================
+  const TIERS = {
+    score: {
+      price: '$149',
+      btnText: 'Get your full report',
+      btnTextInline: 'Get your full report — $149',
+      product: 'ai-visibility-quickscan',
+      items: [
+        'Full 12-point AI audit',
+        'PDF scorecard + city ranking',
+        'Ready-to-use fix packs',
+        'Delivered within 24 hours',
+      ],
+      inlineItems: [
+        { bold: 'Full 12-point AI audit', rest: ' — every signal scored with pass, partial, or fail' },
+        { bold: 'PDF scorecard', rest: ' — your score, your ranking, your city context' },
+        { bold: 'Ready-to-use fix packs', rest: ' — FAQ content, provider bio templates, review request scripts' },
+        { bold: 'Delivered within 24 hours', rest: ' — no subscription, no agency required' },
+      ]
+    },
+    competitive: {
+      price: '$299',
+      btnText: 'Get your full report + competitor analysis',
+      btnTextInline: 'Get your full report + competitor analysis — $299',
+      product: 'ai-visibility-quickscan-competitive',
+      items: [
+        'Everything in Your Score',
+        'Competitive report vs. 3 competitors',
+        'Your strengths + gaps analysis',
+        'Delivered within 24 hours',
+      ],
+      inlineItems: [
+        { bold: 'Everything in Your Score', rest: ' — full 12-point audit, PDF scorecard, fix packs' },
+        { bold: 'Competitive report vs. 3 competitors', rest: ' — side-by-side signal comparison' },
+        { bold: 'Your strengths + gaps analysis', rest: ' — where you win and where to close the gap' },
+        { bold: 'Delivered within 24 hours', rest: ' — no subscription, no agency required' },
+      ]
+    }
+  };
+
+  let currentTier = 'score';
+
+  function selectTier(tier) {
+    currentTier = tier;
+    const t = TIERS[tier];
+
+    // Update all tier option buttons (sticky sidebar)
+    document.querySelectorAll('.tier-option').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.tier === tier);
+    });
+
+    // Update sticky sidebar
+    const stickyPrice = document.getElementById('sticky-price');
+    const stickyBtn = document.getElementById('sticky-btn');
+    const stickyItems = document.getElementById('sticky-items');
+    if (stickyPrice) stickyPrice.textContent = t.price;
+    if (stickyBtn) stickyBtn.textContent = t.btnText;
+    if (stickyItems) {
+      stickyItems.innerHTML = t.items.map(item =>
+        '<div class="sticky-cta-item"><div class="sticky-cta-dot"></div>' + item + '</div>'
+      ).join('');
+    }
+
+    // Update inline CTA blocks (desktop + mobile mirror)
+    document.querySelectorAll('.cta-block .btn-primary').forEach(btn => {
+      btn.textContent = t.btnTextInline;
+      btn.setAttribute('data-fsc-item-path-value', t.product);
+    });
+    document.querySelectorAll('.cta-block .what-you-get').forEach(container => {
+      container.innerHTML = t.inlineItems.map(item =>
+        '<div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>' + item.bold + '</strong>' + item.rest + '</div></div>'
+      ).join('');
+    });
+
+    // Update mobile bottom bar
+    var mobileCta = document.getElementById('mobile-cta');
+    if (mobileCta) {
+      var mobileText = mobileCta.querySelector('.mobile-cta-text strong');
+      var mobileBtn = mobileCta.querySelector('.btn-primary');
+      if (mobileText) mobileText.textContent = t.btnText;
+      if (mobileBtn) mobileBtn.textContent = t.price;
+    }
   }
 
   render();
