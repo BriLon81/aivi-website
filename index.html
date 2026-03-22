@@ -450,13 +450,14 @@
   /* PRICING */
   .pricing-grid {
     display: grid; grid-template-columns: repeat(3,1fr);
-    gap: 18px; align-items: start;
+    gap: 18px; align-items: stretch;
   }
 
   .plan {
     background: var(--navy-mid);
     border: 1px solid var(--navy-border);
     border-radius: 16px; padding: 36px 30px;
+    display: flex; flex-direction: column;
   }
 
   .plan.featured {
@@ -523,6 +524,7 @@
     cursor: pointer; border: none;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.2s;
+    margin-top: auto;
   }
 
   .btn-plan.primary { background: var(--teal); color: var(--navy); }
