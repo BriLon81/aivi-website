@@ -7,613 +7,175 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<!-- FastSpring Sandbox — change data-storefront to aivilabs.onfastspring.com/popup-quickscan to go live -->
-<script
-  id="fsc-api"
-  src="https://sbl.onfastspring.com/sbl/1.0.6/fastspring-builder.min.js"
-  type="text/javascript"
-  data-storefront="aivilabs.test.onfastspring.com/popup-quickscan">
-</script>
+<script id="fsc-api" src="https://sbl.onfastspring.com/sbl/1.0.6/fastspring-builder.min.js" type="text/javascript" data-storefront="aivilabs.test.onfastspring.com/popup-quickscan"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy:        #0d1425;
-    --navy-mid:    #131d35;
-    --navy-light:  #1a2640;
-    --navy-border: #1f2e4a;
-    --teal:        #00c9a7;
-    --teal-dim:    rgba(0,201,167,0.12);
-    --coral:       #ff5f6d;
-    --amber:       #ffc542;
-    --text:        #e8edf7;
-    --text-muted:  #7a8fab;
-    --text-dim:    #4a5a74;
-    --white:       #ffffff;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    background: var(--navy);
-    color: var(--text);
-    line-height: 1.6;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
-
-  /* NAV — logo only */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px 48px;
-    background: rgba(13,20,37,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .logo {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 500; font-size: 17px;
-    letter-spacing: -0.02em; color: var(--white);
-    text-decoration: none;
-  }
-
-  .logo-mark {
-    width: 30px; height: 30px;
-    background: linear-gradient(135deg, var(--teal), #00a8d9);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 12px; color: var(--navy);
-  }
-
-  .logo .accent { color: var(--teal); }
-
-  /* MAIN */
-  .page {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 120px 32px 80px;
-  }
-
-  /* SCORE HERO */
-  .score-hero {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.1s;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .score-top {
-    padding: 40px 44px;
-    border-bottom: 1px solid var(--navy-border);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 32px;
-    align-items: center;
-  }
-
-  .score-circle {
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    border: 3px solid;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-  }
-
-  .score-circle-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 42px; line-height: 1;
-  }
-
-  .score-circle-denom {
-    font-size: 12px; color: var(--text-dim);
-    font-weight: 300; margin-top: 2px;
-  }
-
-  .score-right {}
-
-  .practice-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px; font-weight: 400;
-    color: var(--white); line-height: 1.2;
-    margin-bottom: 10px;
-    letter-spacing: -0.02em;
-  }
-
-  .label-badge {
-    display: inline-block;
-    padding: 5px 14px; border-radius: 100px;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .score-message {
-    font-size: 14px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.65;
-  }
-
-  /* CITY CONTEXT */
-  .city-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--navy-border);
-  }
-
-  .city-stat {
-    background: var(--navy-mid);
-    padding: 20px 24px; text-align: center;
-  }
-
-  .city-stat-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px; line-height: 1;
-    display: block; margin-bottom: 4px;
-  }
-
-  .city-stat-label {
-    font-size: 12px; color: var(--text-muted);
-    font-weight: 300;
-  }
-
-  .comp-row.avg {
-    border-top: 1px solid var(--navy-border);
-    opacity: 0.85;
-  }
-
-  .comp-row.avg .comp-name {
-    color: var(--text-muted);
-    font-style: italic;
-    font-size: 13px;
-  }
-
-  .bar.dashed {
-    background: repeating-linear-gradient(
-      90deg,
-      #8a9bb8 0px,
-      #8a9bb8 6px,
-      transparent 6px,
-      transparent 10px
-    );
-  }
-
-  /* COMPETITORS */
-  .competitors {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.25s;
-  }
-
-  .comp-head {
-    padding: 20px 28px;
-    border-bottom: 1px solid var(--navy-border);
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
-  .comp-row {
-    display: grid;
-    grid-template-columns: 1fr 200px 52px;
-    gap: 16px; align-items: center;
-    padding: 14px 28px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .comp-row:last-child { border-bottom: none; }
-
-  .comp-row.you {
-    border-left: 2px solid var(--teal);
-    padding-left: 26px;
-    background: rgba(0,201,167,0.03);
-  }
-
-  .comp-name {
-    font-size: 14px; color: var(--text); font-weight: 400;
-  }
-
-  .comp-name.you-label {
-    color: var(--teal); font-weight: 500;
-  }
-
-  .bar-wrap {
-    height: 4px; background: var(--navy);
-    border-radius: 2px; overflow: hidden;
-  }
-
-  .bar { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
-
-  .comp-score {
-    font-size: 14px; font-weight: 500;
-    text-align: right;
-  }
-
-  /* COPY SECTION */
-  .copy-block {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px;
-    padding: 36px 44px;
-    margin-bottom: 20px;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.38s;
-  }
-
-  .copy-block h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(22px, 3vw, 30px);
-    font-weight: 400; line-height: 1.2;
-    color: var(--white); margin-bottom: 16px;
-    letter-spacing: -0.02em;
-  }
-
-  .copy-block p {
-    font-size: 15px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.8;
-    margin-bottom: 14px;
-  }
-
-  .copy-block p:last-child { margin-bottom: 0; }
-
-  /* CTA */
-  .cta-block {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px;
-    padding: 36px 44px;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeUp 0.5s ease forwards 0.5s;
-  }
-
-  .btn-primary {
-    display: block; width: 100%;
-    padding: 16px 32px; border-radius: 12px;
-    font-size: 16px; font-weight: 500;
-    background: var(--teal); color: var(--navy);
-    border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s; text-align: center;
-    text-decoration: none;
-    margin-bottom: 20px;
-    letter-spacing: -0.01em;
-  }
-
-  .btn-primary:hover {
-    background: #00e0bc;
-    transform: translateY(-1px);
-  }
-
-  .what-you-get {
-    display: flex; flex-direction: column; gap: 12px;
-    padding-top: 20px;
-    border-top: 1px solid var(--navy-border);
-  }
-
-  .get-item {
-    display: flex; align-items: flex-start; gap: 12px;
-  }
-
-  .get-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--teal); flex-shrink: 0;
-    margin-top: 7px;
-  }
-
-  .get-text {
-    font-size: 14px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.5;
-  }
-
-  .get-text strong {
-    color: var(--text); font-weight: 500;
-  }
-
-  .reassurance {
-    text-align: center;
-    font-size: 12px; color: var(--text-dim);
-    font-weight: 300; margin-top: 16px;
-    letter-spacing: 0.01em;
-  }
-
-  /* FALLBACK — no params */
-  .fallback {
-    text-align: center;
-    padding: 80px 32px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease forwards 0.1s;
-  }
-
-  .fallback h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 36px; font-weight: 400;
-    color: var(--white); margin-bottom: 16px;
-    letter-spacing: -0.02em;
-  }
-
-  .fallback p {
-    font-size: 16px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.75;
-    max-width: 440px; margin: 0 auto 32px;
-  }
-
-  .btn-ghost {
-    display: inline-block;
-    padding: 13px 28px; border-radius: 10px;
-    font-size: 15px; font-weight: 400;
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--navy-border);
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-ghost:hover {
-    border-color: rgba(255,255,255,0.2);
-    color: var(--text);
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    nav { padding: 16px 24px; }
-    .page { padding: 100px 20px 60px; }
-    .score-top {
-      grid-template-columns: 1fr;
-      padding: 28px 24px;
-      gap: 20px;
-    }
-    .score-circle { margin: 0 auto; }
-    .practice-name { font-size: 19px; }
-    .comp-row { grid-template-columns: 1fr 120px 44px; padding: 12px 20px; }
-    .comp-row.you { padding-left: 18px; }
-    .copy-block, .cta-block { padding: 28px 24px; }
-    .city-stat { padding: 16px 12px; }
-    .sticky-cta { display: none; }
-    .mobile-cta { display: flex; }
-  }
-
-  /* STICKY SIDEBAR CTA — desktop */
-  .layout {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 120px 32px 80px;
-    display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 32px;
-    align-items: start;
-  }
-
-  .main-col { min-width: 0; }
-
-  .sticky-cta {
-    position: sticky;
-    top: 100px;
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px;
-    padding: 28px 24px;
-    opacity: 0;
-    animation: fadeUp 0.5s ease forwards 0.6s;
-  }
-
-  .sticky-cta-price {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px; color: var(--white);
-    text-align: center; margin-bottom: 4px;
-    letter-spacing: -0.02em;
-  }
-
-  .sticky-cta-label {
-    font-size: 12px; color: var(--text-dim);
-    text-align: center; margin-bottom: 20px;
-    font-weight: 300;
-  }
-
-  .sticky-cta .btn-primary {
-    font-size: 15px;
-    padding: 14px 20px;
-    margin-bottom: 16px;
-  }
-
-  .sticky-cta-items {
-    display: flex; flex-direction: column; gap: 10px;
-    padding-top: 16px;
-    border-top: 1px solid var(--navy-border);
-  }
-
-  .sticky-cta-item {
-    display: flex; align-items: flex-start; gap: 8px;
-    font-size: 12px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.4;
-  }
-
-  .sticky-cta-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--teal); flex-shrink: 0;
-    margin-top: 5px;
-  }
-
-  .sticky-reassurance {
-    font-size: 11px; color: var(--text-dim);
-    text-align: center; margin-top: 14px;
-    font-weight: 300; line-height: 1.5;
-  }
-
-  /* TIER SELECTOR */
-  .tier-selector {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .tier-option {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px; border-radius: 10px;
-    border: 1px solid var(--navy-border);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    width: 100%;
-    text-align: left;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-  }
-
-  .tier-option:hover {
-    border-color: rgba(255,255,255,0.15);
-  }
-
-  .tier-option.selected {
-    border-color: var(--teal);
-    background: rgba(0,201,167,0.06);
-  }
-
-  .tier-radio {
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid var(--text-dim);
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .tier-option.selected .tier-radio {
-    border-color: var(--teal);
-  }
-
-  .tier-radio-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--teal);
-    transform: scale(0);
-    transition: transform 0.15s ease;
-  }
-
-  .tier-option.selected .tier-radio-dot {
-    transform: scale(1);
-  }
-
-  .tier-info {
-    flex: 1; min-width: 0;
-  }
-
-  .tier-name {
-    font-size: 13px; font-weight: 500;
-    line-height: 1.3;
-  }
-
-  .tier-price-tag {
-    font-size: 12px; color: var(--text-muted);
-    font-weight: 300;
-  }
-
-  .tier-badge {
-    display: inline-block;
-    padding: 2px 8px; border-radius: 100px;
-    font-size: 9px; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    background: rgba(0,201,167,0.15);
-    color: var(--teal);
-    white-space: nowrap;
-  }
-
-  /* MOBILE BOTTOM BAR */
-  .mobile-cta {
-    display: none;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(13,20,37,0.97);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid var(--navy-border);
-    padding: 16px 20px;
-    z-index: 99;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .mobile-cta-text {
-    flex: 1;
-    font-size: 13px; color: var(--text-muted);
-    font-weight: 300; line-height: 1.3;
-  }
-
-  .mobile-cta-text strong {
-    color: var(--white); font-weight: 500;
-    display: block; font-size: 14px;
-  }
-
-  .mobile-cta .btn-primary {
-    flex-shrink: 0;
-    width: auto;
-    padding: 12px 20px;
-    font-size: 14px;
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
-
-  @media (min-width: 601px) {
-    .mobile-cta { display: none !important; }
-    .page { display: none; }
-  }
-
-  @media (max-width: 600px) {
-    .layout { display: none; }
-    .page { display: block; padding-bottom: 100px; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0d1425;--navy-mid:#131d35;--navy-light:#1a2640;--navy-border:#1f2e4a;--teal:#00c9a7;--teal-dim:rgba(0,201,167,0.12);--coral:#ff5f6d;--amber:#ffc542;--text:#e8edf7;--text-muted:#7a8fab;--text-dim:#4a5a74;--white:#ffffff}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--navy);color:var(--text);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px 48px;background:rgba(13,20,37,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;font-size:17px;letter-spacing:-0.02em;color:var(--white);text-decoration:none}
+.logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--teal),#00a8d9);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;color:var(--navy)}
+.logo .accent{color:var(--teal)}
+.page{max-width:720px;margin:0 auto;padding:120px 32px 80px}
+.score-hero{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;overflow:hidden;margin-bottom:20px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .1s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.score-top{padding:40px 44px;border-bottom:1px solid var(--navy-border);display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.score-circle{width:120px;height:120px;border-radius:50%;border:3px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.score-circle-num{font-family:'DM Serif Display',serif;font-size:42px;line-height:1}
+.score-circle-denom{font-size:12px;color:var(--text-dim);font-weight:300;margin-top:2px}
+.practice-name{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--white);line-height:1.2;margin-bottom:10px;letter-spacing:-0.02em}
+.label-badge{display:inline-block;padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px}
+.score-message{font-size:14px;color:var(--text-muted);font-weight:300;line-height:1.65}
+.city-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--navy-border)}
+.city-stat{background:var(--navy-mid);padding:20px 24px;text-align:center}
+.city-stat-num{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;display:block;margin-bottom:4px}
+.city-stat-label{font-size:12px;color:var(--text-muted);font-weight:300}
+.comp-row.avg{border-top:1px solid var(--navy-border);opacity:.85}
+.comp-row.avg .comp-name{color:var(--text-muted);font-style:italic;font-size:13px}
+.bar.dashed{background:repeating-linear-gradient(90deg,#8a9bb8 0px,#8a9bb8 6px,transparent 6px,transparent 10px)}
+.competitors{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;overflow:hidden;margin-bottom:20px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .25s}
+.comp-head{padding:20px 28px;border-bottom:1px solid var(--navy-border);font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim)}
+.comp-row{display:grid;grid-template-columns:1fr 200px 52px;gap:16px;align-items:center;padding:14px 28px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.comp-row:last-child{border-bottom:none}
+.comp-row.you{border-left:2px solid var(--teal);padding-left:26px;background:rgba(0,201,167,0.03)}
+.comp-name{font-size:14px;color:var(--text);font-weight:400}
+.comp-name.you-label{color:var(--teal);font-weight:500}
+.bar-wrap{height:4px;background:var(--navy);border-radius:2px;overflow:hidden}
+.bar{height:100%;border-radius:2px;transition:width .8s ease}
+.comp-score{font-size:14px;font-weight:500;text-align:right}
+.copy-block{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:36px 44px;margin-bottom:20px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .38s}
+.copy-block h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3vw,30px);font-weight:400;line-height:1.2;color:var(--white);margin-bottom:16px;letter-spacing:-0.02em}
+.copy-block p{font-size:15px;color:var(--text-muted);font-weight:300;line-height:1.8;margin-bottom:14px}
+.copy-block p:last-child{margin-bottom:0}
+.preview-section{margin-bottom:20px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .42s}
+.preview-header{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;padding-left:4px}
+.preview-row-top{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.preview-row-bottom{display:grid;grid-template-columns:1fr;gap:12px}
+.preview-card{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:16px;overflow:hidden;transition:transform .2s}
+.preview-card:hover{transform:translateY(-2px)}
+.preview-card img{width:100%;height:auto;display:block;border-bottom:1px solid var(--navy-border)}
+.preview-card-label{padding:14px 16px}
+.preview-card-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px}
+.preview-card-desc{font-size:11px;color:var(--text-dim);font-weight:300;line-height:1.4}
+.preview-card-tag{display:inline-block;padding:2px 8px;border-radius:100px;font-size:9px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-top:6px}
+.preview-card-tag.included{background:var(--teal-dim);color:var(--teal)}
+.preview-card-tag.upgrade{background:rgba(255,197,66,0.12);color:var(--amber)}
+.preview-card-wide{display:grid;grid-template-columns:auto 1fr;background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:16px;overflow:hidden;transition:transform .2s}
+.preview-card-wide:hover{transform:translateY(-2px)}
+.preview-card-wide img{width:280px;height:auto;display:block;border-right:1px solid var(--navy-border)}
+.preview-card-wide .preview-card-label{padding:24px 28px;display:flex;flex-direction:column;justify-content:center}
+.preview-card-wide .preview-card-title{font-size:16px;margin-bottom:6px}
+.preview-card-wide .preview-card-desc{font-size:13px;line-height:1.55}
+@media(max-width:600px){.preview-row-top{grid-template-columns:1fr 1fr;gap:10px}.preview-card-wide{grid-template-columns:1fr}.preview-card-wide img{width:100%;border-right:none;border-bottom:1px solid var(--navy-border)}}
+.compare-section{margin-bottom:20px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .45s}
+.compare-header{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;padding-left:4px}
+.compare-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.compare-card{background:var(--navy-mid);border:2px solid var(--navy-border);border-radius:20px;padding:28px 24px;cursor:pointer;transition:all .25s ease;position:relative}
+.compare-card:hover{border-color:rgba(255,255,255,0.12)}
+.compare-card.selected{border-color:var(--teal);background:linear-gradient(180deg,rgba(0,201,167,0.04) 0%,var(--navy-mid) 100%)}
+.compare-badge{position:absolute;top:-10px;right:20px;padding:4px 12px;border-radius:100px;font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:var(--teal);color:var(--navy)}
+.compare-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.compare-card-name{font-size:15px;font-weight:500;color:var(--white)}
+.compare-card-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--text-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.compare-card.selected .compare-card-radio{border-color:var(--teal)}
+.compare-card-radio-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);transform:scale(0);transition:transform .15s ease}
+.compare-card.selected .compare-card-radio-dot{transform:scale(1)}
+.compare-card-price{font-family:'DM Serif Display',serif;font-size:32px;color:var(--white);letter-spacing:-0.02em;margin-bottom:2px}
+.compare-card-onetime{font-size:12px;color:var(--text-dim);font-weight:300;margin-bottom:20px}
+.compare-card-divider{height:1px;background:var(--navy-border);margin-bottom:18px}
+.compare-card-heading{font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+.compare-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.compare-item:last-child{margin-bottom:0}
+.compare-check{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.compare-item-text{font-size:13px;color:var(--text-muted);font-weight:300;line-height:1.45}
+.compare-item-text strong{color:var(--text);font-weight:500}
+.compare-insight{margin-top:18px;padding:14px 16px;background:rgba(0,201,167,0.05);border:1px solid rgba(0,201,167,0.12);border-radius:10px}
+.compare-insight-text{font-size:12px;color:var(--text-muted);font-weight:300;line-height:1.55;font-style:italic}
+.picker-section{margin-bottom:20px;overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s ease}
+.picker-section.open{max-height:800px;opacity:1}
+.picker-card{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:28px 28px 20px}
+.picker-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--white);margin-bottom:4px;letter-spacing:-0.02em}
+.picker-subtitle{font-size:13px;color:var(--text-muted);font-weight:300;margin-bottom:16px;line-height:1.5}
+.picker-counter{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.04em;background:var(--teal-dim);color:var(--teal);margin-bottom:16px;transition:all .2s}
+.picker-counter.full{background:rgba(0,201,167,0.25)}
+.picker-search{width:100%;padding:10px 14px;background:var(--navy);border:1px solid var(--navy-border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;outline:none;transition:border-color .2s;margin-bottom:12px}
+.picker-search::placeholder{color:var(--text-dim)}
+.picker-search:focus{border-color:rgba(255,255,255,0.15)}
+.picker-list{max-height:320px;overflow-y:auto;border:1px solid var(--navy-border);border-radius:12px;background:var(--navy)}
+.picker-list::-webkit-scrollbar{width:6px}
+.picker-list::-webkit-scrollbar-track{background:transparent}
+.picker-list::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:3px}
+.picker-item{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:background .15s}
+.picker-item:last-child{border-bottom:none}
+.picker-item:hover{background:rgba(255,255,255,0.02)}
+.picker-item.checked{background:rgba(0,201,167,0.04)}
+.picker-item.disabled{opacity:.35;cursor:default}
+.picker-cb{width:18px;height:18px;border-radius:5px;border:2px solid var(--text-dim);display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.picker-item.checked .picker-cb{border-color:var(--teal);background:var(--teal)}
+.picker-cb-tick{opacity:0;transition:opacity .15s;color:var(--navy);font-size:12px;font-weight:700;line-height:1}
+.picker-item.checked .picker-cb-tick{opacity:1}
+.picker-item-name{font-size:13px;color:var(--text);font-weight:400;line-height:1.3}
+.picker-item-score{font-size:12px;font-weight:500;padding:2px 8px;border-radius:100px;white-space:nowrap}
+.picker-empty{padding:24px 14px;text-align:center;font-size:13px;color:var(--text-dim);font-weight:300}
+.cta-block{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:36px 44px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .5s}
+.btn-primary{display:block;width:100%;padding:16px 32px;border-radius:12px;font-size:16px;font-weight:500;background:var(--teal);color:var(--navy);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-align:center;text-decoration:none;margin-bottom:20px;letter-spacing:-0.01em}
+.btn-primary:hover{background:#00e0bc;transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:default;transform:none}
+.btn-primary:disabled:hover{background:var(--teal);transform:none}
+.what-you-get{display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--navy-border)}
+.get-item{display:flex;align-items:flex-start;gap:12px}
+.get-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:7px}
+.get-text{font-size:14px;color:var(--text-muted);font-weight:300;line-height:1.5}
+.get-text strong{color:var(--text);font-weight:500}
+.reassurance{text-align:center;font-size:12px;color:var(--text-dim);font-weight:300;margin-top:16px;letter-spacing:0.01em}
+.fallback{text-align:center;padding:80px 32px;opacity:0;animation:fadeUp .5s ease forwards .1s}
+.fallback h1{font-family:'DM Serif Display',serif;font-size:36px;font-weight:400;color:var(--white);margin-bottom:16px;letter-spacing:-0.02em}
+.fallback p{font-size:16px;color:var(--text-muted);font-weight:300;line-height:1.75;max-width:440px;margin:0 auto 32px}
+.btn-ghost{display:inline-block;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:400;background:transparent;color:var(--text-muted);border:1px solid var(--navy-border);text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.2);color:var(--text)}
+@media(max-width:600px){
+  nav{padding:16px 24px}.page{padding:100px 20px 60px}.score-top{grid-template-columns:1fr;padding:28px 24px;gap:20px}.score-circle{margin:0 auto}.practice-name{font-size:19px}.comp-row{grid-template-columns:1fr 120px 44px;padding:12px 20px}.comp-row.you{padding-left:18px}.copy-block,.cta-block{padding:28px 24px}.city-stat{padding:16px 12px}.sticky-cta{display:none}.mobile-cta{display:flex}.compare-cards{grid-template-columns:1fr;gap:12px}.compare-card{padding:24px 20px}.compare-card-price{font-size:28px}.picker-card{padding:24px 20px 16px}
+}
+.layout{max-width:1100px;margin:0 auto;padding:120px 32px 80px;display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
+.main-col{min-width:0}
+.sticky-cta{position:sticky;top:100px;background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:28px 24px;opacity:0;animation:fadeUp .5s ease forwards .6s}
+.sticky-cta-price{font-family:'DM Serif Display',serif;font-size:32px;color:var(--white);text-align:center;margin-bottom:4px;letter-spacing:-0.02em}
+.sticky-cta-label{font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:20px;font-weight:300}
+.sticky-cta .btn-primary{font-size:15px;padding:14px 20px;margin-bottom:16px}
+.sticky-cta-items{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid var(--navy-border)}
+.sticky-cta-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-muted);font-weight:300;line-height:1.4}
+.sticky-cta-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:5px}
+.sticky-reassurance{font-size:11px;color:var(--text-dim);text-align:center;margin-top:14px;font-weight:300;line-height:1.5}
+.tier-selector{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.tier-option{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;border:1px solid var(--navy-border);background:transparent;cursor:pointer;transition:all .2s;position:relative;width:100%;text-align:left;font-family:'DM Sans',sans-serif;color:var(--text)}
+.tier-option:hover{border-color:rgba(255,255,255,0.15)}
+.tier-option.selected{border-color:var(--teal);background:rgba(0,201,167,0.06)}
+.tier-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--text-dim);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tier-option.selected .tier-radio{border-color:var(--teal)}
+.tier-radio-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);transform:scale(0);transition:transform .15s ease}
+.tier-option.selected .tier-radio-dot{transform:scale(1)}
+.tier-info{flex:1;min-width:0}
+.tier-name{font-size:13px;font-weight:500;line-height:1.3}
+.tier-price-tag{font-size:12px;color:var(--text-muted);font-weight:300}
+.tier-badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:rgba(0,201,167,0.15);color:var(--teal);white-space:nowrap}
+.mobile-cta{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(13,20,37,0.97);backdrop-filter:blur(12px);border-top:1px solid var(--navy-border);padding:16px 20px;z-index:99;align-items:center;gap:16px}
+.mobile-cta-text{flex:1;font-size:13px;color:var(--text-muted);font-weight:300;line-height:1.3}
+.mobile-cta-text strong{color:var(--white);font-weight:500;display:block;font-size:14px}
+.mobile-cta .btn-primary{flex-shrink:0;width:auto;padding:12px 20px;font-size:14px;margin-bottom:0;white-space:nowrap}
+@media(min-width:601px){.mobile-cta{display:none!important}.page{display:none}}
+@media(max-width:600px){.layout{display:none}.page{display:block;padding-bottom:100px}}
 </style>
 </head>
 <body>
-
-<nav>
-  <a href="https://aivilabs.io" class="logo">
-    <div class="logo-mark">AI</div>
-    AIVI <span class="accent">Labs</span>
-  </a>
-</nav>
-
-<div class="page" id="page-content-mobile">
-  <!-- Mobile: Populated by JS below -->
-</div>
-
+<nav><a href="https://aivilabs.io" class="logo"><div class="logo-mark">AI</div>AIVI <span class="accent">Labs</span></a></nav>
+<div class="page" id="page-content-mobile"></div>
 <div class="layout">
-  <div class="main-col" id="page-content">
-    <!-- Desktop main: Populated by JS below -->
-  </div>
+  <div class="main-col" id="page-content"></div>
   <div class="sticky-cta" id="sticky-cta" style="display:none;">
     <div class="tier-selector">
-      <button class="tier-option selected" data-tier="score" onclick="selectTier('score')">
-        <div class="tier-radio"><div class="tier-radio-dot"></div></div>
-        <div class="tier-info">
-          <div class="tier-name">Your Score</div>
-          <div class="tier-price-tag">$149</div>
-        </div>
-      </button>
-      <button class="tier-option" data-tier="competitive" onclick="selectTier('competitive')">
-        <div class="tier-radio"><div class="tier-radio-dot"></div></div>
-        <div class="tier-info">
-          <div class="tier-name">+ Competitive Report</div>
-          <div class="tier-price-tag">$299</div>
-        </div>
-        <div class="tier-badge">Best value</div>
-      </button>
+      <button class="tier-option selected" data-tier="score" onclick="selectTier('score')"><div class="tier-radio"><div class="tier-radio-dot"></div></div><div class="tier-info"><div class="tier-name">Your Score</div><div class="tier-price-tag">$149</div></div></button>
+      <button class="tier-option" data-tier="competitive" onclick="selectTier('competitive')"><div class="tier-radio"><div class="tier-radio-dot"></div></div><div class="tier-info"><div class="tier-name">+ Competitive Report</div><div class="tier-price-tag">$299</div></div><div class="tier-badge">Best value</div></button>
     </div>
     <div class="sticky-cta-price" id="sticky-price">$149</div>
     <div class="sticky-cta-label">One-time payment</div>
@@ -627,341 +189,142 @@
     <div class="sticky-reassurance">PDF report · Secure checkout<br>via FastSpring</div>
   </div>
 </div>
-
-<!-- Mobile bottom bar -->
 <div class="mobile-cta" id="mobile-cta" style="display:none;">
-  <div class="mobile-cta-text">
-    <strong>Get your full report</strong>
-    12-point audit + fix packs
-  </div>
-  <button class="btn-primary" onclick="document.querySelector('.cta-block .btn-primary').click()">$149</button>
+  <div class="mobile-cta-text"><strong id="mobile-cta-label">Get your full report</strong><span id="mobile-cta-sub">12-point audit + fix packs</span></div>
+  <button class="btn-primary" onclick="document.querySelector('.cta-block .btn-primary').click()" id="mobile-cta-btn">$149</button>
 </div>
-
 <script>
-  // ============================================================
-  // PARSE URL PARAMS
-  // ============================================================
-  function getParams() {
-    const p = new URLSearchParams(window.location.search);
-    return {
-      practice: p.get('practice') || '',
-      score:    parseFloat(p.get('score')) || null,
-      label:    (p.get('label') || '').toUpperCase(),
-      segment:  (p.get('segment') || '').toLowerCase(),
-      city:     p.get('city') || 'Peterborough, ON',
-      cityAvg:  parseFloat(p.get('cityavg')) || 59.6,
-      c1:       p.get('c1') || '',
-      c1score:  parseFloat(p.get('c1score')) || null,
-      c2:       p.get('c2') || '',
-      c2score:  parseFloat(p.get('c2score')) || null,
-    };
+const PRACTICE_DB = {
+  'lotusfamilydental.ca':{name:'Lotus Family Dental Peterborough',score:0,city:'Peterborough'},'komfs.com':{name:'Dr. Jokay',score:0,city:'Peterborough'},'davincidentalcentre.com':{name:'DaVinci Dental Centre',score:0,city:'Peterborough'},'kawarthadentalclinic.com':{name:'Kawartha Dental Clinic',score:0,city:'Peterborough'},'chemongfamilydental.com':{name:'Chemong Family Dental Peterborough',score:0,city:'Peterborough'},'peterboroughfamilydentistry.com':{name:'Peterborough Family Dentistry',score:0,city:'Peterborough'},'peterboroughorthodontist.com':{name:'Hiro Urabe, DDS',score:17.5,city:'Peterborough'},'ritaendo.com':{name:'Specialty Endodontics by Dr. Rita',score:37.5,city:'Peterborough'},'cottagecountrysmiles.ca':{name:'Cottage Country Smiles Dentistry',score:40,city:'Peterborough'},'parkstreetdentistry.com':{name:'Park Street Dentistry',score:45,city:'Peterborough'},'parkhilleastdentalcare.ca':{name:'Parkhill East Dental Care',score:47.5,city:'Peterborough'},'louisdiamandakos.ca':{name:'Louis Diamandakos, DDS',score:50,city:'Peterborough'},'ptboperio.ca':{name:'Peterborough Periodontics',score:50,city:'Peterborough'},'kawarthaorthodontics.com':{name:'Kawartha Orthodontics',score:52.5,city:'Peterborough'},'2032dentistry.com':{name:'2032 Dentistry - For Life',score:52.5,city:'Peterborough'},'braganzaperiodontics.com':{name:'Dr. Annabel Braganza - Peterborough Periodontist',score:55,city:'Peterborough'},'eastcitydental.com':{name:'East City Dental',score:57.5,city:'Peterborough'},'brookdaledentalclinic.com':{name:'Brookdale Dental Clinic',score:60,city:'Peterborough'},'peterboroughsmiles.ca':{name:'Peterborough Smiles Dental Centre',score:60,city:'Peterborough'},'everesdentistry.com':{name:'Everes Dentistry',score:60,city:'Peterborough'},'dentistryonsherbrooke.ca':{name:'Dentistry on Sherbrooke',score:62.5,city:'Peterborough'},'peterborough.horizonfamilydentistry.com':{name:'Horizon Family Dentistry Peterborough',score:65,city:'Peterborough'},'grandvillagedental.ca':{name:'Grand Village Dental',score:67.5,city:'Peterborough'},'cornerstonefamilydentistry.ca':{name:'Cornerstone Family Dentistry',score:70,city:'Peterborough'},'brucecoledentistrypeterborough.ca':{name:'Bruce Cole, DDS',score:80,city:'Peterborough'},'lilylakedental.com':{name:'Lily Lake Dental',score:82.5,city:'Peterborough'},'drchristophermoore.ca':{name:'Christopher Moore, DDS',score:82.5,city:'Peterborough'},'mapleleafdentistry.com':{name:'Maple Leaf Dentistry: Dr Cam Crawford',score:85,city:'Peterborough'},'ptbodental.com':{name:'Peterborough Dental Clinic',score:90,city:'Peterborough'},
+  'audenparkfamilydentistry.com':{name:'Auden Park Family Dentistry Kingston',score:0,city:'Kingston'},'limestoneperio.com':{name:'Limestone Periodontics',score:0,city:'Kingston'},'kingstonwestdental.ca':{name:'Kingston West Dental Centre',score:0,city:'Kingston'},'cataraquiwoodsdentistry.com':{name:'Cataraqui Woods Dentistry',score:25,city:'Kingston'},'wajikhan.ca':{name:'Dr Waji Khan',score:30,city:'Kingston'},'tonguetieclinic.ca':{name:'Kingston Tongue Tie Institute',score:30,city:'Kingston'},'kingstonendodontics.com':{name:'Kingston Endodontics',score:37.5,city:'Kingston'},'davidcraigdds.com':{name:'Dr. David Craig',score:42.5,city:'Kingston'},'smithfamilyorthodontics.com':{name:'Smith Family Orthodontics',score:45,city:'Kingston'},'gillisdentistry.com':{name:'Gillis Dentistry',score:45,city:'Kingston'},'smilekingston.ca':{name:'Nguyen Anh Dr',score:45,city:'Kingston'},'hedgewoodhousedental.com':{name:'Hedgewood House',score:47.5,city:'Kingston'},'greenwoodparkdentistry.com':{name:'Greenwood Park Dentistry',score:50,city:'Kingston'},'andersondentistry.ca':{name:'Anderson Dentistry',score:52.5,city:'Kingston'},'westendental.ca':{name:'Westend Dental Clinic',score:55,city:'Kingston'},'cataraquidental.com':{name:'Cataraqui Dental Centre',score:55,city:'Kingston'},'wsmdentistry.com':{name:'William S Motruk Dentistry',score:55,city:'Kingston'},'bracesdoc.ca':{name:'Dr. Timothy Agapas, Orthodontist, Kingston - East',score:55,city:'Kingston'},'dentistryatkingston.ca':{name:'Dentistry @ Palace Road',score:62.5,city:'Kingston'},'gardinersdentalclinic.com':{name:'Gardiners Dental Clinic',score:65,city:'Kingston'},'limestonecitydental.com':{name:'Limestone City Dental',score:65,city:'Kingston'},'rideautowndentalcare.com':{name:'Rideau Town Dental Care',score:65,city:'Kingston'},'kingstoncreeksidedental.com':{name:'Creekside Dental',score:72.5,city:'Kingston'},'eastenddentalcentre.com':{name:'East End Dental Centre',score:72.5,city:'Kingston'},'drparkfamilydentistry.ca':{name:'Dr. Park Family Dentistry',score:75,city:'Kingston'},'harbourdentalkingston.ca':{name:'Harbour Dental',score:75,city:'Kingston'},'altimakingstondental.com':{name:'Altima Kingston Dental Centre',score:77.5,city:'Kingston'},'meadowbrookdentalcentre.ca':{name:'Meadowbrook Dental Centre',score:80,city:'Kingston'},'kmadental.ca':{name:'KMA Dental Kingston',score:80,city:'Kingston'},'dawsondental.ca':{name:'Dawson Dental - Kingston',score:80,city:'Kingston'},'smiledentalkingston.ca':{name:'Smile Dental Centre',score:85,city:'Kingston'},'dentistkingston.com':{name:'Dentistry on Queen',score:85,city:'Kingston'},'pearldentalcarekingston.ca':{name:'Pearl Dental Care',score:85,city:'Kingston'},'kingston.lighthousedental.ca':{name:'LightHouse Dental Kingston',score:90,city:'Kingston'},'cataraquifamilydental.ca':{name:'Cataraqui Family Dental',score:90,city:'Kingston'},
+  'swishsmiles.com':{name:'Swish Dental South',score:0,city:'Austin'},'castordds.com':{name:'Sunset Hills Dentistry',score:0,city:'Austin'},'bartonoaksdentalgroup.com':{name:'Barton Oaks Dental Group',score:0,city:'Austin'},'austinendo.com':{name:'Austin Endodontics, LLP',score:0,city:'Austin'},'littlehousedentistry.com':{name:'little house dentistry',score:0,city:'Austin'},'downtowndentaldesign.com':{name:'Downtown Dental Design',score:0,city:'Austin'},'westerntrailsdental.com':{name:'Western Trails Dental',score:15,city:'Austin'},'va.gov':{name:'Burcin Jennifer DDS',score:32.5,city:'Austin'},'nantzorthodontics.com':{name:'Nantz Orthodontics',score:35,city:'Austin'},'thielpediatricdentistry.com':{name:'Thiel Pediatric Dentistry',score:40,city:'Austin'},'periosurgicalarts.com':{name:'Periodontal Surgical Arts',score:42.5,city:'Austin'},'ianiroendo.com':{name:'Ianiro Endodontics',score:45,city:'Austin'},'lonestarcares.org':{name:'Lone Star Circle of Care at Stassney',score:45,city:'Austin'},'toothinctx.com':{name:'The Tooth Inc',score:45,city:'Austin'},'communitycaretx.org':{name:'Carousel Pediatrics-Riverside',score:47.5,city:'Austin'},'dentalrepublic.com':{name:'Dental Republic - Riverside',score:50,city:'Austin'},'dentalshub.com':{name:'Kaelan Dental Care',score:50,city:'Austin'},'eastaustindental.com':{name:'East Austin Dental',score:52.5,city:'Austin'},'naturaltoothfairy.com':{name:'Dr. Margaret E. Rayne, DDS',score:60,city:'Austin'},'emilyzaramelladds.com':{name:'Emily Ianno Zaramella, DDS',score:60,city:'Austin'},'glintatx.com':{name:'Glint Dental Studio Austin',score:62.5,city:'Austin'},'koladentistry.com':{name:'KoLa Family & Cosmetic Dentistry',score:62.5,city:'Austin'},'austinsmilefixer.com':{name:'Becher & Gil Orthodontics',score:65,city:'Austin'},'altadentalcare.com':{name:'Alta Dental',score:65,city:'Austin'},'belldentalstudio.com':{name:'Bell Dental Studio',score:65,city:'Austin'},'austinmicroendo.com':{name:'South Austin Microendodontics',score:70,city:'Austin'},'veneerloungeaustin.com':{name:'Veneer Lounge Austin TX',score:70,city:'Austin'},'hillcountryoralsurgery.com':{name:'Hill Country Oral Surgery',score:70,city:'Austin'},'westlakehillsdental.com':{name:'West Lake Hills Dental',score:72.5,city:'Austin'},'toothbar.com':{name:'Toothbar',score:72.5,city:'Austin'},'blvddentistry.com':{name:'BLVD Dentistry & Orthodontics of 5th Street',score:72.5,city:'Austin'},'lonestarpediatricdental.com':{name:'Lone Star Pediatric Dental & Braces - South Austin',score:75,city:'Austin'},'superkidsaustin.com':{name:'Super Kids Austin',score:75,city:'Austin'},'honestfamilydental.com':{name:'Honest Family Dental',score:75,city:'Austin'},'bossorthodontics.com':{name:'Boss Orthodontics',score:75,city:'Austin'},'riverrockdentalfamily.com':{name:'River Rock Dental Austin - East Riverside',score:77.5,city:'Austin'},'ladybirddental.com':{name:'Lady Bird Dental',score:77.5,city:'Austin'},'myavenuedental.com':{name:'Avenue Dental of South Austin',score:77.5,city:'Austin'},'smile360atx.com':{name:'Smile 360',score:77.5,city:'Austin'},'brident.com':{name:'Brident Dental & Orthodontics',score:80,city:'Austin'},'longhornpediatricdentist.com':{name:'Longhorn Pediatric Dentistry and Orthodontics',score:80,city:'Austin'},'carussouthcentral.com':{name:'Carus Dental South Central',score:82.5,city:'Austin'},'myidealdental.com':{name:'Ideal Dental South Lamar',score:82.5,city:'Austin'},'blunncreekdental.com':{name:'Blunn Creek Family Dentistry',score:82.5,city:'Austin'},'breezeoralcare.com':{name:'Breeze Dental',score:82.5,city:'Austin'},'enameldentistry.com':{name:'Enamel Dentistry Saltillo (East Austin)',score:82.5,city:'Austin'},'highpointsmilestx.com':{name:'High Point Dentistry',score:82.5,city:'Austin'},'southaustindentalassociates.com':{name:'South Austin Dental Associates',score:85,city:'Austin'},'daybreakdentalcare.com':{name:'Daybreak Dental',score:85,city:'Austin'},'midtowndentalassociates.com':{name:'Midtown Dental Associates',score:87.5,city:'Austin'},'elite-dentistry.net':{name:'Elite Dentistry ATX',score:90,city:'Austin'},
+  'charlotteendodontics.com':{name:'Charlotte Endodontics',score:0,city:'Charlotte'},'linebergerorthodontics.com':{name:'Lineberger Orthodontics - Charlotte',score:0,city:'Charlotte'},'kalonsandglidewell.com':{name:'Kalons, Glidewell & Grewal DDS PA',score:0,city:'Charlotte'},'charlotteorthodontists.com':{name:'Lume Orthodontics - Eastover',score:10,city:'Charlotte'},'premiersmilesnc.com':{name:'Dr. Marcus Jean',score:10,city:'Charlotte'},'goldnerdental.com':{name:'Preston Jan Goldner, DDS',score:15,city:'Charlotte'},'cotswold.alliancedentalgroupnc.com':{name:'Alliance Dental Group - Cotswold',score:20,city:'Charlotte'},'sackstederorthodontics.com':{name:'Sacksteder Orthodontics',score:30,city:'Charlotte'},'linebergerdentistry.com':{name:'Lineberger Dentistry',score:30,city:'Charlotte'},'dualimagesmiles.com':{name:'Dual Image Dentistry and Orthodontics',score:32.5,city:'Charlotte'},'wirysmilesnc.com':{name:'Wiry Smiles Orthodontics',score:35,city:'Charlotte'},'lakepointedentistry.com':{name:'Dr. Naureen Qazi, DDS',score:37.5,city:'Charlotte'},'tranquilfamilydentistry.com':{name:'Tranquil Family Dentistry',score:37.5,city:'Charlotte'},'robertscottcharlottenc.com':{name:'Robert E. Scott, D.M.D.',score:37.5,city:'Charlotte'},'smilecharlotte.com':{name:'Smile Charlotte',score:47.5,city:'Charlotte'},'hannonorthodontics.com':{name:'Hannon Orthodontics',score:50,city:'Charlotte'},'webberdentistry.com':{name:'Webber Dentistry',score:50,city:'Charlotte'},'smilestarterdental.com':{name:'Dr. Jeffrey F. Zieziula, DDS',score:50,city:'Charlotte'},'smilestartersdental.com':{name:'Dr. MI H. Kim, DDS',score:52.5,city:'Charlotte'},'bubblespediatricdentistry.com':{name:'Bubbles Pediatric Dentistry',score:52.5,city:'Charlotte'},'bloomingsmilespd.com':{name:'Blooming Smiles Pediatric Dentistry',score:55,city:'Charlotte'},'teamfinancials.com':{name:'TEAM Financials CPA',score:55,city:'Charlotte'},'pearlcharlotte.com':{name:'Pearl. Dentistry Reimagined',score:60,city:'Charlotte'},'drrobertwatson.com':{name:'Robert Watson Jr., DDS, PA',score:60,city:'Charlotte'},'citydentalclt.com':{name:'City Dental',score:60,city:'Charlotte'},'mf-dentistry.com':{name:'Merlo & Fahrney Dentistry',score:60,city:'Charlotte'},'beacondentalcharlotte.com':{name:'Beacon Dental Center',score:60,city:'Charlotte'},'drlinger.com':{name:'William Linger, DDS, MAGD & Barlan Barrero, DDS',score:62.5,city:'Charlotte'},'eastoverdental.com':{name:'Eastover Dental',score:62.5,city:'Charlotte'},'dualimagedentistry.com':{name:'Dual Image Dentistry',score:62.5,city:'Charlotte'},'growingsmilesnc.com':{name:'Growing Smiles Pediatric Dentistry - Madison Park',score:65,city:'Charlotte'},'charlottedentalpro.com':{name:'Charlotte DentalPro',score:65,city:'Charlotte'},'charlotteperio.com':{name:'CharlottePerio',score:65,city:'Charlotte'},'bwilliamsdds.com':{name:'D. Brian Williams, DDS, PA',score:65,city:'Charlotte'},'districtdentistryclt.com':{name:'District Dentistry',score:65,city:'Charlotte'},'dentistryontheplaza.com':{name:'Dentistry on The Plaza',score:65,city:'Charlotte'},'dentistryofthecarolinas.com':{name:'Dentistry of the Carolinas - Dilworth/South End',score:67.5,city:'Charlotte'},'cltpediatricdentistry.com':{name:'Lume Pediatric Dentistry & Orthodontics - Cotswold',score:67.5,city:'Charlotte'},'charlottedentist.org':{name:'Nelsen Dental Excellence',score:67.5,city:'Charlotte'},'smilesatisfaction.com':{name:'Advanced Dentistry of Charlotte - Dr Chris Bowman',score:70,city:'Charlotte'},'southendpremierdentistry.com':{name:'SouthEnd Premier Dentistry',score:70,city:'Charlotte'},'belvederedentistry.com':{name:'Belvedere Family Dentistry',score:70,city:'Charlotte'},'charlottedentistry.com':{name:'Charlotte Dentistry',score:72.5,city:'Charlotte'},'clearsmilecharlotte.com':{name:'Clearsmile Orthodontics (South End)',score:72.5,city:'Charlotte'},'affordabledentures.com':{name:'C Gregory Martin PA',score:72.5,city:'Charlotte'},'genesisfamilydentistrync.com':{name:'Genesis Family Dentistry - Plaza Midwood',score:72.5,city:'Charlotte'},'premierdentalnc.com':{name:'Premier Dental Noda',score:72.5,city:'Charlotte'},'akasmiles.com':{name:'All Kids Pediatric Dentistry',score:72.5,city:'Charlotte'},'citypark.dental':{name:'City Park Dental of Charlotte',score:75,city:'Charlotte'},'charlottedentalcare.com':{name:'Porter Dental Group',score:75,city:'Charlotte'},'dentistryatcotswold.com':{name:'Dentistry at Cotswold',score:75,city:'Charlotte'},'skyviewdentistrycharlotte.com':{name:'Skyview Dentistry',score:75,city:'Charlotte'},'kidzdentalsouth.com':{name:'Kidz Dental South',score:77.5,city:'Charlotte'},'cltfamilydentistry.com':{name:'Charlotte Family Dentistry',score:77.5,city:'Charlotte'},'flossflossfloss.com':{name:'Eastover Pediatric Dentistry',score:77.5,city:'Charlotte'},'kidzdentalcentral.com':{name:'Kidz Dental Central',score:77.5,city:'Charlotte'},'pmdent.com':{name:'Plaza Midwood Dentistry',score:77.5,city:'Charlotte'},'smilesbypayet.com':{name:'Smiles By Payet Dentistry',score:80,city:'Charlotte'},'randolphdentalcare.com':{name:'Randolph Dental Care',score:80,city:'Charlotte'},'urbanfamilydental.com':{name:'Urban Family Dental',score:80,city:'Charlotte'},'dentistryatsouthend.com':{name:'Dentistry at South End',score:80,city:'Charlotte'},'friendlydentalgroup.com':{name:'Friendly Dental',score:82.5,city:'Charlotte'},'vayadental.com':{name:'Vaya Dental - Madison Park',score:82.5,city:'Charlotte'},'southviewdentistrycharlotte.com':{name:'SouthView Dentistry',score:82.5,city:'Charlotte'},'queensroaddentistry.com':{name:'Queens Road Dentistry',score:82.5,city:'Charlotte'},'dentistryonmonroe.com':{name:'Dentistry On Monroe',score:82.5,city:'Charlotte'},'seitlindental.com':{name:'Seitlin Dental',score:85,city:'Charlotte'},'providencepdo.com':{name:'Providence Pediatric Dentistry & Orthodontics',score:85,city:'Charlotte'},'cotswoldfamilydentistry.com':{name:'Cotswold Family Dentistry',score:85,city:'Charlotte'},'mydentists.org':{name:'My Dentists',score:85,city:'Charlotte'},'fourthwarddentistry.com':{name:'Fourth Ward Dentistry',score:85,city:'Charlotte'},'centralavenuedental.com':{name:'Central Avenue Dental',score:85,city:'Charlotte'},'thelandmarksmile.com':{name:'LandMark Dentistry Charlotte',score:87.5,city:'Charlotte'},'stewartdentalgroupcharlotte.com':{name:'Stewart Dental Group',score:90,city:'Charlotte'},'charlotteemergencydental.com':{name:'Charlotte Emergency Dental',score:92.5,city:'Charlotte'},'harlowdentalnc.com':{name:'Harlow Dental at 7th Street',score:95,city:'Charlotte'},
+  'scottsdaletrailsdentistry.com':{name:'Scottsdale Trails Dentistry',score:0,city:'Scottsdale'},'toothologydental.com':{name:'Toothology Dental',score:0,city:'Scottsdale'},'dentistsonchaparral.com':{name:'Dentists on Chaparral',score:0,city:'Scottsdale'},'scottsdalefamilysmiles.com':{name:'Scottsdale Family Smiles',score:0,city:'Scottsdale'},'aspendental.com':{name:'John Snee',score:0,city:'Scottsdale'},'denturecenterofarizona.com':{name:'Denture Center of Arizona',score:35,city:'Scottsdale'},'noahhelps.org':{name:'Marianne Youssef, DMD',score:42.5,city:'Scottsdale'},'azdentalwellness.com':{name:'AZ Dental Wellness',score:42.5,city:'Scottsdale'},'valleyendodontic.com':{name:'Valley Endodontics & Oral Surgery',score:45,city:'Scottsdale'},'owtadortho.com':{name:'Owtad Orthodontics',score:45,city:'Scottsdale'},'stiegandwachtel.com':{name:'Stieg & Wachtel Orthodontics',score:47.5,city:'Scottsdale'},'a101dentalcare.com':{name:'A-101 Dental Care, PC',score:47.5,city:'Scottsdale'},'arcadiapediatricdental.com':{name:'Arcadia Pediatric Dental',score:50,city:'Scottsdale'},'drbroermann.com':{name:'Martin Broermann DDS pc',score:50,city:'Scottsdale'},'arcadiaorthoaz.com':{name:'Arcadia Orthodontics',score:52.5,city:'Scottsdale'},'modestdentistry.com':{name:'Modest Dentistry - Scottsdale',score:52.5,city:'Scottsdale'},'omsphx.com':{name:'Nicolas Bebeau MD, DDS, FACS',score:52.5,city:'Scottsdale'},'sabaandfowler.com':{name:'Fowler Christopher DDS',score:52.5,city:'Scottsdale'},'childrens-dental.com':{name:"Children's Dental Specialty",score:55,city:'Scottsdale'},'sadlondentistry.com':{name:'Dr. Scott D. Sadlon, DDS',score:57.5,city:'Scottsdale'},'brattonryan.com':{name:'Roy R. Bratton, DDS, PLLC',score:57.5,city:'Scottsdale'},'kgndental.com':{name:'Kathleen C Green Naughton, DMD, PC',score:57.5,city:'Scottsdale'},'southscottsdaledentalcare.com':{name:'South Scottsdale Dental Care',score:60,city:'Scottsdale'},'wowsmilez.com':{name:'Dr. Keiko H. Willcox, DDS',score:60,city:'Scottsdale'},'fourpeaksdental.com':{name:'Four Peaks Family Dentistry',score:60,city:'Scottsdale'},'c-orthostudio.com':{name:'Camelback Orthodontic Studio',score:60,city:'Scottsdale'},'azoralhealth.com':{name:'AZ Oral Health Center',score:62.5,city:'Scottsdale'},'gentledental.interdent.com':{name:'Gentle Dental Scottsdale',score:65,city:'Scottsdale'},'alpersdentistry.com':{name:'Alpers Family and Cosmetic Dentistry',score:67.5,city:'Scottsdale'},'saltriverdental.com':{name:'Salt River Dental Care',score:70,city:'Scottsdale'},'scottsdaleperio.com':{name:'Scottsdale Implants and Periodontics',score:70,city:'Scottsdale'},'milldental.com':{name:'Millennium Dental Associates',score:72.5,city:'Scottsdale'},'pvsmiles.com':{name:'PV Smiles Reem Kidess',score:72.5,city:'Scottsdale'},'snldental.com':{name:'S&L Dental',score:75,city:'Scottsdale'},'scottsdaledentalcare.net':{name:'Scottsdale Dental Care',score:80,city:'Scottsdale'},'woodruffdental.com':{name:'Woodruff Dental',score:80,city:'Scottsdale'},'myradiantfamilydentistry.com':{name:'Radiant Family Dentistry',score:80,city:'Scottsdale'},'omnidds.com':{name:'Omni Dental Studio',score:80,city:'Scottsdale'},'happyfamilydentalcare.com':{name:'Happy Family Dental Care',score:82.5,city:'Scottsdale'},'southtowndentalcare.com':{name:'Southtown Dental Care',score:85,city:'Scottsdale'},'smilearizonadentistry.com':{name:'Smile Arizona Dentistry',score:85,city:'Scottsdale'},'dentistryofoldtownscottsdale.com':{name:'Dentistry of Old Town Scottsdale',score:85,city:'Scottsdale'},'pristinedentalaz.com':{name:'Pristine Dental',score:85,city:'Scottsdale'},'mitchelldentalaz.com':{name:'Mitchell Dental',score:87.5,city:'Scottsdale'},'scottsdalesdentist.com':{name:"Scottsdale's Dentist",score:92.5,city:'Scottsdale'},
+  'mysagedental.com':{name:'Sage Dental of East Naples',score:0,city:'Naples'},'naplesbaydentalgroup.com':{name:'Naples Bay Dental Group',score:0,city:'Naples'},'daveyfamilydentistry.com':{name:'Dr Davey Dental',score:0,city:'Naples'},'cohendentalstudio.com':{name:'Cohen Dental Studio',score:0,city:'Naples'},'westshoreoms.com':{name:'WestShore Oral and Maxillofacial Specialists',score:0,city:'Naples'},'mydentaldesigns.com':{name:'Dental Designs',score:0,city:'Naples'},'pagefamilydentalgroup.com':{name:'Page Family Dental Group',score:0,city:'Naples'},'naplesendodontist.com':{name:'Endodontic Specialists of Naples',score:0,city:'Naples'},'naplesdentists.com':{name:'Jaime Davenport DMD',score:10,city:'Naples'},'drkellidmdnaples.com':{name:'Kelli Salomon, DMD',score:10,city:'Naples'},'towncaredental.com':{name:'Towncare Dental of Naples',score:22.5,city:'Naples'},'dentalspecialtyflorida.com':{name:'Dental Specialty Center of Naples',score:22.5,city:'Naples'},'cpswfl.com':{name:'Wilson Professional Center',score:32.5,city:'Naples'},'meyerdentalcare.com':{name:'Leigh T. Meyer, DMD',score:40,city:'Naples'},'puredentalnaples.com':{name:'Pure Dental Naples',score:42.5,city:'Naples'},'harbordentalfl.com':{name:'Harbor Dental',score:47.5,city:'Naples'},'ayandentistry.com':{name:'Ayan Dentistry',score:47.5,city:'Naples'},'naplesdentalstudio.com':{name:'Naples Dental Studio',score:52.5,city:'Naples'},'precisiondentalcarenaples.com':{name:'Dr. Fonseca',score:57.5,city:'Naples'},'alexanderbraodds.com':{name:'Alexander Brao, DDS',score:57.5,city:'Naples'},'drtaranov.com':{name:'Dr. Kristina Taranov, DDS',score:60,city:'Naples'},'naples-smiles.com':{name:'Naples General & Cosmetic Dentistry LLC',score:60,city:'Naples'},'bayfrontdentistry.com':{name:'Aesthetic Dentistry at Bayfront',score:62.5,city:'Naples'},'engleimplantdentistry.com':{name:'Engle Dentistry Naples',score:65,city:'Naples'},'oldenaplesperio.com':{name:'Olde Naples Periodontics',score:65,city:'Naples'},'dentistsnaples.com':{name:'For Smiles Dentists',score:65,city:'Naples'},'naplesperiodontist.com':{name:'Naples Periodontist- Timothy Davis, D.D.S.',score:65,city:'Naples'},'gulfsidedentalnaples.com':{name:'Dr. Delia Reyes',score:67.5,city:'Naples'},'drjbhansen.com':{name:'Hansen II James B DDS PA',score:67.5,city:'Naples'},'familyorthonaples.com':{name:'Family Orthodontics of Naples',score:67.5,city:'Naples'},'periodontistofnaples.com':{name:'Periodontics and Implant Center of Naples',score:67.5,city:'Naples'},'townedentalnaples.com':{name:'Towne Dental Naples',score:70,city:'Naples'},'naplescomprehensivedentist.com':{name:'Implant and Comprehensive Dentistry of Naples',score:70,city:'Naples'},'myparkdental.com':{name:'Park Family and Cosmetic Dentistry',score:70,city:'Naples'},'healthcareswfl.org':{name:'Network of Southwest Florida News',score:72.5,city:'Naples'},'implantcenternearme.com':{name:'Florida Dental Implant Institute',score:77.5,city:'Naples'},'coastalsmilesfamilyorthodontics.com':{name:'Coastal Smiles Family Orthodontics',score:77.5,city:'Naples'},'castordentalassociates.com':{name:'Castor Dental Associates',score:77.5,city:'Naples'},'bayviewdentalarts.com':{name:'BayView Dental Arts',score:80,city:'Naples'},'childrensdentistryofnaples.com':{name:"Children's Dentistry of Naples",score:80,city:'Naples'},'zerocavity.com':{name:'Gerardo Santiago DDS',score:80,city:'Naples'},'palmroyaldentalcare.com':{name:'Palm Royal Dental Care',score:82.5,city:'Naples'},'camerondentalstudio.com':{name:'Cameron Dental Studio',score:82.5,city:'Naples'},'gulfviewdentistry.com':{name:'Gulfview Dental',score:82.5,city:'Naples'},'cosmeticdentistryofnaples.com':{name:'Gulf Shore Cosmetic and Family Dentistry',score:82.5,city:'Naples'},'hesterpediatricdentistry.com':{name:'Hester Pediatric Dentistry',score:82.5,city:'Naples'},'gatewayofnaplesdental.com':{name:'Gateway of Naples Dental',score:82.5,city:'Naples'},'altamardental.com':{name:'Altamar Dental Studio | Naples',score:85,city:'Naples'},'coastdental.com':{name:'Coast Dental',score:85,city:'Naples'},'naplesdentist.com':{name:'Dr. Randold Binns DMD, MS',score:87.5,city:'Naples'},'banyandentalcarenaples.com':{name:'Banyan Dental Care',score:87.5,city:'Naples'},'eastlakesdentalcare.com':{name:'East Lakes Dental Care',score:87.5,city:'Naples'}
+};
+
+const CHECK_SVG='<svg class="compare-check" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="rgba(0,201,167,0.12)"/><path d="M5 8.5L7 10.5L11 6" stroke="#00c9a7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function getParams(){const p=new URLSearchParams(window.location.search);return{practice:p.get('practice')||'',score:parseFloat(p.get('score'))||null,label:(p.get('label')||'').toUpperCase(),segment:(p.get('segment')||'').toLowerCase(),city:p.get('city')||'Peterborough, ON',cityAvg:parseFloat(p.get('cityavg'))||59.6,c1:p.get('c1')||'',c1score:parseFloat(p.get('c1score'))||null,c2:p.get('c2')||'',c2score:parseFloat(p.get('c2score'))||null}}
+
+const LABEL_STYLE={'PREFERRED':{color:'#00c9a7',bg:'rgba(0,201,167,0.12)'},'VISIBLE':{color:'#00c9a7',bg:'rgba(0,201,167,0.10)'},'UNRELIABLE':{color:'#ffc542',bg:'rgba(255,197,66,0.12)'},'INVISIBLE':{color:'#ff5f6d',bg:'rgba(255,95,109,0.12)'}};
+
+function scoreColor(s){if(s>=60)return'#00c9a7';if(s>=50)return'#ffc542';return'#ff5f6d'}
+function scoreBadgeStyle(s){const c=scoreColor(s);return'color:'+c+';background:'+c+'22;'}
+
+function getCopy(p){
+  const s=p.score,city=p.city,avg=p.cityAvg,cn=city.split(',')[0];
+  if(p.segment==='urgent'||(s!==null&&s<60))return{headline:'Your practice is largely invisible to AI search.',body:'<p>You scored <strong>'+s+'/100</strong> on AI visibility. The city average is '+avg+'. The top practice in '+cn+' scores 90. That gap is where new patients are going instead of to you.</p><p>This isn\u2019t about your website looking good. It\u2019s about whether AI search can find you, trust you, and recommend you with confidence. Right now, it can\u2019t \u2014 not reliably.</p>'};
+  if(p.segment==='leader'||(s!==null&&s>=80))return{headline:'You\u2019re one of the strongest practices in '+cn+' for AI visibility.',body:'<p>You scored <strong>'+s+'/100</strong> \u2014 that puts you near the top of the practices we scanned in '+cn+'. AI search is more likely to recommend you than most of your competitors.</p><p>But visibility at this level requires maintenance. Competitors are improving, signals change, and a few weak spots in your current profile could cost you that edge.</p>'};
+  return{headline:'You\u2019re above average. The top practices are still well ahead.',body:'<p>You scored <strong>'+s+'/100</strong> \u2014 above the city average of '+avg+'. But the top practice in '+cn+' scores 90, and practices at that level are being recommended by ChatGPT and Google Gemini while practices in your range are getting passed over.</p><p>The difference usually comes down to 3 or 4 specific signals \u2014 structured data, credential visibility, FAQ coverage. Small fixes with outsized impact.</p>'};
+}
+
+let selectedCompetitors=[];
+
+function getCityPractices(city){
+  const target=city.split(',')[0].trim();
+  const buyerName=getParams().practice.toLowerCase().trim();
+  return Object.entries(PRACTICE_DB).filter(([d,p])=>p.city===target&&p.score>0).filter(([d,p])=>p.name.toLowerCase().trim()!==buyerName).map(([d,p])=>({domain:d,name:p.name,score:p.score})).sort((a,b)=>a.name.localeCompare(b.name));
+}
+
+function toggleCompetitor(domain,name,score){
+  const idx=selectedCompetitors.findIndex(c=>c.domain===domain);
+  if(idx>=0)selectedCompetitors.splice(idx,1);
+  else if(selectedCompetitors.length<3)selectedCompetitors.push({domain,name,score});
+  refreshPicker();updateCtaState();
+}
+
+function refreshPicker(){
+  document.querySelectorAll('.picker-section').forEach(section=>{
+    const search=section.querySelector('.picker-search');
+    const filter=search?search.value.toLowerCase():'';
+    const list=section.querySelector('.picker-list');
+    const counter=section.querySelector('.picker-counter');
+    const practices=getCityPractices(getParams().city);
+    if(counter){counter.textContent=selectedCompetitors.length+' of 3 selected';counter.classList.toggle('full',selectedCompetitors.length>=3)}
+    const filtered=practices.filter(p=>p.name.toLowerCase().includes(filter));
+    if(!filtered.length){list.innerHTML='<div class="picker-empty">No practices match your search</div>';return}
+    list.innerHTML=filtered.map(p=>{
+      const isChecked=selectedCompetitors.some(c=>c.domain===p.domain);
+      const isDisabled=!isChecked&&selectedCompetitors.length>=3;
+      const cls=(isChecked?' checked':'')+(isDisabled?' disabled':'');
+      const escapedName=p.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      return'<div class="picker-item'+cls+'" onclick="'+(isDisabled?'':"toggleCompetitor('"+p.domain+"','"+escapedName+"',"+p.score+")")+'">'+'<div class="picker-cb"><span class="picker-cb-tick">\u2713</span></div>'+'<div class="picker-item-name">'+esc(p.name)+'</div>'+'</div>';
+    }).join('');
+  });
+}
+
+function updateCtaState(){
+  if(currentTier==='competitive'&&selectedCompetitors.length<3){
+    const remaining=3-selectedCompetitors.length;
+    const label=selectedCompetitors.length===0?'Select 3 competitors above':'Select '+remaining+' more competitor'+(remaining>1?'s':'');
+    document.querySelectorAll('.cta-block .btn-primary').forEach(btn=>{btn.disabled=true;btn.textContent=label});
+    const sb=document.getElementById('sticky-btn');if(sb){sb.disabled=true;sb.textContent=selectedCompetitors.length+'/3 selected'}
+    const mb=document.getElementById('mobile-cta-btn');if(mb)mb.disabled=true;
+  }else{
+    const t=TIERS[currentTier];
+    document.querySelectorAll('.cta-block .btn-primary').forEach(btn=>{btn.disabled=false;btn.textContent=t.btnTextInline});
+    const sb=document.getElementById('sticky-btn');if(sb){sb.disabled=false;sb.textContent=t.btnText}
+    const mb=document.getElementById('mobile-cta-btn');if(mb)mb.disabled=false;
   }
+}
 
-  // ============================================================
-  // COLOUR HELPERS
-  // ============================================================
-  const LABEL_STYLE = {
-    'PREFERRED':  { color: '#00c9a7', bg: 'rgba(0,201,167,0.12)',  border: 'rgba(0,201,167,0.3)'  },
-    'VISIBLE':    { color: '#00c9a7', bg: 'rgba(0,201,167,0.10)',  border: 'rgba(0,201,167,0.25)' },
-    'UNRELIABLE': { color: '#ffc542', bg: 'rgba(255,197,66,0.12)', border: 'rgba(255,197,66,0.3)' },
-    'INVISIBLE':  { color: '#ff5f6d', bg: 'rgba(255,95,109,0.12)', border: 'rgba(255,95,109,0.3)' },
-  };
+function render(){
+  const p=getParams(),page=document.getElementById('page-content'),pageMobile=document.getElementById('page-content-mobile');
+  const style=LABEL_STYLE[p.label]||LABEL_STYLE['INVISIBLE'],copy=getCopy(p);
+  if(!p.practice||p.score===null){const f='<div class="fallback"><h1>Your report link may have expired.</h1><p>This page is personalised for each practice. If you received an email from AIVI Labs, use the link in that email to view your score.</p><a href="https://aivilabs.io" class="btn-ghost">Go to aivilabs.io</a></div>';page.innerHTML=f;pageMobile.innerHTML=f;return}
+  const cityName=esc(p.city.split(',')[0]),entries=[];
+  if(p.c1&&p.c1score!==null)entries.push({score:p.c1score,html:'<div class="comp-row"><div class="comp-name">'+esc(p.c1)+'</div><div class="bar-wrap"><div class="bar" style="width:'+p.c1score+'%;background:'+scoreColor(p.c1score)+';"></div></div><div class="comp-score" style="color:'+scoreColor(p.c1score)+';">'+p.c1score+'</div></div>'});
+  if(p.c2&&p.c2score!==null)entries.push({score:p.c2score,html:'<div class="comp-row"><div class="comp-name">'+esc(p.c2)+'</div><div class="bar-wrap"><div class="bar" style="width:'+p.c2score+'%;background:'+scoreColor(p.c2score)+';"></div></div><div class="comp-score" style="color:'+scoreColor(p.c2score)+';">'+p.c2score+'</div></div>'});
+  entries.push({score:p.cityAvg,html:'<div class="comp-row avg"><div class="comp-name">'+cityName+' Average</div><div class="bar-wrap"><div class="bar dashed" style="width:'+p.cityAvg+'%;"></div></div><div class="comp-score" style="color:#8a9bb8;">'+p.cityAvg+'</div></div>'});
+  entries.push({score:p.score,html:'<div class="comp-row you"><div class="comp-name you-label">'+esc(p.practice)+' \u2190 you</div><div class="bar-wrap"><div class="bar" style="width:'+p.score+'%;background:'+style.color+';"></div></div><div class="comp-score" style="color:'+style.color+';">'+p.score+'</div></div>'});
+  entries.sort((a,b)=>b.score-a.score);
+  const compNames=[];if(p.c1)compNames.push(esc(p.c1));if(p.c2)compNames.push(esc(p.c2));
+  const compStr=compNames.length===2?compNames[0]+' and '+compNames[1]:compNames.length===1?compNames[0]:'your competitors';
+  const cityCount=getCityPractices(p.city).length;
+  const html='<div class="score-hero"><div class="score-top"><div class="score-circle" style="border-color:'+style.color+';"><div class="score-circle-num" style="color:'+style.color+';">'+p.score+'</div><div class="score-circle-denom">out of 100</div></div><div class="score-right"><div class="practice-name">'+esc(p.practice)+'</div><div class="label-badge" style="color:'+style.color+';background:'+style.bg+';">'+p.label+'</div><div class="score-message" style="color:var(--text-muted);">'+esc(p.city)+'</div></div></div><div class="city-bar"><div class="city-stat"><span class="city-stat-num" style="color:var(--amber);">'+p.cityAvg+'</span><span class="city-stat-label">City avg. score</span></div><div class="city-stat"><span class="city-stat-num" style="color:var(--white);">'+(cityCount+1)+'</span><span class="city-stat-label">Practices scanned</span></div><div class="city-stat"><span class="city-stat-num" style="color:var(--text-muted);font-size:18px;">'+cityName+'</span><span class="city-stat-label">'+cityRegionLabel(p.city)+'</span></div></div></div>'+
+  (entries.length?'<div class="competitors"><div class="comp-head">Nearby competitors \u00b7 '+esc(p.city)+'</div>'+entries.map(e=>e.html).join('')+'</div>':'')+
+  '<div class="copy-block"><h2>'+copy.headline+'</h2>'+copy.body+'</div>'+
+  '<div class="preview-section"><div class="preview-header">Sample report pages</div><div class="preview-row-top"><div class="preview-card"><img src="preview_quickscan.jpg" alt="QuickScan report sample"><div class="preview-card-label"><div class="preview-card-title">AI Visibility Scorecard</div><div class="preview-card-desc">Score, snapshot, and top fixes</div><div class="preview-card-tag included">Included in $149</div></div></div><div class="preview-card"><img src="preview_fixpack_faq.jpg" alt="FAQ fix pack sample"><div class="preview-card-label"><div class="preview-card-title">Fix Pack: FAQs</div><div class="preview-card-desc">Patient questions to add to your site</div><div class="preview-card-tag included">Included in $149</div></div></div><div class="preview-card"><img src="preview_fixpack_reviews.jpg" alt="Reviews fix pack sample"><div class="preview-card-label"><div class="preview-card-title">Fix Pack: Reviews</div><div class="preview-card-desc">SMS and email review request templates</div><div class="preview-card-tag included">Included in $149</div></div></div><div class="preview-card"><img src="preview_fixpack_providers.jpg" alt="Provider bios fix pack sample"><div class="preview-card-label"><div class="preview-card-title">Fix Pack: Provider Bios</div><div class="preview-card-desc">Credential-forward bio templates</div><div class="preview-card-tag included">Included in $149</div></div></div></div><div class="preview-row-bottom"><div class="preview-card-wide"><img src="preview_competitive.jpg" alt="Competitive report sample"><div class="preview-card-label"><div class="preview-card-title">Competitive Intelligence Report</div><div class="preview-card-desc">Side-by-side comparison of your practice vs. 3 competitors across all 12 AI visibility signals. See exactly where you lead and where they\u2019re ahead.</div><div class="preview-card-tag upgrade">$299 upgrade</div></div></div></div></div>'+
+  '<div class="compare-section"><div class="compare-header">Choose your report</div><div class="compare-cards">'+
+  '<div class="compare-card selected" data-tier="score" onclick="selectTier(\'score\')"><div class="compare-card-top"><div class="compare-card-name">QuickScan</div><div class="compare-card-radio"><div class="compare-card-radio-dot"></div></div></div><div class="compare-card-price">$149</div><div class="compare-card-onetime">One-time payment</div><div class="compare-card-divider"></div><div class="compare-card-heading">What you get</div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Full 12-point AI audit</strong> \u2014 every signal scored pass, partial, or fail</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>PDF scorecard</strong> \u2014 your score, rating, and city ranking</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Fix packs</strong> \u2014 FAQ content, bio templates, review request scripts</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Delivered within 24 hours</strong></div></div></div>'+
+  '<div class="compare-card recommended" data-tier="competitive" onclick="selectTier(\'competitive\')"><div class="compare-badge">Recommended</div><div class="compare-card-top"><div class="compare-card-name">QuickScan + Competitive</div><div class="compare-card-radio"><div class="compare-card-radio-dot"></div></div></div><div class="compare-card-price">$299</div><div class="compare-card-onetime">One-time payment</div><div class="compare-card-divider"></div><div class="compare-card-heading">Everything in QuickScan, plus</div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Side-by-side comparison</strong> \u2014 your scores vs. 3 competitors across all 12 signals</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Your strengths</strong> \u2014 signals where you outperform competitors</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>Your gaps</strong> \u2014 exactly which signals competitors pass that you don\u2019t</div></div><div class="compare-item">'+CHECK_SVG+'<div class="compare-item-text"><strong>You choose the competitors</strong> \u2014 pick any 3 practices in '+cityName+'</div></div><div class="compare-insight"><div class="compare-insight-text">You can see '+compStr+' scoring above you. The competitive report shows you <em>why</em> \u2014 which specific signals they get right that you don\u2019t, so you know exactly what to fix first.</div></div></div>'+
+  '</div></div>'+
+  '<div class="picker-section"><div class="picker-card"><div class="picker-title">Pick 3 competitors</div><div class="picker-subtitle">Choose the practices you want to compare against. We\u2019ve scanned '+cityCount+' practices in '+cityName+'.</div><div class="picker-counter">0 of 3 selected</div><input type="text" class="picker-search" placeholder="Search practices in '+cityName+'\u2026" oninput="refreshPicker()"><div class="picker-list"></div></div></div>'+
+  '<div class="cta-block"><button class="btn-primary" data-fsc-action="Add,Checkout" data-fsc-item-path-value="ai-visibility-quickscan">Get your full report \u2014 $149</button><div class="what-you-get"><div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>Full 12-point AI audit</strong> \u2014 every signal scored with pass, partial, or fail</div></div><div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>PDF scorecard</strong> \u2014 your score, your ranking, your city context</div></div><div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>Ready-to-use fix packs</strong> \u2014 FAQ content, provider bio templates, review request scripts</div></div><div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>Delivered within 24 hours</strong> \u2014 no subscription, no agency required</div></div></div><div class="reassurance">PDF report \u00b7 One-time payment \u00b7 Secure checkout via FastSpring</div></div>';
+  page.innerHTML=html;pageMobile.innerHTML=html;
+  document.getElementById('sticky-cta').style.display='block';
+  document.getElementById('mobile-cta').style.display='flex';
+  refreshPicker();
+}
 
-  function scoreColor(score) {
-    if (score >= 80) return '#00c9a7';
-    if (score >= 60) return '#00c9a7';
-    if (score >= 50) return '#ffc542';
-    return '#ff5f6d';
-  }
+function cityRegionLabel(city){const parts=city.split(',');if(parts.length<2)return'';const r=parts[1].trim();const map={'ON':'Ontario, Canada','BC':'British Columbia, Canada','AB':'Alberta, Canada','QC':'Quebec, Canada','TX':'Texas, USA','NC':'North Carolina, USA','AZ':'Arizona, USA','FL':'Florida, USA','CA':'California, USA','NY':'New York, USA','IL':'Illinois, USA','OH':'Ohio, USA','PA':'Pennsylvania, USA','GA':'Georgia, USA','WA':'Washington, USA','CO':'Colorado, USA','MA':'Massachusetts, USA','VA':'Virginia, USA'};return map[r]||r}
 
-  // ============================================================
-  // COPY VARIANTS
-  // ============================================================
-  function getCopy(p) {
-    const score    = p.score;
-    const practice = p.practice || 'Your practice';
-    const city     = p.city;
-    const cityAvg  = p.cityAvg;
-    const c1       = p.c1;
-    const c1s      = p.c1score;
-    const c2       = p.c2;
-    const c2s      = p.c2score;
-    const diff     = score !== null ? (score - cityAvg).toFixed(1) : null;
-    const diffStr  = diff !== null ? (diff >= 0 ? '+' + diff : diff) : '';
+function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-    if (p.segment === 'urgent' || (score !== null && score < 60)) {
-      return {
-        headline: 'Your practice is largely invisible to AI search.',
-        body: `
-          <p>You scored <strong>${score}/100</strong> on AI visibility. The city average is ${cityAvg}. The top practice in ${city.split(',')[0]} scores 90. That gap is where new patients are going instead of to you.</p>
-          <p>This isn't about your website looking good. It's about whether AI search can find you, trust you, and recommend you with confidence. Right now, it can't — not reliably.</p>
-          <p>For $149, you get a full 12-point audit that shows exactly what's broken and why, plus ready-to-use fix packs so you don't have to figure out the fixes yourself.</p>
-        `
-      };
-    }
+const TIERS={
+  score:{price:'$149',btnText:'Get your full report',btnTextInline:'Get your full report \u2014 $149',product:'ai-visibility-quickscan',items:['Full 12-point AI audit','PDF scorecard + city ranking','Ready-to-use fix packs','Delivered within 24 hours'],inlineItems:[{bold:'Full 12-point AI audit',rest:' \u2014 every signal scored with pass, partial, or fail'},{bold:'PDF scorecard',rest:' \u2014 your score, your ranking, your city context'},{bold:'Ready-to-use fix packs',rest:' \u2014 FAQ content, provider bio templates, review request scripts'},{bold:'Delivered within 24 hours',rest:' \u2014 no subscription, no agency required'}],mobileSub:'12-point audit + fix packs'},
+  competitive:{price:'$299',btnText:'Get your report + competitor analysis',btnTextInline:'Get your report + competitor analysis \u2014 $299',product:'ai-visibility-quickscan-competitive',items:['Everything in QuickScan','Side-by-side vs. 3 competitors','Your strengths + gaps analysis','Delivered within 24 hours'],inlineItems:[{bold:'Everything in QuickScan',rest:' \u2014 full 12-point audit, PDF scorecard, fix packs'},{bold:'Side-by-side vs. 3 competitors',rest:' \u2014 compare all 12 signals head-to-head'},{bold:'Your strengths + gaps',rest:' \u2014 where you win and exactly where to close the gap'},{bold:'Delivered within 24 hours',rest:' \u2014 no subscription, no agency required'}],mobileSub:'Full audit + competitor analysis'}
+};
 
-    if (p.segment === 'leader' || (score !== null && score >= 80)) {
-      return {
-        headline: `You're one of the strongest practices in ${city.split(',')[0]} for AI visibility.`,
-        body: `
-          <p>You scored <strong>${score}/100</strong> — that puts you near the top of the 23 practices we scanned in ${city.split(',')[0]}. AI search is more likely to recommend you than most of your competitors, and that's a real advantage as more patients rely on ChatGPT and Google Gemini to choose a provider.</p>
-          <p>But visibility at this level requires maintenance. Competitors are improving, signals change, and a few weak spots in your current profile could cost you that edge. Your full report shows you precisely where you stand across all 12 signals — and what to protect.</p>
-        `
-      };
-    }
+let currentTier='score';
 
-    // Growth (default)
-    return {
-      headline: `You're above average. The top practices are still well ahead.`,
-      body: `
-        <p>You scored <strong>${score}/100</strong> — above the city average of ${cityAvg}. But the top practice in ${city.split(',')[0]} scores 90, and practices at that level are being recommended by ChatGPT and Google Gemini while practices in your range are getting passed over.</p>
-        <p>The difference usually comes down to 3 or 4 specific signals — structured data, credential visibility, FAQ coverage. Small fixes with outsized impact on whether AI recommends you or your competitor.</p>
-        <p>For $149, your report shows you exactly which signals are holding you back and gives you ready-to-use content to fix them — delivered within 24 hours.</p>
-      `
-    };
-  }
+function selectTier(tier){
+  currentTier=tier;const t=TIERS[tier];
+  document.querySelectorAll('.tier-option').forEach(b=>b.classList.toggle('selected',b.dataset.tier===tier));
+  document.querySelectorAll('.compare-card').forEach(c=>c.classList.toggle('selected',c.dataset.tier===tier));
+  document.querySelectorAll('.picker-section').forEach(el=>{tier==='competitive'?el.classList.add('open'):el.classList.remove('open')});
+  const sp=document.getElementById('sticky-price'),si=document.getElementById('sticky-items');
+  if(sp)sp.textContent=t.price;
+  if(si)si.innerHTML=t.items.map(i=>'<div class="sticky-cta-item"><div class="sticky-cta-dot"></div>'+i+'</div>').join('');
+  document.querySelectorAll('.cta-block .btn-primary').forEach(btn=>btn.setAttribute('data-fsc-item-path-value',t.product));
+  document.querySelectorAll('.cta-block .what-you-get').forEach(c=>{c.innerHTML=t.inlineItems.map(i=>'<div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>'+i.bold+'</strong>'+i.rest+'</div></div>').join('')});
+  const ml=document.getElementById('mobile-cta-label'),ms=document.getElementById('mobile-cta-sub');
+  if(ml)ml.textContent=t.btnText;if(ms)ms.textContent=t.mobileSub;
+  updateCtaState();refreshPicker();
+}
 
-  // ============================================================
-  // RENDER
-  // ============================================================
-  function render() {
-    const p      = getParams();
-    const page   = document.getElementById('page-content');
-    const pageMobile = document.getElementById('page-content-mobile');
-    const style  = LABEL_STYLE[p.label] || LABEL_STYLE['INVISIBLE'];
-    const copy   = getCopy(p);
-
-    // No params — show fallback
-    if (!p.practice || p.score === null) {
-      const fallbackHTML = `
-        <div class="fallback">
-          <h1>Your report link may have expired.</h1>
-          <p>This page is personalised for each practice. If you received an email from Jessica at AIVI Labs, use the link in that email to view your score.</p>
-          <a href="https://aivilabs.io" class="btn-ghost">Go to aivilabs.io</a>
-        </div>
-      `;
-      page.innerHTML = fallbackHTML;
-      pageMobile.innerHTML = fallbackHTML;
-      return;
-    }
-
-    // Build all entries, sort by score descending, then render
-    const cityName = esc(p.city.split(',')[0]);
-    const entries = [];
-
-    if (p.c1 && p.c1score !== null) {
-      entries.push({ score: p.c1score, html: `
-        <div class="comp-row">
-          <div class="comp-name">${esc(p.c1)}</div>
-          <div class="bar-wrap"><div class="bar" style="width:${p.c1score}%; background:${scoreColor(p.c1score)};"></div></div>
-          <div class="comp-score" style="color:${scoreColor(p.c1score)};">${p.c1score}</div>
-        </div>
-      `});
-    }
-
-    if (p.c2 && p.c2score !== null) {
-      entries.push({ score: p.c2score, html: `
-        <div class="comp-row">
-          <div class="comp-name">${esc(p.c2)}</div>
-          <div class="bar-wrap"><div class="bar" style="width:${p.c2score}%; background:${scoreColor(p.c2score)};"></div></div>
-          <div class="comp-score" style="color:${scoreColor(p.c2score)};">${p.c2score}</div>
-        </div>
-      `});
-    }
-
-    entries.push({ score: p.cityAvg, html: `
-      <div class="comp-row avg">
-        <div class="comp-name">${cityName} Average</div>
-        <div class="bar-wrap"><div class="bar dashed" style="width:${p.cityAvg}%;"></div></div>
-        <div class="comp-score" style="color:#8a9bb8;">${p.cityAvg}</div>
-      </div>
-    `});
-
-    entries.push({ score: p.score, html: `
-      <div class="comp-row you">
-        <div class="comp-name you-label">${esc(p.practice)} ← you</div>
-        <div class="bar-wrap"><div class="bar" style="width:${p.score}%; background:${style.color};"></div></div>
-        <div class="comp-score" style="color:${style.color};">${p.score}</div>
-      </div>
-    `});
-
-    entries.sort((a, b) => b.score - a.score);
-    const compRows = entries.map(e => e.html);
-
-    page.innerHTML = `
-      <!-- SCORE HERO -->
-      <div class="score-hero">
-        <div class="score-top">
-          <div class="score-circle" style="border-color:${style.color};">
-            <div class="score-circle-num" style="color:${style.color};">${p.score}</div>
-            <div class="score-circle-denom">out of 100</div>
-          </div>
-          <div class="score-right">
-            <div class="practice-name">${esc(p.practice)}</div>
-            <div class="label-badge" style="color:${style.color}; background:${style.bg};">${p.label}</div>
-            <div class="score-message" style="color:var(--text-muted);">${esc(p.city)}</div>
-          </div>
-        </div>
-        <div class="city-bar">
-          <div class="city-stat">
-            <span class="city-stat-num" style="color:var(--amber);">${p.cityAvg}</span>
-            <span class="city-stat-label">City avg. score</span>
-          </div>
-          <div class="city-stat">
-            <span class="city-stat-num" style="color:var(--white);">23</span>
-            <span class="city-stat-label">Practices scanned</span>
-          </div>
-          <div class="city-stat">
-            <span class="city-stat-num" style="color:var(--text-muted); font-size:18px;">${esc(p.city.split(',')[0])}</span>
-            <span class="city-stat-label">Ontario, Canada</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- COMPETITORS -->
-      ${compRows.length > 0 ? `
-      <div class="competitors">
-        <div class="comp-head">Nearby competitors · ${esc(p.city)}</div>
-        ${compRows.join('')}
-      </div>
-      ` : ''}
-
-      <!-- COPY -->
-      <div class="copy-block">
-        <h2>${copy.headline}</h2>
-        ${copy.body}
-      </div>
-
-      <!-- CTA -->
-      <div class="cta-block">
-        <button class="btn-primary" data-fsc-action="Add,Checkout" data-fsc-item-path-value="ai-visibility-quickscan">Get your full report — $149</button>
-        <div class="what-you-get">
-          <div class="get-item">
-            <div class="get-dot"></div>
-            <div class="get-text"><strong>Full 12-point AI audit</strong> — every signal scored with pass, partial, or fail</div>
-          </div>
-          <div class="get-item">
-            <div class="get-dot"></div>
-            <div class="get-text"><strong>PDF scorecard</strong> — your score, your ranking, your city context</div>
-          </div>
-          <div class="get-item">
-            <div class="get-dot"></div>
-            <div class="get-text"><strong>Ready-to-use fix packs</strong> — FAQ content, provider bio templates, review request scripts</div>
-          </div>
-          <div class="get-item">
-            <div class="get-dot"></div>
-            <div class="get-text"><strong>Delivered within 24 hours</strong> — no subscription, no agency required</div>
-          </div>
-        </div>
-        <div class="reassurance">PDF report · One-time payment · Secure checkout via FastSpring</div>
-      </div>
-    `;
-
-    // Mirror same content to mobile container
-    pageMobile.innerHTML = page.innerHTML;
-
-    // Show sticky sidebar and mobile bar
-    document.getElementById('sticky-cta').style.display = 'block';
-    document.getElementById('mobile-cta').style.display = 'flex';
-  }
-
-  // Simple HTML escape
-  function esc(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // ============================================================
-  // TIER SELECTION
-  // ============================================================
-  const TIERS = {
-    score: {
-      price: '$149',
-      btnText: 'Get your full report',
-      btnTextInline: 'Get your full report — $149',
-      product: 'ai-visibility-quickscan',
-      items: [
-        'Full 12-point AI audit',
-        'PDF scorecard + city ranking',
-        'Ready-to-use fix packs',
-        'Delivered within 24 hours',
-      ],
-      inlineItems: [
-        { bold: 'Full 12-point AI audit', rest: ' — every signal scored with pass, partial, or fail' },
-        { bold: 'PDF scorecard', rest: ' — your score, your ranking, your city context' },
-        { bold: 'Ready-to-use fix packs', rest: ' — FAQ content, provider bio templates, review request scripts' },
-        { bold: 'Delivered within 24 hours', rest: ' — no subscription, no agency required' },
-      ]
-    },
-    competitive: {
-      price: '$299',
-      btnText: 'Get your full report + competitor analysis',
-      btnTextInline: 'Get your full report + competitor analysis — $299',
-      product: 'ai-visibility-quickscan-competitive',
-      items: [
-        'Everything in Your Score',
-        'Competitive report vs. 3 competitors',
-        'Your strengths + gaps analysis',
-        'Delivered within 24 hours',
-      ],
-      inlineItems: [
-        { bold: 'Everything in Your Score', rest: ' — full 12-point audit, PDF scorecard, fix packs' },
-        { bold: 'Competitive report vs. 3 competitors', rest: ' — side-by-side signal comparison' },
-        { bold: 'Your strengths + gaps analysis', rest: ' — where you win and where to close the gap' },
-        { bold: 'Delivered within 24 hours', rest: ' — no subscription, no agency required' },
-      ]
-    }
-  };
-
-  let currentTier = 'score';
-
-  function selectTier(tier) {
-    currentTier = tier;
-    const t = TIERS[tier];
-
-    // Update all tier option buttons (sticky sidebar)
-    document.querySelectorAll('.tier-option').forEach(btn => {
-      btn.classList.toggle('selected', btn.dataset.tier === tier);
-    });
-
-    // Update sticky sidebar
-    const stickyPrice = document.getElementById('sticky-price');
-    const stickyBtn = document.getElementById('sticky-btn');
-    const stickyItems = document.getElementById('sticky-items');
-    if (stickyPrice) stickyPrice.textContent = t.price;
-    if (stickyBtn) stickyBtn.textContent = t.btnText;
-    if (stickyItems) {
-      stickyItems.innerHTML = t.items.map(item =>
-        '<div class="sticky-cta-item"><div class="sticky-cta-dot"></div>' + item + '</div>'
-      ).join('');
-    }
-
-    // Update inline CTA blocks (desktop + mobile mirror)
-    document.querySelectorAll('.cta-block .btn-primary').forEach(btn => {
-      btn.textContent = t.btnTextInline;
-      btn.setAttribute('data-fsc-item-path-value', t.product);
-    });
-    document.querySelectorAll('.cta-block .what-you-get').forEach(container => {
-      container.innerHTML = t.inlineItems.map(item =>
-        '<div class="get-item"><div class="get-dot"></div><div class="get-text"><strong>' + item.bold + '</strong>' + item.rest + '</div></div>'
-      ).join('');
-    });
-
-    // Update mobile bottom bar
-    var mobileCta = document.getElementById('mobile-cta');
-    if (mobileCta) {
-      var mobileText = mobileCta.querySelector('.mobile-cta-text strong');
-      var mobileBtn = mobileCta.querySelector('.btn-primary');
-      if (mobileText) mobileText.textContent = t.btnText;
-      if (mobileBtn) mobileBtn.textContent = t.price;
-    }
-  }
-
-  render();
+render();
 </script>
-
 </body>
 </html>
