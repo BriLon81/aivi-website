@@ -106,7 +106,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .picker-list::-webkit-scrollbar{width:6px}
 .picker-list::-webkit-scrollbar-track{background:transparent}
 .picker-list::-webkit-scrollbar-thumb{background:var(--navy-border);border-radius:3px}
-.picker-item{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:background .15s}
+.picker-item{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:background .15s}
 .picker-item:last-child{border-bottom:none}
 .picker-item:hover{background:rgba(255,255,255,0.02)}
 .picker-item.checked{background:rgba(0,201,167,0.04)}
@@ -116,6 +116,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .picker-cb-tick{opacity:0;transition:opacity .15s;color:var(--navy);font-size:12px;font-weight:700;line-height:1}
 .picker-item.checked .picker-cb-tick{opacity:1}
 .picker-item-name{font-size:13px;color:var(--text);font-weight:400;line-height:1.3}
+.picker-item-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;letter-spacing:0.03em;white-space:nowrap;margin-left:auto}
+.picker-item-tag.ahead{background:rgba(255,95,109,0.12);color:var(--coral)}
+.picker-item-tag.behind{background:rgba(0,201,167,0.10);color:var(--teal)}
 .picker-item-score{font-size:12px;font-weight:500;padding:2px 8px;border-radius:100px;white-space:nowrap}
 .picker-empty{padding:24px 14px;text-align:center;font-size:13px;color:var(--text-dim);font-weight:300}
 .cta-block{background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:20px;padding:36px 44px;opacity:0;transform:translateY(16px);animation:fadeUp .5s ease forwards .5s}
@@ -255,7 +258,9 @@ function refreshPicker(){
       const isDisabled=!isChecked&&selectedCompetitors.length>=3;
       const cls=(isChecked?' checked':'')+(isDisabled?' disabled':'');
       const escapedName=p.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      return'<div class="picker-item'+cls+'" onclick="'+(isDisabled?'':"toggleCompetitor('"+p.domain+"','"+escapedName+"',"+p.score+")")+'">'+'<div class="picker-cb"><span class="picker-cb-tick">\u2713</span></div>'+'<div class="picker-item-name">'+esc(p.name)+'</div>'+'</div>';
+      const buyerScore=getParams().score||0;
+      const tag=p.score>buyerScore?'<div class="picker-item-tag ahead">Ahead of you</div>':p.score<buyerScore?'<div class="picker-item-tag behind">Behind you</div>':'';
+      return'<div class="picker-item'+cls+'" onclick="'+(isDisabled?'':"toggleCompetitor('"+p.domain+"','"+escapedName+"',"+p.score+")")+'">'+'<div class="picker-cb"><span class="picker-cb-tick">\u2713</span></div>'+'<div class="picker-item-name">'+esc(p.name)+'</div>'+tag+'</div>';
     }).join('');
   });
 }
