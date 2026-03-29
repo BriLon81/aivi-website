@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — AIVI Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0b0f1a;
+      --surface:     #111827;
+      --border:      #1e2d45;
+      --accent:      #0ea5c9;
+      --accent-dim:  #0ea5c920;
+      --text:        #e2e8f0;
+      --text-muted:  #8898aa;
+      --text-faint:  #4a5568;
+      --heading:     #f8fafc;
+      --mono:        'DM Mono', monospace;
+      --sans:        'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--text-muted); }
+    .back-link {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* ── Layout ── */
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* ── Hero ── */
+    .doc-hero {
+      margin-bottom: 52px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent)30;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .doc-hero h1 {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 600;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .doc-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+    }
+    .doc-meta span { color: var(--text-faint); margin: 0 8px; }
+
+    /* ── Content ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+    .toc-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-family: var(--mono);
+      margin-bottom: 14px;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+    }
+    .toc ol li {
+      counter-increment: toc-counter;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 4px 0;
+    }
+    .toc ol li::before {
+      content: counter(toc-counter, decimal-leading-zero);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      min-width: 22px;
+    }
+    .toc ol li a {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .toc ol li a:hover { color: var(--accent); }
+
+    section {
+      margin-bottom: 52px;
+    }
+    section h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-faint);
+      font-weight: 400;
+    }
+    p { margin-bottom: 14px; color: var(--text); font-size: 15px; }
+    p:last-child { margin-bottom: 0; }
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    li { font-size: 15px; margin-bottom: 6px; color: var(--text); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--heading); font-weight: 500; }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .footer-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-links a.active { color: var(--accent); }
+    .footer-copy { font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="https://aivilabs.io" class="logo">AIVI<span>/</span>Labs</a>
+    <a href="https://aivilabs.io" class="back-link">← Back to site</a>
+  </div>
+</header>
+
+<main>
+  <div class="doc-hero">
+    <div class="doc-label">Legal</div>
+    <h1>Terms of Service</h1>
+    <div class="doc-meta">
+      Effective date: July 1, 2025
+      <span>|</span>
+      AIVI Labs SEZC
+      <span>|</span>
+      Cayman Islands
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#overview">Overview &amp; Acceptance</a></li>
+      <li><a href="#services">Our Services</a></li>
+      <li><a href="#payment">Payment &amp; Billing</a></li>
+      <li><a href="#delivery">Delivery of Digital Products</a></li>
+      <li><a href="#use">Acceptable Use</a></li>
+      <li><a href="#ip">Intellectual Property</a></li>
+      <li><a href="#disclaimer">Disclaimers</a></li>
+      <li><a href="#liability">Limitation of Liability</a></li>
+      <li><a href="#termination">Termination</a></li>
+      <li><a href="#governing">Governing Law</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <section id="overview">
+    <h2><span class="section-num">01</span> Overview &amp; Acceptance</h2>
+    <p>These Terms of Service ("Terms") govern your access to and use of the products and services offered by <strong>AIVI Labs SEZC</strong> ("AIVI Labs," "we," "us," or "our"), a Special Economic Zone company incorporated in the Cayman Islands under the Special Economic Zones Law.</p>
+    <p>By placing an order, accessing your report, or otherwise using our services, you agree to be bound by these Terms. If you do not agree, do not use our services.</p>
+    <p>We may update these Terms from time to time. The most current version will always be posted at <a href="https://aivilabs.io/terms">aivilabs.io/terms</a>. Continued use of our services after changes are posted constitutes acceptance of the revised Terms.</p>
+  </section>
+
+  <section id="services">
+    <h2><span class="section-num">02</span> Our Services</h2>
+    <p>AIVI Labs provides AI visibility audit products for dental and healthcare practices. Our current offerings include:</p>
+    <ul>
+      <li><strong>AIVI QuickScan</strong> — A one-time AI visibility audit that scores your practice website 0–100 on AI findability, delivers a scored report, and up to three actionable fix packs (FAQ, Reviews, Provider Bios).</li>
+      <li><strong>AIVI Competitive Bundle</strong> — The QuickScan audit plus a scored comparison report against up to three competitor practices you specify.</li>
+    </ul>
+    <p>All products are <strong>digital deliverables</strong> provided as PDF documents. No physical goods are shipped.</p>
+    <div class="callout">
+      Our audit products analyze publicly available information about your practice website. Scores reflect our proprietary methodology and are intended as directional guidance, not guarantees of search engine or AI platform performance.
+    </div>
+  </section>
+
+  <section id="payment">
+    <h2><span class="section-num">03</span> Payment &amp; Billing</h2>
+    <p>All purchases are processed by <strong>Paddle.com Market Limited</strong> ("Paddle"), which acts as the Merchant of Record for all transactions. When you purchase from AIVI Labs, you are transacting with Paddle, and Paddle's own <a href="https://www.paddle.com/legal/terms" target="_blank">Terms of Use</a> apply to the payment transaction.</p>
+    <p>Prices are listed in US dollars (USD). Paddle is responsible for collecting and remitting applicable taxes. All sales are final unless otherwise stated in our <a href="/refund">Refund Policy</a>.</p>
+    <p>We do not store your credit card or payment details. All payment data is handled exclusively by Paddle.</p>
+  </section>
+
+  <section id="delivery">
+    <h2><span class="section-num">04</span> Delivery of Digital Products</h2>
+    <p>Upon successful payment confirmation, your audit report(s) will be delivered by email, typically within <strong>24 hours</strong> of your order. Delivery times may vary depending on site crawl complexity or queue volume.</p>
+    <p>You are responsible for providing an accurate email address at checkout. AIVI Labs is not responsible for non-delivery caused by incorrect email addresses, spam filters, or inbox configuration.</p>
+    <p>If you have not received your report within 48 hours of purchase, please contact us at <a href="mailto:support@aivilabs.io">support@aivilabs.io</a>.</p>
+  </section>
+
+  <section id="use">
+    <h2><span class="section-num">05</span> Acceptable Use</h2>
+    <p>You agree to use our products and services only for lawful purposes and in accordance with these Terms. You agree not to:</p>
+    <ul>
+      <li>Resell, redistribute, or sublicense any audit report or deliverable without our written consent</li>
+      <li>Use our services to audit websites you do not own or have authority to analyze, for competitive intelligence purposes outside of the permitted Competitive Bundle use case</li>
+      <li>Attempt to reverse-engineer, scrape, or automate access to our platform</li>
+      <li>Misrepresent your affiliation with a dental practice for the purpose of obtaining a report</li>
+    </ul>
+    <p>Reports are licensed for internal use by the purchasing practice or their authorized marketing representatives.</p>
+  </section>
+
+  <section id="ip">
+    <h2><span class="section-num">06</span> Intellectual Property</h2>
+    <p>All scoring methodology, report templates, fix pack content, and underlying technology are the exclusive property of AIVI Labs SEZC. Nothing in these Terms transfers any intellectual property rights to you.</p>
+    <p>Your audit report is licensed to you (not sold) for internal business use. You may share it internally with your team or marketing agency, but not publish it publicly or use it in advertising without our consent.</p>
+    <p>You retain ownership of your website content and any information you provide to us. By submitting your website URL, you grant us a limited, non-exclusive license to crawl and analyze it for the purpose of delivering your report.</p>
+  </section>
+
+  <section id="disclaimer">
+    <h2><span class="section-num">07</span> Disclaimers</h2>
+    <p>Our services are provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+    <p>AIVI Labs does not guarantee that implementing the recommendations in your report will result in improved rankings in any search engine, AI assistant, or directory listing. AI platform behavior changes frequently and is outside our control.</p>
+    <p>We are not a legal, regulatory, or compliance advisory firm. Nothing in our reports constitutes legal or regulatory advice.</p>
+  </section>
+
+  <section id="liability">
+    <h2><span class="section-num">08</span> Limitation of Liability</h2>
+    <p>To the fullest extent permitted by applicable law, AIVI Labs SEZC and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.</p>
+    <p>Our total liability to you for any claim arising from these Terms or our services shall not exceed the amount you paid for the specific product giving rise to the claim.</p>
+  </section>
+
+  <section id="termination">
+    <h2><span class="section-num">09</span> Termination</h2>
+    <p>We reserve the right to refuse service, cancel orders, or terminate access at our discretion, including if we believe a customer is in violation of these Terms. In such cases, we will refund amounts paid for undelivered services.</p>
+    <p>As our products are one-time digital deliverables, "termination" primarily applies to situations prior to report delivery.</p>
+  </section>
+
+  <section id="governing">
+    <h2><span class="section-num">10</span> Governing Law</h2>
+    <p>These Terms are governed by and construed in accordance with the laws of the <strong>Cayman Islands</strong>. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts of the Cayman Islands.</p>
+    <p>If you are located in a jurisdiction with mandatory consumer protection laws that cannot be waived by contract, those laws may apply in addition to these Terms.</p>
+  </section>
+
+  <section id="contact">
+    <h2><span class="section-num">11</span> Contact</h2>
+    <p>For questions about these Terms, please contact:</p>
+    <p>
+      <strong>AIVI Labs SEZC</strong><br>
+      Cayman Enterprise City, Grand Cayman, Cayman Islands<br>
+      Email: <a href="mailto:legal@aivilabs.io">legal@aivilabs.io</a><br>
+      Website: <a href="https://aivilabs.io">aivilabs.io</a>
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="/terms" class="active">Terms of Service</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/refund">Refund Policy</a>
+      <a href="https://aivilabs.io">Home</a>
+    </div>
+    <div class="footer-copy">© 2025 AIVI Labs SEZC — Cayman Islands</div>
+  </div>
+</footer>
+
+</body>
+</html>
