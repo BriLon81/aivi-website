@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Refund Policy — AIVI Labs</title>
+  <title>Refund Policy &#8212; AIVI Labs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:          #0b0f1a;
       --surface:     #111827;
@@ -29,9 +28,7 @@
       --mono:        'DM Mono', monospace;
       --sans:        'DM Sans', sans-serif;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--sans);
       background: var(--bg);
@@ -40,7 +37,6 @@
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
-
     header {
       border-bottom: 1px solid var(--border);
       padding: 20px 0;
@@ -73,13 +69,11 @@
       transition: color 0.2s;
     }
     .back-link:hover { color: var(--accent); }
-
     main {
       max-width: 780px;
       margin: 0 auto;
       padding: 60px 24px 100px;
     }
-
     .doc-hero {
       margin-bottom: 52px;
       padding-bottom: 40px;
@@ -113,7 +107,6 @@
       font-family: var(--mono);
     }
     .doc-meta span { color: var(--text-faint); margin: 0 8px; }
-
     .toc {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -152,7 +145,6 @@
       transition: color 0.2s;
     }
     .toc ol li a:hover { color: var(--accent); }
-
     section { margin-bottom: 52px; }
     section h2 {
       font-size: 18px;
@@ -178,241 +170,117 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     strong { color: var(--heading); font-weight: 500; }
-
-    /* Scenario cards */
-    .scenario-grid {
-      display: grid;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .scenario-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 18px 20px;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: start;
-      gap: 14px;
-    }
-    .scenario-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .icon-yes  { background: var(--green-dim);  color: var(--green); }
-    .icon-no   { background: var(--red-dim);    color: var(--red); }
-    .icon-case { background: var(--amber-dim);  color: var(--amber); }
-    .scenario-body {}
-    .scenario-title {
-      font-weight: 500;
-      color: var(--heading);
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-    .scenario-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-    .scenario-badge {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 4px;
-      white-space: nowrap;
-      align-self: start;
-      margin-top: 4px;
-    }
-    .badge-yes   { background: var(--green-dim);  color: var(--green); }
-    .badge-no    { background: var(--red-dim);    color: var(--red); }
-    .badge-case  { background: var(--amber-dim);  color: var(--amber); }
-
     .callout {
       background: var(--surface);
-      border: 1px solid var(--border);
       border-left: 3px solid var(--accent);
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 8px 8px 0;
       padding: 16px 20px;
-      margin: 20px 0;
       font-size: 14px;
       color: var(--text-muted);
+      margin: 20px 0;
+      line-height: 1.7;
     }
-
     footer {
       border-top: 1px solid var(--border);
-      padding: 32px 24px;
-      text-align: center;
+      padding: 32px 0;
     }
-    .footer-inner { max-width: 780px; margin: 0 auto; }
+    .footer-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
     .footer-links {
       display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 16px;
+      gap: 20px;
       flex-wrap: wrap;
     }
-    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; }
-    .footer-links a:hover { color: var(--accent); }
-    .footer-links a.active { color: var(--accent); }
-    .footer-copy { font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover, .footer-links a.active { color: var(--accent); }
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-faint);
+      font-family: var(--mono);
+    }
+    @media (max-width: 600px) {
+      main { padding: 40px 18px 80px; }
+      .toc { padding: 18px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner">
-    <a href="https://aivilabs.io" class="logo">AIVI<span>/</span>Labs</a>
-    <a href="https://aivilabs.io" class="back-link">← Back to site</a>
+    <a href="https://aivilabs.io" class="logo">AIVI<span>/Labs</span></a>
+    <a href="https://aivilabs.io" class="back-link">&#8592; Back to site</a>
   </div>
 </header>
-
 <main>
   <div class="doc-hero">
     <div class="doc-label">Legal</div>
     <h1>Refund Policy</h1>
-    <div class="doc-meta">
-      Effective date: July 1, 2025
-      <span>|</span>
-      AIVI Labs SEZC
-      <span>|</span>
-      Cayman Islands
-    </div>
+    <div class="doc-meta">Effective date: May 11, 2026 <span>|</span> AIVI Labs SEZC <span>|</span> Cayman Islands</div>
   </div>
 
-  <div class="toc">
+  <nav class="toc">
     <div class="toc-title">Contents</div>
     <ol>
       <li><a href="#overview">Overview</a></li>
-      <li><a href="#digital-goods">Digital Goods Policy</a></li>
-      <li><a href="#scenarios">Refund Scenarios</a></li>
+      <li><a href="#refund-window">Refund Window</a></li>
       <li><a href="#process">How to Request a Refund</a></li>
       <li><a href="#eu-rights">EU &amp; UK Consumer Rights</a></li>
       <li><a href="#paddle">Paddle as Merchant of Record</a></li>
       <li><a href="#contact">Contact</a></li>
     </ol>
-  </div>
+  </nav>
 
   <section id="overview">
     <h2><span class="section-num">01</span> Overview</h2>
-    <p>AIVI Labs offers AI visibility audit products as <strong>one-time digital purchases</strong>. Because our products involve computational work (crawling and scoring your website) and the delivery of custom PDF documents, our refund policy reflects the digital and bespoke nature of what we provide.</p>
-    <p>We are committed to delivering real value. If something goes wrong on our end, we will make it right.</p>
+    <p>AIVI Labs offers AI visibility audit products as <strong>one-time digital purchases</strong>. All purchases are processed by <strong>Paddle.com Market Limited</strong>, which acts as the Merchant of Record for all transactions.</p>
+    <p>We want every customer to be satisfied with their purchase. If you are not happy for any reason, you may request a refund in accordance with this policy.</p>
   </section>
 
-  <section id="digital-goods">
-    <h2><span class="section-num">02</span> Digital Goods Policy</h2>
-    <p>All AIVI Labs products are <strong>digital deliverables</strong> — custom PDF audit reports generated specifically for the website URL you submit. Once your report has been delivered, the service has been rendered in full.</p>
-    <p>As such, <strong>we do not offer refunds after a report has been successfully delivered</strong>, except in the specific circumstances outlined below.</p>
-    <p>This policy is consistent with standard practices for bespoke digital services.</p>
-  </section>
-
-  <section id="scenarios">
-    <h2><span class="section-num">03</span> Refund Scenarios</h2>
-    <p>Here's a clear breakdown of when refunds are and are not available:</p>
-
-    <div class="scenario-grid">
-      <div class="scenario-card">
-        <div class="scenario-icon icon-yes">✓</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Report not delivered within 48 hours</div>
-          <div class="scenario-desc">If you paid and did not receive your report within 48 hours, contact us first. If we cannot deliver, you are entitled to a full refund.</div>
-        </div>
-        <div class="scenario-badge badge-yes">Eligible</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-yes">✓</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Technical error on our side</div>
-          <div class="scenario-desc">If a bug or system error caused your report to be incomplete, corrupted, or for the wrong website, we will re-deliver or refund at your choice.</div>
-        </div>
-        <div class="scenario-badge badge-yes">Eligible</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-yes">✓</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Duplicate charge</div>
-          <div class="scenario-desc">If you were charged more than once for the same order, the duplicate charge will be refunded in full.</div>
-        </div>
-        <div class="scenario-badge badge-yes">Eligible</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-case">~</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Report delivered but score seems incorrect</div>
-          <div class="scenario-desc">Contact us with specifics. We will review the scan and, if we confirm a scoring error, either re-deliver an amended report or issue a partial/full refund at our discretion.</div>
-        </div>
-        <div class="scenario-badge badge-case">Case by case</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-no">✗</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Report delivered, unhappy with your score</div>
-          <div class="scenario-desc">A low score reflects the current state of your website, not an error. Scores are a diagnosis, not a guarantee. Refunds are not available based on score outcome alone.</div>
-        </div>
-        <div class="scenario-badge badge-no">Not eligible</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-no">✗</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Changed your mind after delivery</div>
-          <div class="scenario-desc">Once your custom report has been delivered, the service is complete. Change-of-mind refunds are not available for delivered digital products.</div>
-        </div>
-        <div class="scenario-badge badge-no">Not eligible</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="scenario-icon icon-no">✗</div>
-        <div class="scenario-body">
-          <div class="scenario-title">Website blocked during scan</div>
-          <div class="scenario-desc">Some websites use security tools (Cloudflare, etc.) that block automated scanners. If your site could not be scanned, we will notify you before delivery and issue a full refund — we will not deliver an empty or zero-score report.</div>
-        </div>
-        <div class="scenario-badge badge-yes">Pre-delivery refund</div>
-      </div>
-    </div>
+  <section id="refund-window">
+    <h2><span class="section-num">02</span> Refund Window</h2>
+    <p>You may request a refund within <strong>14 days</strong> of your purchase date. Refund requests made within this 14-day window will be honored and processed by Paddle.</p>
+    <p>To be eligible for a refund, simply contact us within 14 days of your purchase using the process described below.</p>
   </section>
 
   <section id="process">
-    <h2><span class="section-num">04</span> How to Request a Refund</h2>
+    <h2><span class="section-num">03</span> How to Request a Refund</h2>
     <p>To request a refund, email us at <a href="mailto:support@aivilabs.io">support@aivilabs.io</a> with:</p>
     <ul>
       <li>Your order ID (from your confirmation email)</li>
       <li>The email address used at checkout</li>
-      <li>A brief description of the issue</li>
+      <li>A brief description of the reason for your request</li>
     </ul>
-    <p>We will acknowledge your request within <strong>1 business day</strong> and aim to resolve it within <strong>5 business days</strong>. Approved refunds are processed by Paddle and typically return to your original payment method within 5–10 business days, depending on your card issuer.</p>
+    <p>We will acknowledge your request within <strong>1 business day</strong> and aim to resolve it within <strong>5 business days</strong>. Approved refunds are processed by Paddle and typically return to your original payment method within 5&#8211;10 business days, depending on your card issuer.</p>
   </section>
 
   <section id="eu-rights">
-    <h2><span class="section-num">05</span> EU &amp; UK Consumer Rights</h2>
-    <p>If you are located in the European Union or United Kingdom, you may have a statutory right to cancel a digital service contract within 14 days of purchase (the "cooling-off period") under the Consumer Rights Directive and related regulations.</p>
-    <p>However, under applicable law, this right <strong>may be waived</strong> if you explicitly consent to immediate delivery of the digital content before the cooling-off period expires and acknowledge that doing so waives your right of withdrawal. By completing your purchase and requesting immediate delivery, you provide this consent.</p>
-    <div class="callout">
-      Paddle, as the Merchant of Record, is responsible for handling refund requests that fall under EU/UK statutory consumer rights. If you are an EU or UK customer and wish to exercise your statutory rights, you may also contact Paddle directly.
-    </div>
+    <h2><span class="section-num">04</span> EU &amp; UK Consumer Rights</h2>
+    <p>If you are located in the European Union or United Kingdom, you have a statutory right to cancel a digital service contract within 14 days of purchase under the Consumer Rights Directive and related regulations.</p>
+    <p>Paddle, as the Merchant of Record, is responsible for handling refund requests that fall under EU and UK statutory consumer rights. If you are an EU or UK customer and wish to exercise your statutory rights, you may also contact Paddle directly through their <a href="https://www.paddle.com/help" target="_blank">support portal</a>.</p>
   </section>
 
   <section id="paddle">
-    <h2><span class="section-num">06</span> Paddle as Merchant of Record</h2>
+    <h2><span class="section-num">05</span> Paddle as Merchant of Record</h2>
     <p>All AIVI Labs purchases are transacted through <strong>Paddle.com Market Limited</strong>, which acts as the Merchant of Record. Paddle is responsible for payment processing, tax collection, and is the entity that appears on your bank or card statement.</p>
-    <p>For billing disputes or payment issues, you may contact Paddle directly through their <a href="https://www.paddle.com/help" target="_blank">support portal</a>. For product-related issues (report delivery, scoring, fix pack content), contact AIVI Labs directly at <a href="mailto:support@aivilabs.io">support@aivilabs.io</a>.</p>
+    <p>For billing disputes or payment issues, you may contact Paddle directly through their <a href="https://www.paddle.com/help" target="_blank">support portal</a>. For product-related issues, contact AIVI Labs directly at <a href="mailto:support@aivilabs.io">support@aivilabs.io</a>.</p>
   </section>
 
   <section id="contact">
-    <h2><span class="section-num">07</span> Contact</h2>
+    <h2><span class="section-num">06</span> Contact</h2>
     <p>For refund requests or billing questions, please contact:</p>
     <p>
       <strong>AIVI Labs SEZC</strong><br>
@@ -422,7 +290,6 @@
     </p>
   </section>
 </main>
-
 <footer>
   <div class="footer-inner">
     <div class="footer-links">
@@ -431,9 +298,8 @@
       <a href="/refund" class="active">Refund Policy</a>
       <a href="https://aivilabs.io">Home</a>
     </div>
-    <div class="footer-copy">© 2025 AIVI Labs SEZC — Cayman Islands</div>
+    <div class="footer-copy">&#169; 2026 AIVI Labs SEZC &#8212; Cayman Islands</div>
   </div>
 </footer>
-
 </body>
 </html>
