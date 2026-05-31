@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- ============================================================
+     AIVI Labs — per-practice report page (STATIC TEMPLATE)
+
+     This is a self-contained static HTML file. No React, no build step.
+     The generator script fills the {{PLACEHOLDERS}} below, one file per
+     practice, then writes each to /r/{token}.html.
+
+     ALL practice-specific data is in the <script id="aivi-data"> block
+     directly below. The generator only needs to replace that JSON — the
+     markup reads from it on load. Nothing practice-specific is hardcoded
+     anywhere else in this file.
+     ============================================================ -->
+<title>{{PRACTICE}} — AIVI Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0B1220; --surface: #101A2E; --elevated: #16213A;
+    --border: rgba(255,255,255,0.07); --border-em: rgba(255,255,255,0.16);
+    --text-1: #FFFFFF; --text-2: #E0E5F0; --text-3: #C8D0E0; --text-4: #B0B8CC; --text-5: #7B85A0;
+    --neg: #F47B7B; --pos: #7EE2BC; --pos-deep: #5DD0A8; --warn: #FFD66B;
+    --pos-tint: rgba(126,226,188,0.10); --pos-tint-strong: rgba(126,226,188,0.18);
+    --warn-tint: rgba(255,214,107,0.10); --neg-tint: rgba(244,123,123,0.10);
+    --radius: 16px; --radius-sm: 10px; --radius-pill: 999px;
+    --serif: "Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+    --sans: "IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono: "IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --accent: var(--pos); --maxw: 1180px; --pad-x: clamp(20px,5vw,64px);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text-2); }
+  body {
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 1100px 700px at 20% -10%, color-mix(in oklab, var(--pos) 6%, transparent), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 110% 30%, color-mix(in oklab, var(--pos) 3%, transparent), transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  #app { position: relative; z-index: 1; }
+
+  h1, h2, h3 { font-family: var(--serif); color: var(--text-1); margin: 0; text-wrap: pretty; }
+  h1 { font-size: clamp(32px,4vw,48px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; }
+  h2 { font-size: clamp(24px,3.2vw,30px); line-height: 1.2; letter-spacing: -0.01em; font-weight: 600; }
+  h3 { font-size: 22px; font-weight: 600; line-height: 1.25; letter-spacing: -0.005em; }
+  p  { margin: 0; }
+
+  .eyebrow { font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.13em; font-size: 12px; color: var(--text-3); font-weight: 600; }
+  .meta-label { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.10em; font-size: 11px; color: var(--text-5); font-weight: 400; }
+  .meta-value { font-family: var(--mono); font-size: 14px; color: var(--text-2); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.10em; padding: 4px 10px; border: 1px solid; border-radius: var(--radius-pill); font-weight: 700; white-space: nowrap; }
+  .pill.lg { font-size: 12px; padding: 6px 14px; gap: 8px; }
+  .pill .dot { width: 5px; height: 5px; border-radius: 50%; }
+  .pill.lg .dot { width: 6px; height: 6px; }
+  .pill.invisible  { color: var(--neg);  border-color: var(--neg);  background: var(--neg-tint); }
+  .pill.invisible  .dot { background: var(--neg); }
+  .pill.overlooked { color: var(--warn); border-color: var(--warn); background: var(--warn-tint); }
+  .pill.overlooked .dot { background: var(--warn); }
+  .pill.recognized { color: var(--warn); border-color: var(--warn); background: var(--warn-tint); }
+  .pill.recognized .dot { background: var(--warn); }
+  .pill.dominant   { color: var(--pos);  border-color: var(--pos);  background: var(--pos-tint); }
+  .pill.dominant   .dot { background: var(--pos); }
+
+  .masthead { display: flex; align-items: center; gap: 12px; padding-top: clamp(32px,5vw,56px); justify-content: space-between; flex-wrap: wrap; }
+  .logo-mark { background: var(--pos); color: #062418; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; font-size: 14px; letter-spacing: 0.05em; }
+  .wordmark { font-family: var(--sans); font-weight: 600; font-size: 18px; color: var(--text-1); letter-spacing: -0.005em; }
+  .wordmark-accent { color: var(--pos); font-weight: 400; }
+
+  .em-pos { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--pos); }
+  .em-neg { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--neg); }
+
+  ::selection { background: color-mix(in oklab, var(--pos) 40%, transparent); color: var(--text-1); }
+  a { color: inherit; text-decoration: none; }
+  .src-link { color: var(--text-4); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 120ms ease, color 120ms ease; }
+  .src-link:hover { color: var(--text-2); border-bottom-color: var(--text-4); }
+
+  .page-grid { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: clamp(32px,4vw,56px); align-items: start; }
+  .rail-col { position: sticky; top: 24px; align-self: start; }
+  .purchase-rail { display: block; }
+  .purchase-mobile { display: none; }
+
+  /* meta strip */
+  .meta-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 24px; padding: 24px 28px; background: var(--elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+  .meta-item { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+  /* card */
+  .card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .card-accent::before { content: ''; position: absolute; top: 0; left: 24px; width: 48px; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+  /* chart rows */
+  .chart-row { position: relative; display: grid; grid-template-columns: minmax(180px,1.1fr) minmax(0,2.2fr) auto; gap: 24px; align-items: center; padding: 20px 28px; border-top: 1px solid var(--border); }
+  .chart-row.visitor { background: var(--pos-tint); }
+  .chart-row.visitor::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--pos); box-shadow: 0 0 12px var(--pos); }
+  .chart-name { font-family: var(--sans); font-size: clamp(15px,1.2vw,17px); font-weight: 500; letter-spacing: -0.005em; line-height: 1.3; }
+  .chart-row.visitor .chart-name { font-weight: 600; }
+  .chart-you { margin-left: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--pos); letter-spacing: 0.02em; }
+  .chart-track { position: relative; height: 14px; background: rgba(255,255,255,0.04); border-radius: 999px; overflow: hidden; }
+  .chart-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; transition: width 400ms cubic-bezier(0.2,0.7,0.2,1); }
+  .chart-val { font-family: var(--serif); font-size: clamp(26px,2.8vw,36px); font-weight: 600; letter-spacing: -0.015em; line-height: 1; min-width: 72px; text-align: right; font-variant-numeric: tabular-nums; }
+  .chart-val .pct { font-family: var(--serif); font-size: 0.55em; font-weight: 500; color: var(--text-4); margin-left: 1px; }
+
+  /* platform grid */
+  .platform-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 28px; }
+  .platform-tile { display: grid; grid-template-columns: 36px 1fr; grid-template-rows: auto auto; column-gap: 14px; row-gap: 10px; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); align-content: start; }
+  .platform-mono { grid-row: 1; grid-column: 1; width: 32px; height: 32px; background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text-5); letter-spacing: 0.06em; }
+  .platform-name { font-family: var(--sans); font-size: clamp(15px,1.15vw,17px); color: var(--text-1); font-weight: 600; letter-spacing: -0.005em; line-height: 1.2; }
+  .platform-vendor { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-5); font-weight: 400; line-height: 1.4; }
+  .platform-note { grid-row: 2; grid-column: 1 / -1; font-family: var(--sans); font-size: 12.5px; color: var(--text-4); line-height: 1.4; padding-top: 4px; border-top: 1px solid var(--border); margin-top: 4px; }
+
+  /* purchase panel */
+  .tier-option { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px 16px; background: transparent; border: 1px solid var(--border-em); border-radius: var(--radius-sm); cursor: pointer; transition: background 140ms ease, border-color 140ms ease; color: var(--text-1); font: inherit; }
+  .tier-option.selected { background: var(--pos-tint); border-color: var(--pos); }
+  .radio-dot { width: 18px; height: 18px; border-radius: 999px; flex-shrink: 0; border: 1.5px solid var(--text-5); background: transparent; display: inline-flex; align-items: center; justify-content: center; transition: border-color 120ms ease; }
+  .tier-option.selected .radio-dot { border-color: var(--pos); }
+  .radio-inner { width: 9px; height: 9px; border-radius: 999px; background: var(--pos); box-shadow: 0 0 6px var(--pos); display: none; }
+  .tier-option.selected .radio-inner { display: block; }
+  .tier-name { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text-3); letter-spacing: -0.005em; }
+  .tier-option.selected .tier-name { color: var(--text-1); }
+  .tier-price { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--text-4); letter-spacing: -0.01em; }
+  .tier-option.selected .tier-price { color: var(--pos); }
+  .best-value { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 999px; background: var(--pos-tint); color: var(--pos); font-family: var(--sans); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-top: 4px; width: fit-content; }
+  .cta-btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; padding: 16px 20px; background: var(--pos); color: #062418; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 16px; font-weight: 600; text-decoration: none; transition: background 120ms ease, transform 120ms ease; box-shadow: 0 6px 22px -6px color-mix(in oklab, var(--pos) 60%, transparent); }
+  .cta-btn:hover { background: var(--pos-deep); transform: translateY(-1px); }
+  .bullets { margin: 24px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .bullet { display: grid; grid-template-columns: 14px 1fr; gap: 10px; align-items: flex-start; font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--text-2); font-weight: 400; }
+  .bullet.strong { color: var(--text-1); font-weight: 600; }
+  .bullet-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--pos); margin-top: 8px; }
+  .trust-foot { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--sans); font-size: 12px; color: var(--text-5); text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  @media (max-width: 980px) {
+    .page-grid { grid-template-columns: 1fr; }
+    .rail-col { position: static; }
+    .purchase-rail { display: none; }
+    .purchase-mobile { display: flex; align-items: center; justify-content: space-between; gap: 16px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 14px clamp(16px,4vw,24px); background: color-mix(in oklab, var(--surface) 96%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--border-em); box-shadow: 0 -8px 24px rgba(0,0,0,0.32); }
+    body { padding-bottom: 84px; }
+  }
+  @media (max-width: 600px) { .platform-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 380px) { .platform-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- ============================================================
+     PER-PRACTICE DATA — the generator replaces this JSON block.
+     Everything the page renders comes from here.
+     ============================================================ -->
+<script id="aivi-data" type="application/json">
+{
+  "practice":      "{{PRACTICE}}",
+  "city":          "{{CITY}}",
+  "region":        "{{REGION}}",
+  "country":       "{{COUNTRY}}",
+  "measuredMonth": "{{MEASURED_MONTH}}",
+  "mentionCount":  {{MENTION_COUNT}},
+  "totalRuns":     {{TOTAL_RUNS}},
+  "mentionRate":   {{MENTION_RATE}},
+  "band":          "{{BAND}}",
+  "bandClass":     "{{BAND_CLASS}}",
+  "chartRows": [
+    { "name": "{{ROW1_NAME}}", "value": {{ROW1_VALUE}}, "tone": "{{ROW1_TONE}}", "visitor": {{ROW1_VISITOR}} },
+    { "name": "{{ROW2_NAME}}", "value": {{ROW2_VALUE}}, "tone": "{{ROW2_TONE}}", "visitor": {{ROW2_VISITOR}} },
+    { "name": "{{ROW3_NAME}}", "value": {{ROW3_VALUE}}, "tone": "{{ROW3_TONE}}", "visitor": {{ROW3_VISITOR}} }
+  ],
+  "chartScaleMax": {{CHART_SCALE_MAX}},
+  "checkoutUrlStandard":    "{{CHECKOUT_URL_STANDARD}}",
+  "checkoutUrlCompetitive": "{{CHECKOUT_URL_COMPETITIVE}}"
+}
+</script>
+
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('aivi-data').textContent);
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); };
+
+  var TONE = {
+    pos:  { color: 'var(--pos)',  bar: 'var(--pos)'  },
+    warn: { color: 'var(--warn)', bar: 'var(--warn)' },
+    neg:  { color: 'var(--neg)',  bar: 'var(--neg)'  }
+  };
+
+  function chartRowHTML(r) {
+    var t = TONE[r.tone] || TONE.neg;
+    var w = Math.min(100, (r.value / D.chartScaleMax) * 100);
+    var you = r.visitor ? '<span class="chart-you">&larr; you</span>' : '';
+    var shadow = r.visitor ? 'box-shadow:0 0 12px ' + t.color + '88;' : '';
+    return '<div class="chart-row' + (r.visitor ? ' visitor' : '') + '">' +
+      '<div><span class="chart-name" style="color:' + t.color + '">' + esc(r.name) + you + '</span></div>' +
+      '<div class="chart-track"><div class="chart-fill" style="width:' + w + '%;background:' + t.bar + ';' + shadow + '"></div></div>' +
+      '<div class="chart-val" style="color:' + t.color + '">' + r.value + '<span class="pct">%</span></div>' +
+      '</div>';
+  }
+
+  var PLATFORMS = [
+    { name: 'ChatGPT', vendor: 'OpenAI', mono: 'GP', note: '' },
+    { name: 'Claude', vendor: 'Anthropic', mono: 'CL', note: '' },
+    { name: 'Gemini', vendor: 'Google', mono: 'GM', note: '' },
+    { name: 'Perplexity', vendor: 'Perplexity', mono: 'PX', note: '' },
+    { name: 'Google AI Overviews', vendor: 'Google', mono: 'AI', note: 'measured on searches where an AI Overview appeared' },
+    { name: 'Google Local Pack', vendor: 'Google', mono: 'LP', note: '' }
+  ];
+  function platformTileHTML(p) {
+    return '<div class="platform-tile">' +
+      '<div class="platform-mono">' + p.mono + '</div>' +
+      '<div style="grid-row:1;grid-column:2;display:flex;flex-direction:column;gap:2px;min-width:0">' +
+        '<span class="platform-name">' + esc(p.name) + '</span>' +
+        '<span class="platform-vendor">' + esc(p.vendor) + '</span></div>' +
+      (p.note ? '<span class="platform-note">' + esc(p.note) + '</span>' : '') +
+      '</div>';
+  }
+
+  var TIERS = {
+    standard: { name: 'Standard Report', price: 149, bestValue: false, bullets: [
+      'Your mention rate on each of the six AI platforms',
+      'Your average position and ranking when you are named',
+      'Your nearest geographic competitors',
+      '12-check website diagnostic',
+      'Four-move action plan, prioritised',
+      'Hosted at a private link, yours to keep'
+    ]},
+    competitive: { name: 'Competitive Bundle', price: 299, bestValue: true, bullets: [
+      { strong: true, text: 'Everything in the Standard Report, plus:' },
+      'Head-to-head scoreboard vs. your top three competitors',
+      'Per-platform competitive breakdown',
+      'Full city landscape',
+      'Diagnostic comparison vs. competitors',
+      'Hosted at a private link, yours to keep'
+    ]}
+  };
+
+  var state = { tier: 'standard' };
+
+  function bulletsHTML(tier) {
+    return TIERS[tier].bullets.map(function (b) {
+      var strong = (typeof b === 'object') && b.strong;
+      var text = (typeof b === 'object') ? b.text : b;
+      return '<li class="bullet' + (strong ? ' strong' : '') + '"><span class="bullet-dot"></span><span>' + esc(text) + '</span></li>';
+    }).join('');
+  }
+  function checkoutUrl(tier) {
+    return tier === 'competitive' ? D.checkoutUrlCompetitive : D.checkoutUrlStandard;
+  }
+  var arrowSvg = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 10h10M11 6l4 4-4 4" stroke="#062418" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var shieldSvg = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0"><path d="M6 1.5L2 3v2.5c0 2.5 4 5 4 5s4-2.5 4-5V3L6 1.5z" stroke="currentColor" stroke-width="1" fill="none" stroke-linejoin="round"/></svg>';
+
+  function tierOptionHTML(id) {
+    var t = TIERS[id]; var sel = state.tier === id;
+    return '<button type="button" class="tier-option' + (sel ? ' selected' : '') + '" data-tier="' + id + '">' +
+      '<span class="radio-dot"><span class="radio-inner"></span></span>' +
+      '<div style="display:flex;flex-direction:column;gap:4px;min-width:0">' +
+        '<span class="tier-name">' + t.name + '</span>' +
+        (t.bestValue ? '<span class="best-value">Best Value</span>' : '') + '</div>' +
+      '<span class="tier-price tnum">$' + t.price + '</span></button>';
+  }
+
+  function renderPanel() {
+    var t = TIERS[state.tier];
+    var rail = document.getElementById('purchase-rail');
+    rail.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:10px">' +
+        tierOptionHTML('standard') + tierOptionHTML('competitive') + '</div>' +
+      '<div style="margin-top:24px;display:flex;flex-direction:column;gap:4px">' +
+        '<span class="tnum" style="font-family:var(--serif);font-size:56px;font-weight:600;color:var(--text-1);letter-spacing:-0.025em;line-height:1">$' + t.price + '</span>' +
+        '<span style="font-family:var(--sans);font-size:13px;color:var(--text-4)">One-time payment</span></div>' +
+      '<a class="cta-btn" href="' + esc(checkoutUrl(state.tier)) + '">Get my report ' + arrowSvg + '</a>' +
+      '<ul class="bullets">' + bulletsHTML(state.tier) + '</ul>' +
+      '<div class="trust-foot">' + shieldSvg + ' Secure checkout via Dodo Payments</div>';
+
+    // mobile bar
+    var mb = document.getElementById('purchase-mobile');
+    mb.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:2px;min-width:0">' +
+        '<span class="tnum" style="font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text-1);line-height:1;letter-spacing:-0.015em">$' + t.price + '</span>' +
+        '<button type="button" id="mobile-switch" style="background:transparent;border:none;padding:0;cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:0.1em;text-align:left">' +
+          (state.tier === 'standard' ? 'Standard · tap to switch' : 'Competitive · tap to switch') + '</button></div>' +
+      '<a href="' + esc(checkoutUrl(state.tier)) + '" style="display:inline-flex;align-items:center;gap:8px;padding:14px 20px;background:var(--pos);color:#062418;border-radius:var(--radius-sm);font-family:var(--sans);font-size:15px;font-weight:600;text-decoration:none;white-space:nowrap">Get my report ' + arrowSvg + '</a>';
+
+    rail.querySelectorAll('.tier-option').forEach(function (b) {
+      b.addEventListener('click', function () { state.tier = b.getAttribute('data-tier'); renderPanel(); });
+    });
+    document.getElementById('mobile-switch').addEventListener('click', function () {
+      state.tier = state.tier === 'standard' ? 'competitive' : 'standard'; renderPanel();
+    });
+  }
+
+  document.getElementById('app').innerHTML =
+    '<main style="max-width:1280px;margin:0 auto;padding:0 var(--pad-x);padding-bottom:48px">' +
+      '<header class="masthead">' +
+        '<div style="display:flex;align-items:center;gap:12px"><div class="logo-mark">AI</div>' +
+        '<div class="wordmark">AIVI <span class="wordmark-accent">Labs</span></div></div>' +
+        '<span class="pill lg ' + esc(D.bandClass) + '"><span class="dot"></span>' + esc(D.band) + '</span>' +
+      '</header>' +
+      '<div class="page-grid"><div class="content-col" style="min-width:0">' +
+
+        // BLOCK 1
+        '<section style="padding-top:clamp(32px,6vw,64px)">' +
+          '<p style="margin:0;font-family:var(--serif);font-weight:500;color:var(--text-2);font-size:clamp(20px,2.6vw,32px);line-height:1.35;letter-spacing:-0.005em;max-width:980px">' +
+            'We asked AI for the best dentist in ' + esc(D.city) + ' &mdash; ' + D.totalRuns + ' times.</p>' +
+          '<h1 style="margin:clamp(20px,2.6vw,32px) 0 0;max-width:880px">' +
+            '<span class="tnum" style="color:var(--pos)">' + D.mentionCount + ' of ' + D.totalRuns + '</span> answers named ' + esc(D.practice) + '.</h1>' +
+          '<p style="margin-top:clamp(28px,4vw,44px);max-width:780px;font-family:var(--sans);font-size:14px;line-height:1.55;color:var(--text-4);font-weight:400">' +
+            'Measured across ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and Google Local Pack.</p>' +
+          '<div style="margin-top:clamp(40px,6vw,64px)"><div class="meta-strip">' +
+            '<div class="meta-item"><span class="meta-label">Market</span><span class="meta-value">' + esc(D.city) + ', ' + esc(D.region) + ' &middot; ' + esc(D.country) + '</span></div>' +
+            '<div class="meta-item"><span class="meta-label">Measured</span><span class="meta-value">' + esc(D.measuredMonth) + '</span></div>' +
+            '<div class="meta-item"><span class="meta-label">Runs</span><span class="meta-value">' + D.totalRuns + ' queries</span></div>' +
+            '<div class="meta-item"><span class="meta-label">Platforms</span><span class="meta-value">6 AI surfaces</span></div>' +
+          '</div></div></section>' +
+
+        '<div style="padding-top:clamp(24px,4.5vw,48px)"><div style="height:1px;background:var(--border)"></div></div>' +
+
+        // BLOCK 2
+        '<section style="padding-top:clamp(40px,5.5vw,72px)">' +
+          '<div class="eyebrow" style="margin-bottom:18px">02 &middot; Where you sit</div>' +
+          '<h2 style="max-width:980px">You are <span class="em-neg">' + esc(D.band) + '</span> in ' + esc(D.city) + '.</h2>' +
+          '<p style="margin-top:22px;max-width:820px;font-family:var(--sans);font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:var(--text-3)">' +
+            'When AI is asked for the best dentist in ' + esc(D.city) + ', the same handful of practices come back again and again. Most practices are named rarely &mdash; or never at all.</p>' +
+          '<div class="card card-accent" style="margin-top:40px;padding:24px 0 12px">' +
+            '<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;padding:0 28px 20px">' +
+              '<div class="meta-label" style="font-size:12px;letter-spacing:0.14em">Nearby competitors &middot; ' + esc(D.city) + ', ' + esc(D.region) + '</div>' +
+              '<div class="meta-label" style="font-size:11px;color:var(--text-5)">Mention rate &middot; ' + esc(D.measuredMonth) + '</div></div>' +
+            '<div>' + D.chartRows.map(chartRowHTML).join('') + '</div></div>' +
+          '<p style="margin-top:36px;max-width:820px;font-family:var(--sans);font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:var(--text-3)">' +
+            'Every practice on this chart was measured the same way, in the same week, against the same six AI platforms. This isn\'t an estimate.</p></section>' +
+
+        '<div style="padding-top:clamp(24px,4.5vw,48px)"><div style="height:1px;background:var(--border)"></div></div>' +
+
+        // BLOCK 3
+        '<section style="padding-top:clamp(40px,5.5vw,72px);max-width:920px">' +
+          '<div class="eyebrow" style="margin-bottom:18px">03 &middot; Why this matters</div>' +
+          '<h2>More patients are asking AI for recommendations every day.</h2>' +
+          '<div style="margin-top:28px;display:flex;flex-direction:column;gap:20px;font-family:var(--sans);font-size:clamp(16px,1.25vw,19px);line-height:1.65;color:var(--text-2)">' +
+            '<p><span class="tnum" style="color:var(--text-1);font-weight:600">32%</span> of consumers now turn to an AI assistant first when they need information &mdash; more than the <span class="tnum" style="color:var(--text-1);font-weight:600">28%</span> who still start with Google <span style="color:var(--text-4)">(<a href="https://clutch.co/resources/ai-adoption-and-usage-2026" target="_blank" rel="noopener noreferrer" class="src-link">Clutch, April 2026</a>)</span>.</p>' +
+            '<p>When a patient asks ChatGPT or Claude for a dentist in ' + esc(D.city) + ', four or five names typically come back. Practices in that list get the new patient. Practices outside it don\'t.</p></div></section>' +
+
+        '<div style="padding-top:clamp(24px,4.5vw,48px)"><div style="height:1px;background:var(--border)"></div></div>' +
+
+        // BLOCK 4
+        '<section style="padding-top:clamp(40px,5.5vw,72px)">' +
+          '<div class="eyebrow" style="margin-bottom:18px">04 &middot; How we measured</div>' +
+          '<h2>How we measured it.</h2>' +
+          '<p style="margin-top:24px;max-width:860px;font-family:var(--sans);font-size:clamp(16px,1.25vw,19px);line-height:1.6;color:var(--text-3)">' +
+            'We ran ' + D.totalRuns + ' measurement queries about ' + esc(D.city) + ' dentists last month, across six AI platforms and search surfaces:</p>' +
+          '<div class="platform-grid">' + PLATFORMS.map(platformTileHTML).join('') + '</div>' +
+          '<div style="margin-top:32px;display:flex;flex-direction:column;gap:18px;max-width:860px;font-family:var(--sans);font-size:clamp(15px,1.2vw,18px);line-height:1.65;color:var(--text-3)">' +
+            '<p>Each query was a variation on what a real prospective patient might ask: ' +
+              '<span style="font-style:italic;color:var(--text-1);font-family:var(--serif)">"best dentist in ' + esc(D.city) + '"</span>, ' +
+              '<span style="font-style:italic;color:var(--text-1);font-family:var(--serif)">"family dentist near me"</span>, ' +
+              '<span style="font-style:italic;color:var(--text-1);font-family:var(--serif)">"emergency dentist ' + esc(D.city) + '"</span>. We recorded every practice named in every response, then aggregated.</p>' +
+            '<p>Repeated measurements across the panel established the noise floor: <span style="color:var(--text-1);font-family:var(--mono);font-size:0.92em">&plusmn;6 percentage points</span> at the aggregate level. We report integer rates only because the data doesn\'t support more precision.</p></div>' +
+          '<div style="margin-top:36px;max-width:860px;padding:22px 26px;background:var(--elevated);border:1px solid var(--border-em);border-radius:var(--radius-sm);border-left:2px solid var(--pos)">' +
+            '<div class="eyebrow" style="margin-bottom:10px;color:var(--pos)">What AIVI Labs is</div>' +
+            '<p style="font-family:var(--sans);font-size:clamp(15px,1.2vw,18px);line-height:1.55;color:var(--text-1);font-weight:400">AIVI Labs is the measurement layer. We don\'t sell SEO services. We don\'t make recommendations to AI platforms. We measure what\'s happening and report it.</p></div></section>' +
+
+        // footer
+        '<footer style="margin-top:clamp(56px,8vw,104px);padding-top:28px;padding-bottom:48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">' +
+          '<div style="display:flex;align-items:center;gap:12px"><div class="logo-mark" style="width:30px;height:30px;font-size:12px">AI</div>' +
+          '<span class="wordmark" style="font-size:16px">AIVI <span class="wordmark-accent">Labs</span></span></div>' +
+          '<div class="meta-label">Measurement layer for AI search visibility &middot; aivilabs.io</div></footer>' +
+
+      '</div>' + // content-col
+      '<div class="rail-col"><aside class="purchase-rail" id="purchase-rail" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,0.3)"></aside></div>' +
+      '</div></main>' +
+      '<div class="purchase-mobile" id="purchase-mobile" role="region" aria-label="Purchase"></div>';
+
+  renderPanel();
+})();
+</script>
+</body>
+</html>
