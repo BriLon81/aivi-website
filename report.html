@@ -184,7 +184,7 @@
           </form>
 
           <div class="pricing">
-            We measure cities in full — every practice on the map, not a sample — so your city goes live all at once. No charge to join the list.
+            We measure cities in full, not a sample — so your city goes live all at once. No charge to join the list.
           </div>
         </div>
 
@@ -232,13 +232,22 @@
 <script>
 (function(){
   // Measured Peterborough practice NAMES (public). No tokens, ids, or links here.
+  //
   // KEEP THIS LIST ALPHABETICAL. It ships in the page body, so its ORDER is
   // public too — in rates-file order it published the city ranking (most-named
   // practice first) to anyone reading source. Appending a name out of order
   // re-leaks it; the sort at render time is a safety net, not a substitute.
+  //
+  // THIS IS 29, NOT 31 — AND THAT IS CORRECT. Peterborough has 31 measured
+  // practices, but "Anderson Kenneth R Dr" and "Dean Dental Lab" are absent on
+  // purpose: both were measured, but neither has an analyzable website, so the
+  // scanner produced no usable diagnostic scan and generate_reports.py skips
+  // them ("Skipped 2 (no usable scan)"). No report file exists for either, so
+  // this form's promise — we'll email you your report link — cannot be honoured
+  // for them. Do NOT add them back to "fix" the count; a name here without a
+  // generated report is a request that silently fails for a real practice.
   var PRACTICES = [
     "2032 Dentistry - For Life",
-    "Anderson Kenneth R Dr",
     "Brookdale Dental Clinic",
     "Bruce Cole, DDS",
     "Chemong Family Dental Peterborough",
@@ -246,7 +255,6 @@
     "Cornerstone Family Dentistry",
     "Cottage Country Smiles Dentistry",
     "DaVinci Dental Centre",
-    "Dean Dental Lab",
     "Dentistry on Sherbrooke",
     "Dr. Annabel Braganza - Peterborough Periodontist",
     "Dr. Jokay",

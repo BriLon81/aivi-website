@@ -185,22 +185,29 @@ framing. Decision 2026-07-23. -->
       <p class="lede">When a patient asks ChatGPT, Claude, or Gemini for a dentist, a handful of names come back again and again — and most practices barely appear. <b>AIVI Labs measures exactly how often each practice is named</b>, across six AI surfaces. No scores, no guesswork — measured facts.</p>
       <div class="hero__cta">
         <a class="btn btn--lg" href="report.html">Get your practice's report</a>
-        <a class="btn btn--lg btn--ghost" href="#fieldguide">Get the free field guide</a>
+        <a class="btn btn--lg btn--ghost" href="#fieldguide">Join the field guide list</a>
       </div>
       <p class="hero__note">Peterborough, Ontario is live now. Not your city? We'll measure it — ask on the report page.</p>
 
       <div class="statband">
         <div class="stat">
-          <div class="stat__num tnum">31</div>
-          <div class="stat__label">Peterborough dental practices measured — every one that appears on the map, not a sample.</div>
+          <div class="stat__num tnum"><span class="pos">1035</span></div>
+          <div class="stat__label">Measured AI answers about local dentists, aggregated into a mention rate per practice.</div>
         </div>
         <div class="stat">
           <div class="stat__num tnum">6</div>
           <div class="stat__label">AI surfaces: ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and the Google Local Pack.</div>
         </div>
+        <!-- The "8" is the count of measured practices with ZERO mentions across
+             every surface. Source of truth: 1b-analysis-<city>/<city>_final_rates.csv,
+             rows where final_deduped == 0 (equivalently final_rate_pct == 0) — 8 of
+             31 in Peterborough. Recompute it per city; do NOT carry this number over.
+             NB it is deliberately NOT the reports' §07 "not yet named by any AI"
+             figure, which counts final_rate_pct < 1 and so reads 12 — that predicate
+             also catches four practices that WERE named at least once. -->
         <div class="stat">
-          <div class="stat__num tnum"><span class="pos">1035</span></div>
-          <div class="stat__label">Measured AI answers about local dentists, aggregated into a mention rate per practice.</div>
+          <div class="stat__num tnum">8</div>
+          <div class="stat__label">Peterborough practices never named in a single AI answer.</div>
         </div>
       </div>
     </div>
@@ -277,13 +284,13 @@ framing. Decision 2026-07-23. -->
   <!-- FIELD GUIDE CAPTURE -->
   <section class="section" id="fieldguide">
     <div class="wrap">
-      <div class="eyebrow section__label">Free field guide</div>
+      <div class="eyebrow section__label">Free field guide · Coming soon</div>
       <h2>The small-business playbook for AI search.</h2>
-      <p class="intro">A plain-language guide to what AI assistants actually read when they decide which local businesses to name — and what you can do about it. Free.</p>
+      <p class="intro">A plain-language guide to what AI assistants actually read when they decide which local businesses to name — and what you can do about it. We're writing it now. It'll be free.</p>
 
       <div class="capture">
-        <h3>Get the free field guide</h3>
-        <p>The small-business playbook for AI search. One email, no spam — the guide lands in your inbox.</p>
+        <h3>The AIVI field guide to AI visibility — coming soon</h3>
+        <p>Leave your email and we'll send it the day it's out. One email, no spam.</p>
         <form id="fieldguide-form" novalidate>
           <div class="form-row">
             <div class="field">
@@ -291,11 +298,11 @@ framing. Decision 2026-07-23. -->
               <input type="email" id="fg-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
             </div>
             <div class="field" style="flex:0 0 auto;display:flex;align-items:flex-end">
-              <button type="submit" class="btn btn--lg btn--block">Send me the guide</button>
+              <button type="submit" class="btn btn--lg btn--block">Notify me when it's out</button>
             </div>
           </div>
           <div class="form-error" role="alert"></div>
-          <p class="form-fineprint">We'll email you the field guide and the occasional measurement update. Unsubscribe anytime.</p>
+          <p class="form-fineprint">We'll email you the field guide when it's published, plus the occasional measurement update. Unsubscribe anytime.</p>
         </form>
       </div>
     </div>
@@ -388,7 +395,7 @@ framing. Decision 2026-07-23. -->
       return r.json().catch(function(){ return {}; });
     }).then(function(){
       clearTimeout(timer);
-      form.innerHTML = successHTML("You're on the list", "The guide lands in your inbox soon.");
+      form.innerHTML = successHTML("You're on the list", "We'll email you the field guide the day it's published.");
     }).catch(function(err){
       clearTimeout(timer);
       if(window.console && console.error) console.error('field guide signup failed:', err);
