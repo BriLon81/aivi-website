@@ -138,6 +138,21 @@
   .bullet-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--pos); margin-top: 8px; }
   .trust-foot { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--sans); font-size: 12px; color: var(--text-5); text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
+  /* competitor picker */
+  .picker { margin-top: 18px; }
+  .picker-head { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text-2); line-height: 1.4; margin-bottom: 10px; }
+  .pick-list { height: 300px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px; display: flex; flex-direction: column; }
+  .pick-row { display: grid; grid-template-columns: 16px 1fr; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-family: var(--sans); font-size: 13.5px; color: var(--text-3); line-height: 1.3; transition: background 100ms ease; }
+  .pick-row:hover { background: rgba(255,255,255,0.04); }
+  .pick-row input { width: 16px; height: 16px; margin: 0; accent-color: var(--pos); cursor: pointer; }
+  .pick-row.disabled { color: var(--text-5); cursor: not-allowed; }
+  .pick-row.disabled input { cursor: not-allowed; }
+  .pick-count { margin-top: 10px; font-family: var(--sans); font-size: 12px; color: var(--text-4); font-weight: 500; }
+  .pick-zero { margin-top: 8px; font-family: var(--sans); font-size: 12px; line-height: 1.45; color: var(--text-5); }
+  .picker-toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; background: transparent; border: 1px solid var(--border-em); border-radius: var(--radius-sm); padding: 10px 12px; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text-2); }
+  .cta-btn.disabled { background: var(--elevated); color: var(--text-5); box-shadow: none; cursor: default; pointer-events: none; transform: none; }
+  .cta-error { margin-top: 10px; font-family: var(--sans); font-size: 12.5px; color: var(--neg); line-height: 1.45; }
+
   @media (max-width: 980px) {
     .page-grid { grid-template-columns: 1fr; }
     .rail-col { position: static; }
@@ -175,7 +190,9 @@
   ],
   "chartScaleMax": {{CHART_SCALE_MAX}},
   "checkoutUrlStandard":    "{{CHECKOUT_URL_STANDARD}}",
-  "checkoutUrlCompetitive": "{{CHECKOUT_URL_COMPETITIVE}}"
+  "checkoutUrlCompetitive": "{{CHECKOUT_URL_COMPETITIVE}}",
+  "competitivePool":        "{{COMPETITIVE_POOL}}",
+  "zeroMentionCount":       {{ZERO_MENTION_COUNT}}
 }
 </script>
 
@@ -184,6 +201,14 @@
   var D = JSON.parse(document.getElementById('aivi-data').textContent);
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
     return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); };
+
+  // Upgrade mode: reached from a Standard report's "Unlock the competitive
+  // picture" CTA (…?upgrade=1). The competitive tier becomes a $150 "Competitive
+  // Upgrade" (Standard already paid for) and checkout uses the upgrade product.
+  var upgradeMode = false;
+  try { upgradeMode = new URLSearchParams(location.search).get('upgrade') === '1'; } catch (e) { upgradeMode = false; }
+  var UPGRADE_PRODUCT_ID = 'pdt_0NjlzSvN3aKLOES2TqmyB';
+  var CHECKOUT_BASE = 'https://checkout.dodopayments.com/buy/';
 
   var TONE = {
     pos:  { color: 'var(--pos)',  bar: 'var(--pos)'  },
@@ -240,7 +265,30 @@
     ]}
   };
 
-  var state = { tier: 'standard' };
+  // In upgrade mode the competitive tier is a $150 "Competitive Upgrade" with no
+  // BEST VALUE badge; Standard is untouched and still fully selectable. This drives
+  // both the option-row price and the large price figure (both read t.price).
+  if (upgradeMode) {
+    TIERS.competitive.name = 'Competitive Upgrade';
+    TIERS.competitive.price = 150;
+    TIERS.competitive.bestValue = false;
+    // First bullet reframes from "buy Standard + more" to "add to what you own".
+    TIERS.competitive.bullets[0] = { strong: true, text: 'Adds to the report you already own:' };
+  }
+
+  // Upgrade mode opens straight into the competitive picker; otherwise Standard.
+  var state = { tier: upgradeMode ? 'competitive' : 'standard', picks: [], pickerOpen: false, building: false, buildError: '' };
+
+  // Competitive build endpoint: the server generates + publishes the report,
+  // registers the slug, and returns the Dodo checkout URL to redirect to.
+  // 90s abort is generous — generation typically takes 10-30s.
+  var BUILD_ENDPOINT = 'https://api.aivilabs.io/competitive/build';
+  var BUILD_TIMEOUT_MS = 90000;
+
+  // Competitor pool: guard for pages where it's missing/empty — the tier
+  // still renders, just with the picker hidden.
+  var HAS_POOL = Array.isArray(D.competitivePool) && D.competitivePool.length > 0;
+  function pickerActive() { return state.tier === 'competitive' && HAS_POOL; }
 
   function bulletsHTML(tier) {
     return TIERS[tier].bullets.map(function (b) {
@@ -250,6 +298,19 @@
     }).join('');
   }
   function checkoutUrl(tier) {
+    if (tier === 'competitive' && upgradeMode) {
+      // Same token, but swap in the upgrade product + metadata_tier=upgrade.
+      var src = D.checkoutUrlCompetitive || D.checkoutUrlStandard || '';
+      try {
+        var u = new URL(src);
+        u.pathname = '/buy/' + UPGRADE_PRODUCT_ID;
+        u.searchParams.set('metadata_tier', 'upgrade');
+        return u.toString();
+      } catch (e) {
+        return CHECKOUT_BASE + UPGRADE_PRODUCT_ID +
+          '?metadata_token=' + encodeURIComponent(reportToken()) + '&metadata_tier=upgrade';
+      }
+    }
     return tier === 'competitive' ? D.checkoutUrlCompetitive : D.checkoutUrlStandard;
   }
   var arrowSvg = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 10h10M11 6l4 4-4 4" stroke="#062418" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -265,33 +326,220 @@
       '<span class="tier-price tnum">$' + t.price + '</span></button>';
   }
 
+  // ---- competitor picker ------------------------------------------------
+  function pickListHTML() {
+    return D.competitivePool.map(function (p) {
+      var checked = state.picks.indexOf(p.place_id) !== -1;
+      var capped = state.picks.length >= 3 && !checked; // cap: grey out the rest
+      return '<label class="pick-row' + (capped ? ' disabled' : '') + '">' +
+        '<input type="checkbox" class="pick-cb" data-pid="' + esc(p.place_id) + '"' +
+          (checked ? ' checked' : '') + (capped ? ' disabled' : '') + '>' +
+        '<span>' + esc(p.name) + '</span></label>';
+    }).join('');
+  }
+  function countHTML() {
+    return '<div class="pick-count">' + state.picks.length + ' of 3 selected</div>';
+  }
+  function zeroHTML() {
+    if (!(D.zeroMentionCount > 0)) return ''; // omit the line entirely when 0
+    return '<div class="pick-zero">' + D.zeroMentionCount + ' more ' + esc(D.city) +
+      ' practices were never named in any AI answer &mdash; there\'s nothing to compare against.</div>';
+  }
+  function railPickerHTML() {
+    if (!pickerActive()) return '';
+    // Counter + zero-line live OUTSIDE .picker (which has overflow:hidden on the
+    // constrained rail) so they can never be clipped — they sit as pinned rail
+    // siblings, just like the price block and CTA below them.
+    return '<div class="picker">' +
+      '<div class="picker-head">Choose the 3 practices you want to be compared against</div>' +
+      '<div class="pick-list">' + pickListHTML() + '</div></div>' +
+      countHTML() + zeroHTML();
+  }
+  function mobilePickerHTML() {
+    if (!pickerActive()) return '';
+    var open = state.pickerOpen;
+    return '<div class="picker" style="margin-top:0;width:100%">' +
+      // Same reassurance as the desktop rail, surfaced inside the mobile drawer.
+      (upgradeMode ? '<div style="font-family:var(--sans);font-size:12px;line-height:1.5;color:var(--text-4);margin-bottom:14px">You own the Standard Report &mdash; this unlocks sections 05&ndash;08 in your existing report at your same private link.</div>' : '') +
+      '<button type="button" id="mobile-picker-toggle" class="picker-toggle">' +
+        '<span>Choose your 3 competitors</span>' +
+        '<span style="display:flex;align-items:center;gap:8px"><span class="pick-count" style="margin:0">' +
+          state.picks.length + ' of 3</span><span>' + (open ? '&#9662;' : '&rarr;') + '</span></span>' +
+      '</button>' +
+      (open
+        ? '<div class="picker-head" style="margin-top:12px">Choose the 3 practices you want to be compared against</div>' +
+          '<div class="pick-list" style="max-height:40vh">' + pickListHTML() + '</div>'
+        : '') +
+      '</div>' +
+      // Counter + zero-line as siblings after .picker, mirroring the rail.
+      (open ? countHTML() + zeroHTML() : '');
+  }
+
+  // ---- competitive picks + button state ---------------------------------
+  // The data island has no explicit token field; the practice token rides in
+  // the Dodo checkout URLs as the metadata_token query param. Pull it from there.
+  function reportToken() {
+    var url = D.checkoutUrlCompetitive || D.checkoutUrlStandard || '';
+    try {
+      return new URL(url).searchParams.get('metadata_token') || '';
+    } catch (e) {
+      var m = /[?&]metadata_token=([^&]+)/.exec(url);
+      return m ? decodeURIComponent(m[1]) : '';
+    }
+  }
+  // Selected picks in pool order (list order), not click order.
+  function orderedPicks() {
+    return D.competitivePool.filter(function (p) {
+      return state.picks.indexOf(p.place_id) !== -1;
+    });
+  }
+  function ctaState() {
+    if (pickerActive()) {
+      if (state.building) {
+        return { enabled: false, action: null, label: 'Building your comparison…', href: '#' };
+      }
+      var ok = state.picks.length === 3;
+      return { enabled: ok, action: ok ? 'build' : null, label: 'Build my comparison', href: '#' };
+    }
+    return { enabled: true, action: 'checkout', label: 'Get my report', href: checkoutUrl(state.tier) };
+  }
+  function ctaErrorHTML() {
+    if (!state.buildError) return '';
+    return '<div class="cta-error">' + esc(state.buildError) + '</div>';
+  }
+  function railCtaHTML() {
+    var st = ctaState();
+    return '<a class="cta-btn js-cta' + (st.enabled ? '' : ' disabled') + '" href="' + esc(st.href) + '"' +
+      ' data-action="' + (st.action || '') + '"' +
+      (st.enabled ? '' : ' aria-disabled="true" tabindex="-1"') + '>' + st.label + ' ' + arrowSvg + '</a>';
+  }
+  function mobileCtaHTML() {
+    var st = ctaState();
+    var base = 'display:inline-flex;align-items:center;gap:8px;padding:14px 20px;border-radius:var(--radius-sm);font-family:var(--sans);font-size:15px;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0;';
+    var style = st.enabled
+      ? base + 'background:var(--pos);color:#062418;'
+      : base + 'background:var(--elevated);color:var(--text-5);pointer-events:none;';
+    return '<a class="js-cta" href="' + esc(st.href) + '" style="' + style + '"' +
+      ' data-action="' + (st.action || '') + '"' +
+      (st.enabled ? '' : ' aria-disabled="true" tabindex="-1"') + '>' + st.label + ' ' + arrowSvg + '</a>';
+  }
+
+  function togglePick(pid, checked) {
+    var i = state.picks.indexOf(pid);
+    if (checked) { if (i === -1 && state.picks.length < 3) state.picks.push(pid); }
+    else if (i !== -1) { state.picks.splice(i, 1); }
+    reRenderPreserveScroll();
+  }
+  function reRenderPreserveScroll() {
+    var rl = document.querySelector('#purchase-rail .pick-list');
+    var ml = document.querySelector('#purchase-mobile .pick-list');
+    var rs = rl ? rl.scrollTop : 0, ms = ml ? ml.scrollTop : 0;
+    renderPanel();
+    rl = document.querySelector('#purchase-rail .pick-list');
+    ml = document.querySelector('#purchase-mobile .pick-list');
+    if (rl) rl.scrollTop = rs;
+    if (ml) ml.scrollTop = ms;
+  }
+
+  // POST the picks to the build endpoint; on success redirect to Dodo checkout.
+  // Every failure mode (non-200, network, CORS, 90s abort) lands in fail(), which
+  // restores the CTA and shows the inline error — the button is never left stuck.
+  function startBuild() {
+    if (state.building) return;                          // guard: ignore repeat clicks
+    if (!(pickerActive() && state.picks.length === 3)) return;
+    var picks = orderedPicks();
+    var payload = {
+      token: reportToken(),
+      tier: upgradeMode ? 'upgrade' : 'competitive',
+      p1: picks[0].place_id,
+      p2: picks[1].place_id,
+      p3: picks[2].place_id
+    };
+    state.building = true;
+    state.buildError = '';
+    reRenderPreserveScroll();                             // CTA -> "Building your comparison…", disabled
+
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, BUILD_TIMEOUT_MS);
+    function fail(err) {
+      clearTimeout(timer);
+      if (window.console && console.error) console.error('competitive build failed:', err);
+      state.building = false;
+      state.buildError = 'Something went wrong building your comparison — please try again.';
+      reRenderPreserveScroll();
+    }
+    fetch(BUILD_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    }).then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    }).then(function (data) {
+      clearTimeout(timer);
+      if (data && data.checkout_url) {
+        window.location.href = data.checkout_url;         // navigate away; leave building state as-is
+      } else {
+        fail(new Error('missing checkout_url in response'));
+      }
+    }).catch(fail);                                        // non-200 / network / CORS / abort
+  }
+
   function renderPanel() {
     var t = TIERS[state.tier];
     var rail = document.getElementById('purchase-rail');
     rail.innerHTML =
+      // Upgrade buyers already own Standard — reassure them, and never show the
+      // Standard row so they can't re-purchase it. Competitive Upgrade stands alone.
+      (upgradeMode ? '<div style="font-family:var(--sans);font-size:12px;line-height:1.5;color:var(--text-4);margin-bottom:14px">You own the Standard Report &mdash; this unlocks sections 05&ndash;08 in your existing report at your same private link.</div>' : '') +
       '<div style="display:flex;flex-direction:column;gap:10px">' +
-        tierOptionHTML('standard') + tierOptionHTML('competitive') + '</div>' +
+        (upgradeMode ? '' : tierOptionHTML('standard')) + tierOptionHTML('competitive') + '</div>' +
+      railPickerHTML() +
       '<div style="margin-top:24px;display:flex;flex-direction:column;gap:4px">' +
         '<span class="tnum" style="font-family:var(--serif);font-size:56px;font-weight:600;color:var(--text-1);letter-spacing:-0.025em;line-height:1">$' + t.price + '</span>' +
         '<span style="font-family:var(--sans);font-size:13px;color:var(--text-4)">One-time payment</span></div>' +
-      '<a class="cta-btn" href="' + esc(checkoutUrl(state.tier)) + '">Get my report ' + arrowSvg + '</a>' +
+      railCtaHTML() + ctaErrorHTML() +
       '<ul class="bullets">' + bulletsHTML(state.tier) + '</ul>' +
       '<div class="trust-foot">' + shieldSvg + ' Secure checkout via Dodo Payments</div>';
 
     // mobile bar
     var mb = document.getElementById('purchase-mobile');
-    mb.innerHTML =
+    var priceCol =
       '<div style="display:flex;flex-direction:column;gap:2px;min-width:0">' +
         '<span class="tnum" style="font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text-1);line-height:1;letter-spacing:-0.015em">$' + t.price + '</span>' +
-        '<button type="button" id="mobile-switch" style="background:transparent;border:none;padding:0;cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:0.1em;text-align:left">' +
-          (state.tier === 'standard' ? 'Standard · tap to switch' : 'Competitive · tap to switch') + '</button></div>' +
-      '<a href="' + esc(checkoutUrl(state.tier)) + '" style="display:inline-flex;align-items:center;gap:8px;padding:14px 20px;background:var(--pos);color:#062418;border-radius:var(--radius-sm);font-family:var(--sans);font-size:15px;font-weight:600;text-decoration:none;white-space:nowrap">Get my report ' + arrowSvg + '</a>';
+        // Upgrade mode: single tier, so a static label (no switch affordance).
+        (upgradeMode
+          ? '<span style="font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:0.1em">Competitive Upgrade</span>'
+          : '<button type="button" id="mobile-switch" style="background:transparent;border:none;padding:0;cursor:pointer;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:0.1em;text-align:left">' +
+              (state.tier === 'standard' ? 'Standard · tap to switch' : 'Competitive · tap to switch') + '</button>') +
+        '</div>';
+    var mobileRow =
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%">' +
+        priceCol + mobileCtaHTML() + '</div>';
+    mb.innerHTML = pickerActive()
+      ? '<div style="display:flex;flex-direction:column;gap:12px;width:100%;max-height:80vh;overflow-y:auto">' + mobilePickerHTML() + mobileRow + ctaErrorHTML() + '</div>'
+      : mobileRow;
 
     rail.querySelectorAll('.tier-option').forEach(function (b) {
       b.addEventListener('click', function () { state.tier = b.getAttribute('data-tier'); renderPanel(); });
     });
-    document.getElementById('mobile-switch').addEventListener('click', function () {
+    var mobileSwitch = document.getElementById('mobile-switch');   // absent in upgrade mode
+    if (mobileSwitch) mobileSwitch.addEventListener('click', function () {
       state.tier = state.tier === 'standard' ? 'competitive' : 'standard'; renderPanel();
+    });
+    [rail, mb].forEach(function (root) {
+      root.querySelectorAll('.pick-cb').forEach(function (cb) {
+        cb.addEventListener('change', function () { togglePick(cb.getAttribute('data-pid'), cb.checked); });
+      });
+    });
+    var mpt = document.getElementById('mobile-picker-toggle');
+    if (mpt) mpt.addEventListener('click', function () { state.pickerOpen = !state.pickerOpen; renderPanel(); });
+    // Competitive CTA with 3 picks: click builds via the endpoint (not a direct link).
+    [rail, mb].forEach(function (root) {
+      root.querySelectorAll('.js-cta[data-action="build"]').forEach(function (a) {
+        a.addEventListener('click', function (ev) { ev.preventDefault(); startBuild(); });
+      });
     });
   }
 

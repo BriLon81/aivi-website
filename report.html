@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Get your report — AIVI Labs</title>
+<meta name="description" content="Request your practice's AI mention-rate report. Peterborough, Ontario is measured now — pick your practice and we'll email your report link. Elsewhere, tell us your city and we'll measure it." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0B1220; --surface:#101A2E; --elevated:#16213A;
+    --border:rgba(255,255,255,0.07); --border-em:rgba(255,255,255,0.16);
+    --text-1:#FFFFFF; --text-2:#E0E5F0; --text-3:#C8D0E0; --text-4:#B0B8CC; --text-5:#7B85A0;
+    --neg:#F47B7B; --pos:#7EE2BC; --pos-deep:#5DD0A8; --warn:#FFD66B;
+    --pos-tint:rgba(126,226,188,0.10); --pos-tint-strong:rgba(126,226,188,0.18);
+    --warn-tint:rgba(255,214,107,0.10); --neg-tint:rgba(244,123,123,0.10);
+    --radius:16px; --radius-sm:10px; --radius-pill:999px;
+    --serif:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --maxw:1100px; --pad-x:clamp(20px,5vw,48px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text-2)}
+  body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(ellipse 1100px 700px at 18% -12%, color-mix(in oklab, var(--pos) 7%, transparent), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 112% 22%, color-mix(in oklab, var(--pos) 3%, transparent), transparent 60%);}
+  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x)}
+  h1,h2,h3{font-family:var(--serif);color:var(--text-1);margin:0;text-wrap:pretty}
+  h1{font-size:clamp(32px,4.6vw,50px);line-height:1.06;letter-spacing:-0.02em;font-weight:600}
+  h2{font-size:clamp(24px,3vw,32px);line-height:1.18;letter-spacing:-0.01em;font-weight:600}
+  h3{font-size:20px;font-weight:600;line-height:1.3}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:0.13em;font-size:12px;color:var(--text-3);font-weight:600}
+  .mono{font-family:var(--mono)}
+  .tnum{font-variant-numeric:tabular-nums}
+  .em-pos{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--pos)}
+  ::selection{background:color-mix(in oklab, var(--pos) 40%, transparent);color:var(--text-1)}
+
+  .site-header{position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg) 82%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .site-header__inner{max-width:var(--maxw);margin:0 auto;padding:13px var(--pad-x);display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .logo-mark{background:var(--pos);color:#062418;width:34px;height:34px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:0.05em}
+  .wordmark{font-family:var(--sans);font-weight:600;font-size:17px;color:var(--text-1);letter-spacing:-0.005em}
+  .wordmark span{color:var(--pos);font-weight:400}
+  .site-nav{display:flex;align-items:center;gap:24px}
+  .site-nav .nav-link{font-size:14px;color:var(--text-3);font-weight:500}
+  .site-nav .nav-link:hover{color:var(--text-1)}
+  .site-nav .nav-link.active{color:var(--text-1)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;background:var(--pos);color:#062418;border-radius:var(--radius-pill);font-family:var(--sans);font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background 120ms ease,transform 120ms ease;box-shadow:0 6px 20px -8px color-mix(in oklab, var(--pos) 60%, transparent)}
+  .btn:hover{background:var(--pos-deep);transform:translateY(-1px)}
+  .btn--lg{padding:15px 26px;font-size:15px}
+  .btn--block{width:100%}
+  .btn:disabled{opacity:0.6;cursor:default;transform:none;box-shadow:none}
+
+  .lede-head{padding:clamp(44px,7vw,80px) 0 clamp(20px,3vw,32px)}
+  .lede-head h1{max-width:18ch}
+  .lede-head p{margin-top:20px;max-width:60ch;font-size:clamp(16px,1.5vw,19px);color:var(--text-3);line-height:1.6}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-bottom:clamp(48px,7vw,88px)}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,3vw,32px);display:flex;flex-direction:column}
+  .panel--primary{border-color:color-mix(in oklab, var(--pos) 35%, var(--border))}
+  .panel__tag{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-size:11px;text-transform:uppercase;letter-spacing:0.11em;font-weight:700;padding:5px 12px;border-radius:var(--radius-pill);margin-bottom:18px}
+  .panel__tag.live{color:var(--pos);background:var(--pos-tint);border:1px solid color-mix(in oklab, var(--pos) 40%, transparent)}
+  .panel__tag.soon{color:var(--text-4);background:var(--elevated);border:1px solid var(--border-em)}
+  .panel__tag .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .panel h2{font-size:clamp(22px,2.4vw,27px)}
+  .panel__sub{margin-top:12px;color:var(--text-3);font-size:15.5px;line-height:1.55}
+
+  label.field-label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:600;margin-bottom:7px}
+  .field{margin-top:18px}
+  input[type=email],input[type=text]{width:100%;padding:13px 15px;background:var(--bg);border:1px solid var(--border-em);border-radius:var(--radius-sm);color:var(--text-1);font-family:var(--sans);font-size:15px;transition:border-color 120ms ease}
+  input[type=email]:focus,input[type=text]:focus{outline:none;border-color:var(--pos)}
+  input::placeholder{color:var(--text-5)}
+  .hint{margin-top:7px;font-size:12.5px;color:var(--text-5);line-height:1.45}
+  .submit-row{margin-top:24px}
+  .form-error{display:none;margin-top:14px;font-size:13.5px;color:var(--neg);line-height:1.45}
+  .form-success{display:flex;gap:12px;align-items:flex-start;padding:20px 22px;background:var(--pos-tint);border:1px solid color-mix(in oklab, var(--pos) 40%, transparent);border-radius:var(--radius-sm)}
+  .form-success svg{flex-shrink:0;margin-top:2px}
+  .form-success .t{font-size:16px;color:var(--text-1);font-weight:600}
+  .form-success .s{font-size:14px;color:var(--text-3);margin-top:4px}
+  .pricing{margin-top:auto;padding-top:20px;border-top:1px solid var(--border);font-size:13px;color:var(--text-4);line-height:1.5}
+  .pricing b{color:var(--text-2);font-weight:600}
+
+  .site-footer{border-top:1px solid var(--border);margin-top:clamp(24px,4vw,48px);padding:48px 0 40px}
+  .site-footer__inner{display:grid;grid-template-columns:1.3fr 2fr;gap:40px}
+  .site-footer__tag{margin-top:16px;max-width:34ch;color:var(--text-4);font-size:14px;line-height:1.55}
+  .site-footer__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .foot-h{font-size:12px;text-transform:uppercase;letter-spacing:0.11em;color:var(--text-5);font-weight:600;margin-bottom:12px}
+  .site-footer__cols a{display:block;color:var(--text-3);font-size:14px;padding:5px 0}
+  .site-footer__cols a:hover{color:var(--text-1)}
+  .site-footer__legal{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-5)}
+
+  @media (max-width:820px){
+    .cards{grid-template-columns:1fr}
+    .site-footer__inner{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){ .site-nav .nav-link{display:none} }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html" aria-label="AIVI Labs home">
+      <span class="logo-mark">AI</span>
+      <span class="wordmark">AIVI <span>Labs</span></span>
+    </a>
+    <nav class="site-nav">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="methodology.html">Methodology</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="btn" href="report.html">Get your report</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="lede-head">
+    <div class="wrap">
+      <div class="eyebrow" style="margin-bottom:14px">Get your report</div>
+      <h1>See how often AI names your practice.</h1>
+      <p>We measure how frequently each local practice is named across six AI surfaces, then hand you the measured facts — your mention rate, your nearest competitors, and what's readable about your site. Instant, automated delivery to your inbox.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cards">
+
+        <!-- SECTION A: measured city -->
+        <div class="panel panel--primary">
+          <span class="panel__tag live"><span class="dot"></span>Measured now</span>
+          <h2>Practices we've measured — Peterborough, ON</h2>
+          <p class="panel__sub">All 31 Peterborough dental practices are measured. Find yours, add your email, and we'll send your report link.</p>
+
+          <form id="report-form" novalidate>
+            <div class="field">
+              <label class="field-label" for="practice">Your practice</label>
+              <input type="text" id="practice" name="practice_name" list="practice-list" placeholder="Start typing your practice name…" autocomplete="off" required />
+              <datalist id="practice-list"></datalist>
+              <div class="hint">Choose from the 31 measured Peterborough practices.</div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="report-email">Email</label>
+              <input type="email" id="report-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
+              <div class="hint">We email your report link here — nothing else without your say-so.</div>
+            </div>
+            <div class="submit-row">
+              <button type="submit" class="btn btn--lg btn--block">Send my report link</button>
+            </div>
+            <div class="form-error" role="alert"></div>
+          </form>
+
+          <div class="pricing">
+            <b>Standard report — $149.</b> Your mention rate on each surface, nearest competitors, and a site diagnostic. <b>Competitive bundle — $299</b> adds a head-to-head scoreboard against three rivals you pick. You choose at checkout after your link arrives.
+          </div>
+        </div>
+
+        <!-- SECTION B: everywhere else -->
+        <div class="panel">
+          <span class="panel__tag soon"><span class="dot"></span>Coming to your city</span>
+          <h2>Not in Peterborough? We'll measure your city.</h2>
+          <p class="panel__sub">Tell us where you are. When we measure your city, you'll be the first to know — and the first to see where you stand.</p>
+
+          <form id="city-form" novalidate>
+            <div class="field">
+              <label class="field-label" for="city">Your city</label>
+              <input type="text" id="city" name="city" placeholder="City, Province / State" autocomplete="address-level2" required />
+            </div>
+            <div class="field">
+              <label class="field-label" for="city-email">Email</label>
+              <input type="email" id="city-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
+            </div>
+            <div class="submit-row">
+              <button type="submit" class="btn btn--lg btn--block">Notify me when it's measured</button>
+            </div>
+            <div class="form-error" role="alert"></div>
+          </form>
+
+          <div class="pricing">
+            We measure cities in full — every practice on the map, not a sample — so your city goes live all at once. No charge to join the list.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__inner">
+      <div>
+        <a class="brand" href="index.html" aria-label="AIVI Labs home">
+          <span class="logo-mark">AI</span>
+          <span class="wordmark">AIVI <span>Labs</span></span>
+        </a>
+        <p class="site-footer__tag">The measurement layer for AI search visibility. We measure how AI names local businesses — and report the facts.</p>
+      </div>
+      <div class="site-footer__cols">
+        <div>
+          <div class="foot-h">Product</div>
+          <a href="report.html">Get your report</a>
+          <a href="methodology.html">Methodology</a>
+        </div>
+        <div>
+          <div class="foot-h">Company</div>
+          <a href="about.html">About</a>
+          <a href="mailto:support@aivilabs.io">Contact</a>
+        </div>
+        <div>
+          <div class="foot-h">Legal</div>
+          <a href="privacy/">Privacy</a>
+          <a href="terms/">Terms</a>
+          <a href="refund/">Refund</a>
+        </div>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      <span>© 2026 AIVI Labs SEZC · Cayman Islands</span>
+      <span class="mono">support@aivilabs.io</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Measured Peterborough practice NAMES (public). No tokens, ids, or links here.
+  var PRACTICES = [
+    "Chemong Family Dental Peterborough",
+    "Kawartha Dental Clinic",
+    "Maple Leaf Dentistry: Dr Cam Crawford",
+    "Cornerstone Family Dentistry",
+    "Grand Village Dental",
+    "Peterborough Dental Clinic",
+    "2032 Dentistry - For Life",
+    "Christopher Moore, DDS",
+    "Louis Diamandakos, DDS",
+    "Horizon Family Dentistry Peterborough",
+    "Lily Lake Dental",
+    "Peterborough Family Dentistry",
+    "DaVinci Dental Centre",
+    "Everes Dentistry",
+    "Lotus Family Dental Peterborough",
+    "Peterborough Smiles Dental Centre",
+    "Bruce Cole, DDS",
+    "Brookdale Dental Clinic",
+    "East City Dental",
+    "Dr. Jokay",
+    "Parkhill East Dental Care",
+    "Cottage Country Smiles Dentistry",
+    "Dentistry on Sherbrooke",
+    "Anderson Kenneth R Dr",
+    "Dean Dental Lab",
+    "Dr. Annabel Braganza - Peterborough Periodontist",
+    "Hiro Urabe, DDS",
+    "Kawartha Orthodontics",
+    "Park Street Dentistry",
+    "Peterborough Periodontics",
+    "Specialty Endodontics by Dr. Rita"
+  ];
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var REPORT_ENDPOINT = 'https://api.aivilabs.io/report/request';
+  var CITY_ENDPOINT = 'https://api.aivilabs.io/city/request';
+  var TIMEOUT_MS = 15000;
+
+  // Populate the searchable datalist from the names array.
+  var dl = document.getElementById('practice-list');
+  dl.innerHTML = PRACTICES.map(function(n){
+    return '<option value="' + n.replace(/"/g,'&quot;') + '"></option>';
+  }).join('');
+
+  var okSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#7EE2BC" stroke-width="1.4"/><path d="M6 10.2l2.6 2.6L14 7.4" stroke="#7EE2BC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function successHTML(title, sub){
+    return '<div class="form-success">' + okSvg +
+      '<div><div class="t">' + title + '</div><div class="s">' + sub + '</div></div></div>';
+  }
+
+  // Shared submit wiring: validate -> POST JSON -> success replaces form / error restores button.
+  // Mirrors the report landing page: AbortController timeout, inline error, button restored on failure.
+  function wire(opts){
+    var form = document.getElementById(opts.formId);
+    var btn = form.querySelector('button[type=submit]');
+    var errEl = form.querySelector('.form-error');
+    var busy = false;
+    function showErr(msg){ errEl.textContent = msg; errEl.style.display = 'block'; }
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(busy) return;
+      errEl.style.display = 'none'; errEl.textContent = '';
+      var payload = opts.build(showErr);
+      if(!payload) return;
+
+      busy = true;
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Sending…';
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT_MS);
+      fetch(opts.endpoint, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload), signal: controller.signal
+      }).then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json().catch(function(){ return {}; });
+      }).then(function(){
+        clearTimeout(timer);
+        form.innerHTML = successHTML(opts.successTitle, opts.successSub);
+      }).catch(function(err){
+        clearTimeout(timer);
+        if(window.console && console.error) console.error(opts.formId + ' failed:', err);
+        busy = false; btn.disabled = false; btn.textContent = label;
+        showErr('Something went wrong — please try again.');
+      });
+    });
+  }
+
+  // Section A — measured city: {practice_name, email} -> /report/request
+  wire({
+    formId: 'report-form',
+    endpoint: REPORT_ENDPOINT,
+    successTitle: 'Check your inbox',
+    successSub: 'Your report link is on its way.',
+    build: function(showErr){
+      var name = (document.getElementById('practice').value || '').trim();
+      var email = (document.getElementById('report-email').value || '').trim();
+      // Must match one of the measured practices (case-insensitive), and normalize
+      // back to the canonical spelling before sending.
+      var match = null;
+      for(var i=0;i<PRACTICES.length;i++){
+        if(PRACTICES[i].toLowerCase() === name.toLowerCase()){ match = PRACTICES[i]; break; }
+      }
+      if(!match){ showErr('Please choose your practice from the list of 31 measured practices.'); return null; }
+      if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return null; }
+      return { practice_name: match, email: email };
+    }
+  });
+
+  // Section B — everywhere else: {city, email} -> /city/request
+  wire({
+    formId: 'city-form',
+    endpoint: CITY_ENDPOINT,
+    successTitle: "You're on the list",
+    successSub: "We'll email you when your city is measured.",
+    build: function(showErr){
+      var city = (document.getElementById('city').value || '').trim();
+      var email = (document.getElementById('city-email').value || '').trim();
+      if(city.length < 2){ showErr('Please enter your city.'); return null; }
+      if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return null; }
+      return { city: city, email: email };
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,2 +1,6 @@
 # Google Drive cruft — appears in every folder on this Drive-hosted repo
 desktop.ini
+# Generated per-practice report pages (build output)
+r/
+# Generated per-practice reports (build output)
+reports/

@@ -1,2455 +1,402 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIVI Labs — AI Visibility Index</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AIVI Labs — We measure how AI recommends local businesses</title>
+<meta name="description" content="AIVI Labs measures how often AI assistants name local businesses. We asked AI about dentists in Peterborough 1035 times across six AI surfaces. We don't predict the shift to AI search — we measure it." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #0d1425;
-    --navy-mid: #131d35;
-    --navy-light: #1a2640;
-    --navy-border: #1f2e4a;
-    --teal: #00c9a7;
-    --teal-dim: rgba(0,201,167,0.12);
-    --coral: #ff5f6d;
-    --amber: #ffc542;
-    --text: #e8edf7;
-    --text-muted: #7a8fab;
-    --text-dim: #4a5a74;
-    --white: #ffffff;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    background: var(--navy);
-    color: var(--text);
-    line-height: 1.6;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 48px;
-    background: rgba(13,20,37,0.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .logo {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 500; font-size: 17px;
-    letter-spacing: -0.02em; color: var(--white);
-    text-decoration: none;
-  }
-
-  .logo-mark {
-    width: 30px; height: 30px;
-    background: linear-gradient(135deg, var(--teal), #00a8d9);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 12px; color: var(--navy);
-    letter-spacing: 0;
-  }
-
-  .logo .accent { color: var(--teal); }
-
-  .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a {
-    color: var(--text-muted); text-decoration: none;
-    font-size: 14px; font-weight: 400;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-
-  .btn-nav {
-    padding: 9px 20px; border-radius: 8px;
-    font-size: 13px; font-weight: 500;
-    background: var(--teal); color: var(--navy);
-    border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-nav:hover { background: #00e0bc; }
-
-  /* HERO */
-  .hero {
-    max-width: 800px; margin: 0 auto;
-    padding: 160px 48px 80px;
-    text-align: center;
-  }
-
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 16px; border-radius: 100px;
-    border: 1px solid rgba(0,201,167,0.3);
-    background: rgba(0,201,167,0.07);
-    font-size: 11px; font-weight: 500;
-    color: var(--teal); letter-spacing: 0.06em;
-    text-transform: uppercase; margin-bottom: 36px;
-  }
-
-  .badge .dot {
-    width: 6px; height: 6px;
-    background: var(--teal); border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(36px, 5vw, 60px);
-    font-weight: 400; line-height: 1.1;
-    letter-spacing: -0.02em; color: var(--white);
-    margin-bottom: 24px;
-  }
-
-  h1 em { font-style: italic; color: var(--teal); }
-
-  .hero-sub {
-    font-size: 18px; font-weight: 300;
-    color: var(--text-muted);
-    max-width: 520px; margin: 0 auto 44px;
-    line-height: 1.75;
-  }
-
-  .hero-cta {
-    display: flex; align-items: center;
-    justify-content: center; gap: 14px; flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    padding: 14px 32px; border-radius: 10px;
-    font-size: 15px; font-weight: 500;
-    background: var(--teal); color: var(--navy);
-    border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    text-decoration: none; display: inline-block;
-  }
-  .btn-primary:hover { background: #00e0bc; transform: translateY(-1px); }
-
-  .btn-ghost {
-    padding: 14px 28px; border-radius: 10px;
-    font-size: 15px; font-weight: 400;
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--navy-border);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    text-decoration: none; display: inline-block;
-    transition: all 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--text-dim); color: var(--text); }
-
-  .hero-stats {
-    margin-top: 60px;
-    display: flex; align-items: center;
-    justify-content: center; gap: 40px; flex-wrap: wrap;
-  }
-
-  .stat .n {
-    font-family: 'DM Serif Display', serif;
-    font-size: 30px; color: var(--white);
-    display: block; line-height: 1;
-  }
-
-  .stat .l {
-    font-size: 13px; color: var(--text-muted);
-    font-weight: 300; margin-top: 4px;
-  }
-
-  .divider { width: 1px; height: 36px; background: var(--navy-border); }
-
-  /* SECTIONS */
-  .section { padding: 90px 48px; max-width: 1200px; margin: 0 auto; }
-
-  .section-label {
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--teal); margin-bottom: 14px;
-  }
-
-  h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(26px, 3.5vw, 42px);
-    font-weight: 400; line-height: 1.15;
-    letter-spacing: -0.02em; color: var(--white);
-    margin-bottom: 16px;
-  }
-
-  .section-intro {
-    font-size: 17px; color: var(--text-muted);
-    font-weight: 300; max-width: 520px;
-    line-height: 1.75; margin-bottom: 52px;
-  }
-
-  /* SHIFT CARDS */
-  .three-grid {
-    display: grid; grid-template-columns: repeat(3,1fr);
-    gap: 1px; background: var(--navy-border);
-    border-radius: 16px; overflow: hidden;
-  }
-
-  .card {
-    background: var(--navy-mid);
-    padding: 40px 36px;
-  }
-
-  .card.active { background: var(--navy-light); }
-
-  .era {
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .era.past { color: var(--text-dim); }
-  .era.now { color: var(--amber); }
-  .era.future { color: var(--coral); }
-
-  .card h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 21px; font-weight: 400;
-    color: var(--white); margin-bottom: 14px;
-    line-height: 1.25;
-  }
-
-  .card p {
-    font-size: 14px; color: var(--text-muted);
-    line-height: 1.7; font-weight: 300;
-  }
-
-  .tag {
-    display: inline-block; margin-top: 18px;
-    padding: 5px 12px; border-radius: 100px;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.03em;
-  }
-  .tag.dim { background: rgba(74,90,116,0.15); color: var(--text-dim); }
-  .tag.amber { background: rgba(255,197,66,0.1); color: var(--amber); }
-  .tag.coral { background: rgba(255,95,109,0.1); color: var(--coral); }
-
-  /* HOOK / SCORE PREVIEW */
-  .hook-box {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px; overflow: hidden;
-  }
-
-  .hook-top {
-    padding: 40px 48px;
-    border-bottom: 1px solid var(--navy-border);
-    display: grid; grid-template-columns: 1fr auto;
-    gap: 48px; align-items: center;
-  }
-
-  .score-block { display: flex; align-items: center; gap: 28px; }
-
-  .big-score {
-    font-family: 'DM Serif Display', serif;
-    font-size: 80px; line-height: 1;
-    color: var(--coral);
-  }
-
-  .score-meta h4 {
-    font-size: 18px; font-weight: 500;
-    color: var(--white); margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .rating-badge {
-    display: inline-block; padding: 4px 12px;
-    background: rgba(255,95,109,0.12);
-    color: var(--coral); border-radius: 100px;
-    font-size: 12px; font-weight: 500;
-    letter-spacing: 0.03em;
-  }
-
-  .score-meta p {
-    font-size: 13px; color: var(--text-muted);
-    margin-top: 10px; font-weight: 300; line-height: 1.5;
-  }
-
-  .city-rank { text-align: right; }
-
-  .rank-big {
-    font-family: 'DM Serif Display', serif;
-    font-size: 44px; color: var(--white); line-height: 1;
-  }
-
-  .rank-big span {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 20px; font-weight: 300;
-    color: var(--text-muted);
-  }
-
-  .rank-sub { font-size: 13px; color: var(--text-muted); margin-top: 6px; font-weight: 300; }
-  .city-name { font-size: 13px; color: var(--teal); font-weight: 500; margin-top: 2px; }
-
-  /* COMPETITOR ROWS */
-  .comp-section {
-    padding: 32px 48px;
-    border-bottom: 1px solid var(--navy-border);
-  }
-
-  .comp-header {
-    display: flex; align-items: center;
-    justify-content: space-between; margin-bottom: 20px;
-  }
-
-  .comp-header h4 { font-size: 14px; font-weight: 500; color: var(--text); }
-  .comp-header span { font-size: 12px; color: var(--text-dim); font-weight: 300; }
-
-  .comp-row {
-    display: grid;
-    grid-template-columns: 1fr 180px 48px 56px;
-    gap: 20px; align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-  .comp-row:last-child { border-bottom: none; }
-
-  .comp-name { font-size: 14px; color: var(--text); font-weight: 400; }
-  .comp-name.you { color: var(--coral); font-weight: 500; }
-  .comp-name.you::after {
-    content: ' ← you';
-    font-size: 11px; font-weight: 300; color: var(--text-dim);
-  }
-
-  .bar-wrap { height: 4px; background: var(--navy); border-radius: 2px; overflow: hidden; }
-  .bar { height: 100%; border-radius: 2px; }
-
-  .comp-score { font-size: 14px; font-weight: 500; text-align: right; }
-
-  .delta {
-    font-size: 11px; font-weight: 500;
-    padding: 3px 8px; border-radius: 100px;
-    text-align: center;
-  }
-  .delta.up { background: rgba(0,201,167,0.1); color: var(--teal); }
-  .delta.down { background: rgba(255,95,109,0.1); color: var(--coral); }
-  .delta.neutral { background: rgba(255,197,66,0.1); color: var(--amber); }
-
-  /* LOCKED */
-  .hook-locked { position: relative; padding: 32px 48px; }
-
-  .blurred { filter: blur(5px); opacity: 0.35; pointer-events: none; user-select: none; }
-
-  .lock-overlay {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 14px;
-    background: rgba(13,20,37,0.65);
-    backdrop-filter: blur(2px);
-  }
-
-  .lock-icon {
-    width: 44px; height: 44px;
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 12px;
-    display: flex; align-items: center;
-    justify-content: center; font-size: 18px;
-  }
-
-  .lock-text { text-align: center; }
-  .lock-text h4 { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 5px; }
-  .lock-text p { font-size: 13px; color: var(--text-muted); font-weight: 300; }
-
-  /* FAKE CHECK ROWS */
-  .check-preview {
-    display: flex; flex-direction: column; gap: 0;
-  }
-
-  .check-p {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 14px; align-items: center;
-    padding: 13px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .cdot.pass { background: var(--teal); }
-  .cdot.fail { background: var(--coral); }
-  .cdot.partial { background: var(--amber); }
-
-  .cname { font-size: 14px; color: var(--text); font-weight: 300; }
-
-  .cstatus { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-  .cstatus.pass { color: var(--teal); }
-  .cstatus.fail { color: var(--coral); }
-  .cstatus.partial { color: var(--amber); }
-
-  /* HOW IT WORKS */
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(3,1fr);
-    gap: 1px; background: var(--navy-border);
-    border-radius: 16px; overflow: hidden;
-  }
-
-  .step-card { background: var(--navy-mid); padding: 40px 36px; }
-
-  .step-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 44px; color: var(--teal);
-    opacity: 0.25; line-height: 1; margin-bottom: 18px;
-  }
-
-  .step-card h3 {
-    font-size: 17px; font-weight: 500;
-    color: var(--white); margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-
-  .step-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; font-weight: 300; }
-
-  /* CHECKS */
-  .checks-grid {
-    display: grid; grid-template-columns: repeat(2,1fr);
-    gap: 12px;
-  }
-
-  .check-item {
-    display: flex; gap: 14px; align-items: flex-start;
-    padding: 20px 22px;
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 12px;
-  }
-
-  .check-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px; background: var(--teal-dim);
-    display: flex; align-items: center;
-    justify-content: center; flex-shrink: 0; font-size: 15px;
-  }
-
-  .check-item h4 {
-    font-size: 14px; font-weight: 500;
-    color: var(--white); margin-bottom: 3px;
-    letter-spacing: -0.01em;
-  }
-
-  .check-item p { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.5; }
-
-  /* PRICING */
-  .pricing-grid {
-    display: grid; grid-template-columns: repeat(3,1fr);
-    gap: 18px; align-items: stretch;
-  }
-
-  .plan {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 16px; padding: 36px 30px;
-    display: flex; flex-direction: column;
-  }
-
-  .plan.featured {
-    border-color: var(--teal);
-    background: var(--navy-light);
-    position: relative;
-  }
-
-  .pop-tag {
-    position: absolute; top: -11px; left: 50%;
-    transform: translateX(-50%);
-    background: var(--teal); color: var(--navy);
-    font-size: 10px; font-weight: 600;
-    padding: 4px 12px; border-radius: 100px;
-    letter-spacing: 0.04em; text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .plan-name {
-    font-size: 12px; font-weight: 500;
-    color: var(--text-muted); letter-spacing: 0.05em;
-    text-transform: uppercase; margin-bottom: 10px;
-  }
-
-  .plan-price {
-    font-family: 'DM Serif Display', serif;
-    font-size: 44px; color: var(--white);
-    line-height: 1; margin-bottom: 4px;
-  }
-
-  .plan-price sup {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 20px; font-weight: 300;
-    vertical-align: top; margin-top: 8px;
-  }
-
-  .plan-cadence {
-    font-size: 13px; color: var(--text-muted);
-    font-weight: 300; margin-bottom: 28px;
-  }
-
-  .plan ul {
-    list-style: none; display: flex;
-    flex-direction: column; gap: 11px; margin-bottom: 28px;
-  }
-
-  .plan li {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 14px; color: var(--text-muted); font-weight: 300;
-  }
-
-  .plan li::before {
-    content: '';
-    width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
-    background: var(--teal-dim);
-    border: 1px solid rgba(0,201,167,0.25);
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1.5' stroke='%2300c9a7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: center;
-  }
-
-  .btn-plan {
-    width: 100%; padding: 13px; border-radius: 9px;
-    font-size: 14px; font-weight: 500;
-    cursor: pointer; border: none;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    margin-top: auto;
-  }
-
-  .btn-plan.primary { background: var(--teal); color: var(--navy); }
-  .btn-plan.primary:hover { background: #00e0bc; }
-  .btn-plan.ghost {
-    background: transparent; color: var(--text-muted);
-    border: 1px solid var(--navy-border);
-  }
-  .btn-plan.ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
-
-  /* WHO IT SERVES */
-  .verticals {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 12px; margin-top: 0;
-  }
-
-  .vertical {
-    padding: 24px 22px;
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 12px;
-    transition: border-color 0.2s;
-  }
-  .vertical:hover { border-color: rgba(0,201,167,0.3); }
-
-  .vertical-icon { font-size: 24px; margin-bottom: 12px; }
-
-  .vertical h4 {
-    font-size: 15px; font-weight: 500;
-    color: var(--white); margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .vertical p { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.5; }
-
-  /* MODAL */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(5,10,20,0.88);
-    backdrop-filter: blur(8px);
-    z-index: 200; align-items: center;
-    justify-content: center; padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--navy-mid);
-    border: 1px solid var(--navy-border);
-    border-radius: 20px; width: 100%;
-    max-width: 680px; max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal-head {
-    padding: 32px 40px 24px;
-    border-bottom: 1px solid var(--navy-border);
-    display: flex; justify-content: space-between;
-    align-items: flex-start; gap: 16px;
-  }
-
-  .modal-head h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 25px; font-weight: 400;
-    color: var(--white); line-height: 1.2;
-  }
-
-  .modal-head p { font-size: 14px; color: var(--text-muted); margin-top: 5px; font-weight: 300; }
-
-  .close-x {
-    width: 30px; height: 30px; border-radius: 8px;
-    background: var(--navy-light);
-    border: 1px solid var(--navy-border);
-    color: var(--text-muted); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-    transition: all 0.2s; line-height: 1;
-  }
-  .close-x:hover { color: var(--text); }
-
-  .pips {
-    padding: 18px 40px;
-    display: flex; gap: 8px;
-    border-bottom: 1px solid var(--navy-border);
-  }
-
-  .pip {
-    flex: 1; height: 3px; border-radius: 2px;
-    background: var(--navy-light); transition: background 0.3s;
-  }
-  .pip.active { background: rgba(0,201,167,0.4); }
-  .pip.done { background: var(--teal); }
-
-  .modal-body { padding: 32px 40px; }
-
-  .modal-step { display: none; }
-  .modal-step.active { display: block; }
-
-  .url-row { display: flex; gap: 12px; margin-top: 22px; }
-
-  .url-input {
-    flex: 1; background: var(--navy);
-    border: 1px solid var(--navy-border);
-    border-radius: 10px; padding: 13px 18px;
-    color: var(--text); font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300; outline: none;
-    transition: border-color 0.2s;
-  }
-  .url-input:focus { border-color: var(--teal); }
-  .url-input::placeholder { color: var(--text-dim); }
-
-  /* LOADING */
-  .loading {
-    text-align: center; padding: 48px 0; display: none;
-  }
-  .loading.visible { display: block; }
-
-  .spinner {
-    width: 36px; height: 36px;
-    border: 2px solid var(--navy-light);
-    border-top-color: var(--teal);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 18px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading p { font-size: 14px; color: var(--text-muted); font-weight: 300; }
-
-  .loading-items {
-    margin-top: 20px; display: flex;
-    flex-direction: column; gap: 10px;
-    max-width: 280px; margin-left: auto; margin-right: auto;
-  }
-
-  .li-item {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 13px; color: var(--text-dim); font-weight: 300;
-    text-align: left;
-  }
-  .li-item.done { color: var(--text-muted); }
-  .li-item::before { content: '○'; color: var(--text-dim); font-size: 12px; flex-shrink: 0; }
-  .li-item.done::before { content: '✓'; color: var(--teal); }
-
-  /* SCORE REVEAL */
-  .score-reveal { text-align: center; padding: 8px 0 24px; }
-
-  .reveal-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 96px; line-height: 1;
-    color: var(--coral); margin-bottom: 8px;
-  }
-
-  .reveal-label { font-size: 14px; color: var(--text-muted); font-weight: 300; }
-
-  .reveal-rating {
-    display: inline-block; margin-top: 10px;
-    padding: 6px 18px; border-radius: 100px;
-    font-size: 13px; font-weight: 500;
-    background: rgba(255,95,109,0.12);
-    color: var(--coral); letter-spacing: 0.03em;
-  }
-
-  .lb {
-    background: var(--navy);
-    border: 1px solid var(--navy-border);
-    border-radius: 12px; overflow: hidden; margin-top: 24px;
-  }
-
-  .lb-head {
-    padding: 14px 20px;
-    display: grid;
-    grid-template-columns: 28px 1fr 100px 52px;
-    gap: 12px; border-bottom: 1px solid var(--navy-border);
-  }
-  .lb-head span {
-    font-size: 11px; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--text-dim);
-  }
-
-  .lb-row {
-    padding: 13px 20px;
-    display: grid;
-    grid-template-columns: 28px 1fr 100px 52px;
-    gap: 12px; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-  .lb-row:last-child { border-bottom: none; }
-  .lb-row.hl {
-    background: rgba(255,95,109,0.05);
-    border-left: 2px solid var(--coral);
-    padding-left: 18px;
-  }
-
-  .lb-rank { font-size: 13px; color: var(--text-dim); text-align: center; }
-  .lb-name { font-size: 14px; color: var(--text); font-weight: 400; }
-  .lb-name.you { color: var(--coral); font-weight: 500; }
-
-  .lb-bar-w { height: 4px; background: var(--navy-light); border-radius: 2px; overflow: hidden; }
-  .lb-bar { height: 100%; border-radius: 2px; }
-
-  .lb-score { font-size: 14px; font-weight: 500; text-align: right; }
-
-  .unlock-note {
-    background: linear-gradient(135deg, rgba(0,201,167,0.07), rgba(0,168,217,0.05));
-    border: 1px solid rgba(0,201,167,0.18);
-    border-radius: 12px; padding: 18px 22px;
-    margin-top: 20px; display: flex; gap: 14px;
-  }
-
-  .unlock-note .icon { font-size: 20px; flex-shrink: 0; }
-  .unlock-note h4 { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
-  .unlock-note p { font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.6; }
-
-  /* PLAN SELECT */
-  .plan-opts { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
-
-  .plan-opt {
-    display: flex; align-items: center; gap: 16px;
-    padding: 18px 22px;
-    background: var(--navy);
-    border: 1px solid var(--navy-border);
-    border-radius: 12px; cursor: pointer;
-    transition: all 0.2s; position: relative;
-  }
-  .plan-opt:hover, .plan-opt.sel { border-color: var(--teal); background: rgba(0,201,167,0.04); }
-
-  .plan-opt.pop::before {
-    content: 'Most popular';
-    position: absolute; top: -10px; right: 18px;
-    background: var(--teal); color: var(--navy);
-    font-size: 10px; font-weight: 600;
-    padding: 3px 10px; border-radius: 100px;
-    letter-spacing: 0.04em; text-transform: uppercase;
-  }
-
-  .radio {
-    width: 18px; height: 18px;
-    border: 2px solid var(--navy-border);
-    border-radius: 50%; flex-shrink: 0;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .plan-opt.sel .radio { border-color: var(--teal); background: var(--teal); }
-  .plan-opt.sel .radio::after {
-    content: ''; width: 6px; height: 6px;
-    background: var(--navy); border-radius: 50%;
-  }
-
-  .plan-opt-info { flex: 1; }
-  .pon { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 2px; letter-spacing: -0.01em; }
-  .pod { font-size: 13px; color: var(--text-muted); font-weight: 300; }
-  .ppr { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--white); }
-  .ppr span { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 300; color: var(--text-muted); }
-
-  /* MODAL FOOTER */
-  .modal-foot {
-    padding: 22px 40px;
-    border-top: 1px solid var(--navy-border);
-    display: flex; align-items: center;
-    justify-content: space-between; gap: 16px;
-  }
-
-  .foot-note { font-size: 12px; color: var(--text-dim); font-weight: 300; }
-  .foot-actions { display: flex; gap: 10px; }
-
-  .btn-back {
-    background: transparent;
-    border: 1px solid var(--navy-border);
-    color: var(--text-muted); padding: 11px 18px;
-    border-radius: 9px; font-size: 14px;
-    cursor: pointer; font-family: 'DM Sans', sans-serif;
-    font-weight: 400; transition: all 0.2s; display: none;
-  }
-  .btn-back:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-
-  .btn-next {
-    background: var(--teal); color: var(--navy);
-    padding: 11px 24px; border-radius: 9px;
-    font-size: 14px; font-weight: 500;
-    cursor: pointer; border: none;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-next:hover:not(:disabled) { background: #00e0bc; }
-  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--navy-border);
-    padding: 44px 48px;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    max-width: 1200px; margin: 0 auto;
-    flex-wrap: wrap; gap: 20px;
-  }
-
-  footer p { font-size: 13px; color: var(--text-dim); font-weight: 300; }
-  .foot-links { display: flex; gap: 24px; }
-  .foot-links a {
-    font-size: 13px; color: var(--text-dim);
-    text-decoration: none; font-weight: 300; transition: color 0.2s;
-  }
-  .foot-links a:hover { color: var(--text-muted); }
-
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links a:not(.btn-nav-wrap) { display: none; }
-    .hero { padding: 140px 24px 60px; }
-    .section { padding: 60px 24px; }
-    .three-grid, .steps-grid, .pricing-grid { grid-template-columns: 1fr; }
-    .checks-grid { grid-template-columns: 1fr; }
-    .verticals { grid-template-columns: repeat(2,1fr); }
-    .hook-top { grid-template-columns: 1fr; gap: 20px; padding: 28px; }
-    .city-rank { text-align: left; }
-    .comp-section, .hook-locked { padding: 24px; }
-    .modal-head, .modal-body, .modal-foot, .pips { padding: 24px; }
-    .lb-head, .lb-row { grid-template-columns: 24px 1fr 80px 44px; }
-    footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+  :root{
+    --bg:#0B1220; --surface:#101A2E; --elevated:#16213A;
+    --border:rgba(255,255,255,0.07); --border-em:rgba(255,255,255,0.16);
+    --text-1:#FFFFFF; --text-2:#E0E5F0; --text-3:#C8D0E0; --text-4:#B0B8CC; --text-5:#7B85A0;
+    --neg:#F47B7B; --pos:#7EE2BC; --pos-deep:#5DD0A8; --warn:#FFD66B;
+    --pos-tint:rgba(126,226,188,0.10); --pos-tint-strong:rgba(126,226,188,0.18);
+    --warn-tint:rgba(255,214,107,0.10); --neg-tint:rgba(244,123,123,0.10);
+    --radius:16px; --radius-sm:10px; --radius-pill:999px;
+    --serif:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --maxw:1100px; --pad-x:clamp(20px,5vw,48px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text-2)}
+  body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(ellipse 1100px 700px at 18% -12%, color-mix(in oklab, var(--pos) 7%, transparent), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 112% 22%, color-mix(in oklab, var(--pos) 3%, transparent), transparent 60%);}
+  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x)}
+  h1,h2,h3{font-family:var(--serif);color:var(--text-1);margin:0;text-wrap:pretty}
+  h1{font-size:clamp(34px,5.2vw,58px);line-height:1.05;letter-spacing:-0.02em;font-weight:600}
+  h2{font-size:clamp(26px,3.4vw,38px);line-height:1.15;letter-spacing:-0.01em;font-weight:600}
+  h3{font-size:20px;font-weight:600;line-height:1.3}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:0.13em;font-size:12px;color:var(--text-3);font-weight:600}
+  .mono{font-family:var(--mono)}
+  .tnum{font-variant-numeric:tabular-nums}
+  .em-pos{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--pos)}
+  .em-neg{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--neg)}
+  ::selection{background:color-mix(in oklab, var(--pos) 40%, transparent);color:var(--text-1)}
+
+  /* header */
+  .site-header{position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg) 82%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .site-header__inner{max-width:var(--maxw);margin:0 auto;padding:13px var(--pad-x);display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .logo-mark{background:var(--pos);color:#062418;width:34px;height:34px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:0.05em}
+  .wordmark{font-family:var(--sans);font-weight:600;font-size:17px;color:var(--text-1);letter-spacing:-0.005em}
+  .wordmark span{color:var(--pos);font-weight:400}
+  .site-nav{display:flex;align-items:center;gap:24px}
+  .site-nav .nav-link{font-size:14px;color:var(--text-3);font-weight:500}
+  .site-nav .nav-link:hover{color:var(--text-1)}
+  .site-nav .nav-link.active{color:var(--text-1)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;background:var(--pos);color:#062418;border-radius:var(--radius-pill);font-family:var(--sans);font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background 120ms ease,transform 120ms ease;box-shadow:0 6px 20px -8px color-mix(in oklab, var(--pos) 60%, transparent)}
+  .btn:hover{background:var(--pos-deep);transform:translateY(-1px)}
+  .btn--lg{padding:15px 26px;font-size:15px}
+  .btn--ghost{background:transparent;color:var(--text-2);border:1px solid var(--border-em);box-shadow:none}
+  .btn--ghost:hover{background:var(--elevated);color:var(--text-1)}
+  .btn--block{width:100%}
+
+  /* hero */
+  .hero{padding:clamp(56px,9vw,104px) 0 clamp(32px,5vw,56px)}
+  .hero .kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border:1px solid var(--border-em);border-radius:var(--radius-pill);font-size:12px;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-3);font-weight:600;background:var(--surface)}
+  .hero .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos)}
+  .hero h1{margin:24px 0 0;max-width:16ch}
+  .hero .lede{margin-top:clamp(20px,3vw,30px);max-width:60ch;font-size:clamp(17px,1.6vw,20px);line-height:1.6;color:var(--text-3)}
+  .hero .lede b{color:var(--text-1);font-weight:600}
+  .hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(28px,4vw,40px)}
+  .hero__note{margin-top:16px;font-size:13px;color:var(--text-5)}
+
+  /* stat band */
+  .statband{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:clamp(40px,6vw,64px)}
+  .stat{background:var(--surface);padding:26px 28px;min-width:0}
+  .stat__num{font-family:var(--serif);font-size:clamp(34px,4.5vw,52px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--text-1)}
+  .stat__num .pos{color:var(--pos)}
+  .stat__label{margin-top:12px;font-size:13.5px;color:var(--text-3);line-height:1.45}
+
+  /* section scaffolding */
+  .section{padding:clamp(52px,8vw,96px) 0;border-top:1px solid var(--border)}
+  .section__label{margin-bottom:16px}
+  .section h2{max-width:22ch}
+  .section .intro{margin-top:18px;max-width:64ch;font-size:clamp(16px,1.4vw,18px);color:var(--text-3);line-height:1.6}
+
+  /* shift cards */
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(28px,4vw,44px)}
+  .era-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:12px}
+  .era-card.now{border-color:color-mix(in oklab, var(--pos) 45%, var(--border));background:linear-gradient(180deg, var(--pos-tint) 0%, var(--surface) 60%)}
+  .era{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-5);font-weight:500}
+  .era-card.now .era{color:var(--pos)}
+  .era-card h3{font-size:19px}
+  .era-card p{font-size:15px;color:var(--text-3);line-height:1.55}
+  .tagchip{margin-top:auto;align-self:flex-start;font-size:11px;text-transform:uppercase;letter-spacing:0.10em;font-weight:700;padding:4px 11px;border-radius:var(--radius-pill);border:1px solid var(--border-em);color:var(--text-4)}
+  .era-card.now .tagchip{color:var(--pos);border-color:color-mix(in oklab, var(--pos) 45%, transparent);background:var(--pos-tint)}
+  .shift-foot{margin-top:26px;padding:18px 22px;border:1px solid var(--border-em);border-left:2px solid var(--pos);border-radius:var(--radius-sm);background:var(--elevated);font-size:15.5px;color:var(--text-2);line-height:1.6}
+  .shift-foot b{color:var(--text-1);font-weight:600}
+
+  /* positioning box */
+  .posbox{margin-top:clamp(28px,4vw,40px);background:var(--elevated);border:1px solid var(--border-em);border-left:2px solid var(--pos);border-radius:var(--radius-sm);padding:clamp(24px,3.5vw,36px)}
+  .posbox .eyebrow{color:var(--pos);margin-bottom:14px}
+  .posbox p{font-size:clamp(16px,1.4vw,19px);color:var(--text-1);line-height:1.6;font-weight:400;max-width:70ch}
+  .posbox p + p{margin-top:16px;color:var(--text-3)}
+
+  /* surfaces */
+  .surfaces{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(24px,3.5vw,36px)}
+  .surface{display:flex;align-items:center;gap:13px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+  .surface__mono{width:36px;height:36px;flex-shrink:0;background:var(--elevated);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-4);letter-spacing:0.04em}
+  .surface__name{font-size:15px;color:var(--text-1);font-weight:600;line-height:1.2}
+  .surface__vendor{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-5);margin-top:2px}
+
+  /* capture card */
+  .capture{margin-top:clamp(28px,4vw,40px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,3.5vw,36px);max-width:640px}
+  .capture h3{font-size:22px}
+  .capture p{margin-top:10px;color:var(--text-3);font-size:15.5px;line-height:1.55}
+  .form-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .field{flex:1 1 240px;min-width:0}
+  label.field-label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:600;margin-bottom:7px}
+  input[type=email],input[type=text]{width:100%;padding:13px 15px;background:var(--bg);border:1px solid var(--border-em);border-radius:var(--radius-sm);color:var(--text-1);font-family:var(--sans);font-size:15px;transition:border-color 120ms ease}
+  input[type=email]:focus,input[type=text]:focus{outline:none;border-color:var(--pos)}
+  input::placeholder{color:var(--text-5)}
+  .form-error{display:none;margin-top:12px;font-size:13.5px;color:var(--neg);line-height:1.45}
+  .form-success{display:flex;gap:12px;align-items:flex-start;padding:18px 20px;background:var(--pos-tint);border:1px solid color-mix(in oklab, var(--pos) 40%, transparent);border-radius:var(--radius-sm)}
+  .form-success svg{flex-shrink:0;margin-top:2px}
+  .form-success .t{font-size:16px;color:var(--text-1);font-weight:600}
+  .form-success .s{font-size:14px;color:var(--text-3);margin-top:4px}
+  .form-fineprint{margin-top:12px;font-size:12px;color:var(--text-5);line-height:1.5}
+
+  /* closing cta */
+  .closer{text-align:center;padding:clamp(56px,9vw,104px) 0}
+  .closer h2{margin:0 auto;max-width:20ch}
+  .closer p{margin:18px auto 0;max-width:56ch;color:var(--text-3);font-size:clamp(16px,1.4vw,18px)}
+  .closer .hero__cta{justify-content:center}
+
+  /* footer */
+  .site-footer{border-top:1px solid var(--border);margin-top:clamp(40px,7vw,80px);padding:48px 0 40px}
+  .site-footer__inner{display:grid;grid-template-columns:1.3fr 2fr;gap:40px}
+  .site-footer__tag{margin-top:16px;max-width:34ch;color:var(--text-4);font-size:14px;line-height:1.55}
+  .site-footer__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .foot-h{font-size:12px;text-transform:uppercase;letter-spacing:0.11em;color:var(--text-5);font-weight:600;margin-bottom:12px}
+  .site-footer__cols a{display:block;color:var(--text-3);font-size:14px;padding:5px 0}
+  .site-footer__cols a:hover{color:var(--text-1)}
+  .site-footer__legal{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-5)}
+
+  @media (max-width:820px){
+    .statband{grid-template-columns:1fr}
+    .three{grid-template-columns:1fr}
+    .surfaces{grid-template-columns:1fr 1fr}
+    .site-footer__inner{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .site-nav .nav-link{display:none}
+    .surfaces{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
+<!-- COPY NOTE: Hero + stats are deliberately Peterborough-specific
+(first market). When city #2 publishes: update hero city + stat band.
+When aggregate numbers justify it: switch to generic ratings-agency
+framing. Decision 2026-07-23. -->
 
-<nav>
-  <a href="#" class="logo">
-    <div class="logo-mark">AI</div>
-    AIVI <span class="accent">Labs</span>
-  </a>
-  <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#pricing">Pricing</a>
-    <button class="btn-nav" onclick="openModal()">Get your audit — $149</button>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="index.html" aria-label="AIVI Labs home">
+      <span class="logo-mark">AI</span>
+      <span class="wordmark">AIVI <span>Labs</span></span>
+    </a>
+    <nav class="site-nav">
+      <a class="nav-link active" href="index.html">Home</a>
+      <a class="nav-link" href="methodology.html">Methodology</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="btn" href="report.html">Get your report</a>
+    </nav>
   </div>
-</nav>
+</header>
 
-<!-- HERO -->
-<div style="max-width:1200px; margin:0 auto;">
-  <div class="hero">
-    <div class="badge"><span class="dot"></span>AI search is replacing traditional local discovery</div>
-    <h1>Is your practice <em>visible</em><br>to AI search?</h1>
-    <p class="hero-sub">When patients ask ChatGPT or Google Gemini who to book with — does your practice show up? Get your AI visibility score in minutes.</p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="openModal()">Get your audit — $149</button>
-      <a href="#how" class="btn-ghost">See how it works</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><span class="n">12</span><span class="l">visibility checks</span></div>
-      <div class="divider"></div>
-      <div class="stat"><span class="n">59</span><span class="l">avg. city score</span></div>
-      <div class="divider"></div>
-      <div class="stat"><span class="n">24hr</span><span class="l">full report delivery</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- URL LOOKUP -->
-<div class="section" id="lookup" style="padding-top:0;">
-  <div class="section-label">Score lookup</div>
-  <h2>See where you rank</h2>
-  <p class="section-intro">288 practices scanned across 6 cities. Enter your website to see your score instantly.</p>
-
-  <!-- City stats -->
-  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--navy-border); border-radius:14px; overflow:hidden; margin-bottom:32px;">
-    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div id="stat-avg-score" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--amber); margin-bottom:4px;">—</div>
-      <div id="stat-avg-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Avg. AI visibility score</div>
-    </div>
-    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div id="stat-count" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--white); margin-bottom:4px;">—</div>
-      <div id="stat-count-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Practices scanned</div>
-    </div>
-    <div style="background:var(--navy-mid); padding:24px 28px; text-align:center;">
-      <div id="stat-below" style="font-family:'DM Serif Display',serif; font-size:40px; line-height:1; color:var(--coral); margin-bottom:4px;">—</div>
-      <div id="stat-below-label" style="font-size:13px; color:var(--text-muted); font-weight:300;">Score below average</div>
-    </div>
-  </div>
-
-  <!-- URL input box -->
-  <div style="background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; padding:32px 36px;">
-    <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:14px;">Enter your practice website</div>
-    <div style="display:flex; gap:12px;">
-      <input type="text" id="lookup-url" class="url-input" placeholder="https://yourpractice.com" style="flex:1;" onkeydown="if(event.key==='Enter') runLookup()">
-      <button class="btn-primary" onclick="runLookup()" style="white-space:nowrap; padding:13px 24px;">Check my score</button>
-    </div>
-    <div style="font-size:12px; color:var(--text-dim); margin-top:10px; font-weight:300;">Available in Austin, Charlotte, Kingston, Naples, Peterborough, and Scottsdale.</div>
-
-    <!-- Inline not-found message (hidden by default) -->
-    <div id="lookup-notfound" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--navy-border);">
-      <div style="font-size:13px; color:var(--text-muted); font-weight:300; margin-bottom:12px;">We don't have data for this practice yet. Enter your email to get notified when we add your city.</div>
-      <div style="display:flex; gap:12px; align-items:center;">
-        <input type="email" id="notify-email" class="url-input" placeholder="you@yourpractice.com" style="flex:1;">
-        <button class="btn-primary" onclick="submitNotify()" style="white-space:nowrap; padding:13px 24px;">Notify me</button>
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="kicker"><span class="dot"></span>Measurement, not marketing</span>
+      <h1>We asked AI about dentists in Peterborough <span class="em-pos">1035 times</span>. Here's who it recommends.</h1>
+      <p class="lede">When a patient asks ChatGPT, Claude, or Gemini for a dentist, a handful of names come back again and again — and most practices barely appear. <b>AIVI Labs measures exactly how often each practice is named</b>, across six AI surfaces. No scores, no guesswork — measured facts.</p>
+      <div class="hero__cta">
+        <a class="btn btn--lg" href="report.html">Get your practice's report</a>
+        <a class="btn btn--lg btn--ghost" href="#fieldguide">Get the free field guide</a>
       </div>
-      <div id="notify-confirm" style="display:none; margin-top:10px; font-size:13px; color:var(--teal); font-weight:300;">Done — we'll be in touch when your city goes live.</div>
-    </div>
-  </div>
+      <p class="hero__note">Peterborough, Ontario is live now. Not your city? We'll measure it — ask on the report page.</p>
 
-  <!-- Result panel (hidden, slides open on match) -->
-  <div id="lookup-result" style="overflow:hidden; max-height:0; transition:max-height 0.55s ease; margin-top:0;">
-    <div style="margin-top:20px; background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:16px; overflow:hidden;">
-
-      <!-- Score card -->
-      <div style="padding:36px 40px; border-bottom:1px solid var(--navy-border); display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;">
-        <div style="display:flex; align-items:center; gap:24px;">
-          <div style="text-align:center; flex-shrink:0;">
-            <div id="result-score-num" style="font-family:'DM Serif Display',serif; font-size:80px; line-height:1; color:var(--coral);">—</div>
-            <div style="font-size:11px; color:var(--text-dim); font-weight:300; margin-top:4px; letter-spacing:0.04em;">out of 100</div>
-          </div>
-          <div>
-            <div id="result-practice-name" style="font-size:16px; font-weight:500; color:var(--white); margin-bottom:8px;"></div>
-            <div id="result-label-badge" style="display:inline-block; padding:4px 12px; border-radius:100px; font-size:12px; font-weight:500; letter-spacing:0.04em;"></div>
-            <div id="result-message" style="font-size:13px; color:var(--text-muted); margin-top:8px; font-weight:300; line-height:1.55;"></div>
-          </div>
+      <div class="statband">
+        <div class="stat">
+          <div class="stat__num tnum">31</div>
+          <div class="stat__label">Peterborough dental practices measured — every one that appears on the map, not a sample.</div>
         </div>
-        <div style="display:flex; gap:24px; flex-shrink:0; text-align:center;">
-          <div>
-            <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">City avg.</div>
-            <div id="result-city-avg" style="font-family:'DM Serif Display',serif; font-size:36px; color:#ffc542; line-height:1;">—</div>
-            <div id="result-city-name" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
-          </div>
-          <div>
-            <div style="font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px;">Your rank</div>
-            <div id="result-rank" style="font-family:'DM Serif Display',serif; font-size:36px; color:var(--white); line-height:1;"></div>
-            <div id="result-city-count" style="font-size:12px; color:var(--text-muted); font-weight:300; margin-top:4px;"></div>
-          </div>
+        <div class="stat">
+          <div class="stat__num tnum">6</div>
+          <div class="stat__label">AI surfaces: ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and the Google Local Pack.</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num tnum"><span class="pos">1035</span></div>
+          <div class="stat__label">Measured AI answers about local dentists, aggregated into a mention rate per practice.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE SHIFT -->
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow section__label">The shift</div>
+      <h2>How patients find a dentist is changing — and it's measurable.</h2>
+      <p class="intro">The way people choose a local provider has moved through three eras. We don't ask you to take the shift on faith. We measure where it stands today.</p>
+
+      <div class="three">
+        <div class="era-card">
+          <div class="era">Yesterday</div>
+          <h3>Patients Googled and clicked</h3>
+          <p>Practices surfaced on keywords, backlinks, and page speed. SEO agencies owned that playbook — and a whole industry grew up to game it.</p>
+          <span class="tagchip">Traditional SEO</span>
+        </div>
+        <div class="era-card now">
+          <div class="era">Today</div>
+          <h3>Patients ask AI and trust the answer</h3>
+          <p>ChatGPT, Claude, and Gemini answer directly — often with no click at all. A few practices get named; the rest are simply absent from the conversation.</p>
+          <span class="tagchip">AI answers directly</span>
+        </div>
+        <div class="era-card">
+          <div class="era">Tomorrow</div>
+          <h3>Agents book on a patient's behalf</h3>
+          <p>As assistants start scheduling appointments directly, a practice AI doesn't name with confidence won't even make the shortlist.</p>
+          <span class="tagchip">Agentic booking</span>
         </div>
       </div>
 
-      <!-- Competitor rows -->
-      <div style="padding:28px 40px; border-bottom:1px solid var(--navy-border);">
-        <div style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;">Nearby competitors</div>
-        <div id="comp-rows"></div>
-      </div>
-
-      <!-- CTA -->
-      <div style="padding:28px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
-        <div>
-          <div style="font-size:15px; font-weight:500; color:var(--white); margin-bottom:4px;">Your full report is ready</div>
-          <div style="font-size:13px; color:var(--text-muted); font-weight:300;">All 12 checks, your exact ranking, and a prioritised action plan — delivered in 24 hours.</div>
-        </div>
-        <button class="btn-primary" onclick="openModal()" style="white-space:nowrap; flex-shrink:0;">Get your full report — $149</button>
+      <div class="shift-foot">
+        <b>We don't predict this — we measure it.</b> Yesterday and Tomorrow are context. Today is a fact: we ran the queries, recorded every practice named, and counted. What you get from us is the measurement, not a forecast.
       </div>
     </div>
-  </div>
+  </section>
 
-</div>
+  <!-- WHAT AIVI IS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow section__label">What AIVI Labs is</div>
+      <h2>A measurement company for AI search.</h2>
+      <p class="intro">Think of us as a ratings agency for the AI era — an independent measurement layer, not another agency selling you traffic.</p>
 
-<!-- THE SHIFT -->
-<div class="section" style="padding-top:0;">
-  <div class="section-label">The shift</div>
-  <h2>Search just changed — again.</h2>
-  <p class="section-intro">The way patients find and choose local providers has fundamentally shifted. Most practices haven't adapted yet.</p>
-  <div class="three-grid">
-    <div class="card">
-      <div class="era past">Yesterday</div>
-      <h3>Patients Googled and clicked</h3>
-      <p>Practices showed up based on keywords, backlinks, and page speed. SEO agencies had the playbook.</p>
-      <span class="tag dim">Traditional SEO</span>
-    </div>
-    <div class="card active">
-      <div class="era now">Today</div>
-      <h3>Patients ask AI and trust the answer</h3>
-      <p>ChatGPT, Claude, and Google Gemini answer directly — no clicking. AI picks winners based on signals most practices don't have.</p>
-      <span class="tag amber">AI answers directly</span>
-    </div>
-    <div class="card">
-      <div class="era future">Tomorrow</div>
-      <h3>AI agents book appointments for people</h3>
-      <p>If the AI doesn't know your practice exists with confidence, you won't even be considered.</p>
-      <span class="tag coral">Agentic booking</span>
-    </div>
-  </div>
-</div>
-
-<!-- HOW IT WORKS -->
-<div class="section" id="how" style="padding-top:0;">
-  <div class="section-label">How it works</div>
-  <h2>From invisible to recommended</h2>
-  <p class="section-intro">A clear, data-driven process that shows exactly what AI search needs to recommend your practice.</p>
-
-  <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">01</div>
-      <h3>Check your score</h3>
-      <p>Enter your practice website below to instantly see your AI visibility score and where you rank against local competitors.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">02</div>
-      <h3>Understand the gap</h3>
-      <p>See exactly which signals are holding you back and how you compare to the practices AI search is recommending instead.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">03</div>
-      <h3>Get your action plan</h3>
-      <p>Purchase your full report and receive a prioritised action plan — every failed check translated into a clear, ranked fix — within 24 hours.</p>
-    </div>
-  </div>
-</div>
-
-<!-- PRICING -->
-<div class="section" id="pricing" style="padding-top:0;">
-  <div class="section-label">Pricing</div>
-  <h2>Simple, transparent pricing</h2>
-  <p class="section-intro">Choose the report that fits your needs.</p>
-
-  <div class="pricing-grid">
-    <div class="plan">
-      <div class="plan-name">Your Score</div>
-      <div class="plan-price"><sup>$</sup>149</div>
-      <div class="plan-cadence">one-time payment</div>
-      <ul>
-        <li>Full 12-point AI audit</li>
-        <li>PDF scorecard with ratings</li>
-        <li>AI Visibility Action Plan</li>
-        <li>24hr delivery</li>
-      </ul>
-      <button class="btn-plan ghost" onclick="openModal()">Get started</button>
-    </div>
-    <div class="plan featured">
-      <div class="pop-tag">Most popular</div>
-      <div class="plan-name">Full Competitive Report</div>
-      <div class="plan-price"><sup>$</sup>299</div>
-      <div class="plan-cadence">one-time payment</div>
-      <ul>
-        <li>Everything in Your Score</li>
-        <li>3 competitor scans</li>
-        <li>Side-by-side comparison</li>
-        <li>Professional annotations</li>
-        <li>Gap analysis & priority fixes</li>
-      </ul>
-      <button class="btn-plan primary" onclick="openModal()">Get started</button>
-    </div>
-    <div class="plan">
-      <div class="plan-name">Monthly Monitoring</div>
-      <div class="plan-price"><sup>$</sup>79<span style="font-family:'DM Sans'; font-size:20px; font-weight:300; color:var(--text-muted);">/mo</span></div>
-      <div class="plan-cadence">billed monthly</div>
-      <ul>
-        <li>Monthly rescan & score</li>
-        <li>City rank tracking</li>
-        <li>Competitor movement alerts</li>
-        <li>Score delta report</li>
-        <li>Priority support</li>
-      </ul>
-      <button class="btn-plan ghost" onclick="openModal()">Get started</button>
-    </div>
-  </div>
-</div>
-
-
-<div style="border-top: 1px solid var(--navy-border);">
-  <footer>
-    <div>
-      <div class="logo" style="margin-bottom:8px; font-size:15px;">
-        <div class="logo-mark" style="width:26px; height:26px; font-size:11px;">AI</div>
-        AIVI <span class="accent">Labs</span>
+      <div class="posbox">
+        <div class="eyebrow">Our posture</div>
+        <p>AIVI Labs is the measurement layer. We don't sell SEO services. We don't make recommendations to AI platforms, and we don't promise to move you up their answers. We measure what is actually happening — how often each practice is named — and we report it plainly.</p>
+        <p>Every practice is measured the same way, in the same week, against the same six AI surfaces. That's what makes the number a fact you can act on rather than a score we invented.</p>
       </div>
-      <p>AI Visibility Index — helping local practices<br>get found in the age of AI search.</p>
     </div>
-    <div class="foot-links">
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-      <a href="/refund">Refund Policy</a>
+  </section>
+
+  <!-- PROOF POINT -->
+  <section class="section">
+    <div class="wrap">
+      <div class="eyebrow section__label">Proof point · Peterborough, Ontario</div>
+      <h2>One city, measured end to end.</h2>
+      <p class="intro">Peterborough is our first fully measured market — all 31 dental practices on the map, measured across the six AI surfaces and aggregated from 1035 answers into a mention rate for each practice.</p>
+
+      <div class="surfaces">
+        <div class="surface"><span class="surface__mono">GP</span><span><span class="surface__name">ChatGPT</span><span class="surface__vendor">OpenAI</span></span></div>
+        <div class="surface"><span class="surface__mono">CL</span><span><span class="surface__name">Claude</span><span class="surface__vendor">Anthropic</span></span></div>
+        <div class="surface"><span class="surface__mono">GM</span><span><span class="surface__name">Gemini</span><span class="surface__vendor">Google</span></span></div>
+        <div class="surface"><span class="surface__mono">PX</span><span><span class="surface__name">Perplexity</span><span class="surface__vendor">Perplexity</span></span></div>
+        <div class="surface"><span class="surface__mono">AI</span><span><span class="surface__name">Google AI Overviews</span><span class="surface__vendor">Google · SERP</span></span></div>
+        <div class="surface"><span class="surface__mono">LP</span><span><span class="surface__name">Google Local Pack</span><span class="surface__vendor">Google · SERP</span></span></div>
+      </div>
+      <p class="intro" style="margin-top:22px">See exactly how it's done on the <a href="methodology.html" style="color:var(--pos);border-bottom:1px solid color-mix(in oklab, var(--pos) 45%, transparent)">methodology page</a>.</p>
     </div>
-    <p>© 2026 AIVI Labs. All rights reserved.</p>
-  </footer>
-</div>
+  </section>
 
-<!-- Additional modal styles -->
-<style>
-  .city-input-wrap {
-    margin-top: 20px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
+  <!-- FIELD GUIDE CAPTURE -->
+  <section class="section" id="fieldguide">
+    <div class="wrap">
+      <div class="eyebrow section__label">Free field guide</div>
+      <h2>The small-business playbook for AI search.</h2>
+      <p class="intro">A plain-language guide to what AI assistants actually read when they decide which local businesses to name — and what you can do about it. Free.</p>
 
-  .city-input-wrap label {
-    font-size: 13px; color: var(--text-muted); font-weight: 400;
-  }
+      <div class="capture">
+        <h3>Get the free field guide</h3>
+        <p>The small-business playbook for AI search. One email, no spam — the guide lands in your inbox.</p>
+        <form id="fieldguide-form" novalidate>
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label" for="fg-email">Email</label>
+              <input type="email" id="fg-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
+            </div>
+            <div class="field" style="flex:0 0 auto;display:flex;align-items:flex-end">
+              <button type="submit" class="btn btn--lg btn--block">Send me the guide</button>
+            </div>
+          </div>
+          <div class="form-error" role="alert"></div>
+          <p class="form-fineprint">We'll email you the field guide and the occasional measurement update. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </div>
+  </section>
 
-  .city-detected {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 16px; padding: 12px 16px;
-    background: rgba(0,201,167,0.07);
-    border: 1px solid rgba(0,201,167,0.2);
-    border-radius: 10px;
-  }
+  <!-- CLOSER -->
+  <section class="closer">
+    <div class="wrap">
+      <h2>Find out how often AI names your practice.</h2>
+      <p>Pick your practice, and we'll email your measured report. Instant, automated delivery — no sales call.</p>
+      <div class="hero__cta">
+        <a class="btn btn--lg" href="report.html">Get your practice's report</a>
+      </div>
+    </div>
+  </section>
+</main>
 
-  .city-detected .city-dot {
-    width: 8px; height: 8px; background: var(--teal);
-    border-radius: 50%; flex-shrink: 0;
-  }
-
-  .city-detected span {
-    font-size: 14px; color: var(--text); font-weight: 400; flex: 1;
-  }
-
-  .city-detected button {
-    font-size: 12px; color: var(--text-dim); background: none;
-    border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    font-weight: 300; padding: 0; text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color 0.2s;
-  }
-  .city-detected button:hover { color: var(--text-muted); }
-
-  /* Market snapshot on step 2 */
-  .market-header {
-    display: flex; align-items: stretch; gap: 1px;
-    background: var(--navy-border);
-    border-radius: 14px; overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .market-stat {
-    flex: 1; background: var(--navy-mid);
-    padding: 20px 22px; text-align: center;
-  }
-
-  .market-stat .ms-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 34px; line-height: 1;
-    color: var(--white); display: block; margin-bottom: 4px;
-  }
-
-  .market-stat .ms-num.amber { color: var(--amber); }
-  .market-stat .ms-num.teal { color: var(--teal); }
-
-  .market-stat .ms-label {
-    font-size: 12px; color: var(--text-muted); font-weight: 300;
-  }
-
-  .leaderboard-label {
-    font-size: 12px; font-weight: 500;
-    color: var(--text-muted); letter-spacing: 0.05em;
-    text-transform: uppercase; margin-bottom: 10px;
-  }
-
-  /* Locked score row */
-  .lb-row.locked-row {
-    background: rgba(13,20,37,0.6);
-    position: relative;
-  }
-
-  .locked-score-cell {
-    display: flex; align-items: center; justify-content: flex-end;
-    gap: 6px;
-  }
-
-  .locked-pill {
-    font-size: 10px; font-weight: 600;
-    padding: 3px 8px; border-radius: 100px;
-    background: var(--teal); color: var(--navy);
-    letter-spacing: 0.04em; text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .locked-name {
-    font-size: 14px; color: var(--teal); font-weight: 500;
-  }
-
-  .locked-bar-wrap {
-    height: 4px; background: var(--navy-light); border-radius: 2px; overflow: hidden;
-  }
-
-  .locked-bar-fill {
-    height: 100%; border-radius: 2px;
-    background: repeating-linear-gradient(
-      90deg,
-      rgba(0,201,167,0.4) 0px,
-      rgba(0,201,167,0.4) 6px,
-      transparent 6px,
-      transparent 10px
-    );
-    width: 65%;
-  }
-
-  .your-score-teaser {
-    background: linear-gradient(135deg, rgba(0,201,167,0.07), rgba(0,168,217,0.04));
-    border: 1px solid rgba(0,201,167,0.2);
-    border-radius: 12px; padding: 20px 22px;
-    margin-top: 20px;
-    display: flex; align-items: center; gap: 18px;
-  }
-
-  .your-score-teaser .tease-icon { font-size: 28px; flex-shrink: 0; }
-
-  .your-score-teaser h4 {
-    font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 4px;
-  }
-
-  .your-score-teaser p {
-    font-size: 13px; color: var(--text-muted); font-weight: 300; line-height: 1.55;
-  }
-</style>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <div class="modal-head">
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__inner">
       <div>
-        <h3 id="m-title">Scan your website</h3>
-        <p id="m-sub">See how your city's top practices score — and where you stand.</p>
+        <a class="brand" href="index.html" aria-label="AIVI Labs home">
+          <span class="logo-mark">AI</span>
+          <span class="wordmark">AIVI <span>Labs</span></span>
+        </a>
+        <p class="site-footer__tag">The measurement layer for AI search visibility. We measure how AI names local businesses — and report the facts.</p>
       </div>
-      <button class="close-x" onclick="closeModal()">×</button>
+      <div class="site-footer__cols">
+        <div>
+          <div class="foot-h">Product</div>
+          <a href="report.html">Get your report</a>
+          <a href="methodology.html">Methodology</a>
+        </div>
+        <div>
+          <div class="foot-h">Company</div>
+          <a href="about.html">About</a>
+          <a href="mailto:support@aivilabs.io">Contact</a>
+        </div>
+        <div>
+          <div class="foot-h">Legal</div>
+          <a href="privacy/">Privacy</a>
+          <a href="terms/">Terms</a>
+          <a href="refund/">Refund</a>
+        </div>
+      </div>
     </div>
-    <div class="pips">
-      <div class="pip active" id="p1"></div>
-      <div class="pip" id="p2"></div>
-      <div class="pip" id="p3"></div>
-      <div class="pip" id="p4"></div>
-      <div class="pip" id="p5"></div>
-    </div>
-    <div class="modal-body">
-
-      <!-- STEP 1: URL -->
-      <div class="modal-step active" id="s1">
-        <p style="font-size:15px; color:var(--text-muted); font-weight:300; line-height:1.75;">
-          Enter your practice website and we'll scan it against 12 AI visibility signals — then show you exactly where you rank in your city.
-        </p>
-        <div class="url-row" style="margin-top:22px;">
-          <input type="text" class="url-input" id="url-field" placeholder="https://yourpractice.com">
-        </div>
-        <div class="city-detected" id="city-detected" style="display:none;">
-          <div class="city-dot"></div>
-          <span id="city-detected-text">City detected: Peterborough, Ontario</span>
-          <button onclick="showCityInput()">Not right?</button>
-        </div>
-        <p style="font-size:12px; color:var(--text-dim); margin-top:12px; font-weight:300;">🔒 We only scan publicly available website content.</p>
-      </div>
-
-      <!-- STEP 1b: CITY CONFIRMATION (if not detected) -->
-      <div class="modal-step" id="s1b">
-        <p style="font-size:15px; color:var(--text-muted); font-weight:300; line-height:1.75;">
-          We couldn't automatically detect your city from your website. Enter it below so we can pull the right competitor data.
-        </p>
-        <div class="city-input-wrap">
-          <label>Your city or suburb</label>
-          <input type="text" class="url-input" id="city-field" placeholder="e.g. Peterborough, Ontario">
-        </div>
-        <p style="font-size:12px; color:var(--text-dim); margin-top:14px; font-weight:300;">We use this to find comparable practices in your area.</p>
-      </div>
-
-      <!-- LOADING -->
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p id="loading-msg">Scanning your website...</p>
-        <div class="loading-items">
-          <div class="li-item done" id="li1">Crawling homepage</div>
-          <div class="li-item done" id="li2">Checking schema markup</div>
-          <div class="li-item" id="li3">Scanning city competitors</div>
-          <div class="li-item" id="li4">Building city leaderboard</div>
-        </div>
-      </div>
-
-      <!-- STEP 2: CITY MARKET + LOCKED SCORE -->
-      <div class="modal-step" id="s2">
-        <div class="market-header">
-          <div class="market-stat">
-            <span class="ms-num amber">59</span>
-            <span class="ms-label">City avg. score</span>
-          </div>
-          <div class="market-stat">
-            <span class="ms-num">23</span>
-            <span class="ms-label">Practices scanned</span>
-          </div>
-          <div class="market-stat">
-            <span class="ms-num teal">84</span>
-            <span class="ms-label">City leader score</span>
-          </div>
-        </div>
-
-        <div class="leaderboard-label">Top practices in Peterborough, Ontario</div>
-        <div class="lb">
-          <div class="lb-head">
-            <span>#</span><span>Practice</span><span>Score</span><span>Rating</span>
-          </div>
-          <div class="lb-row">
-            <div class="lb-rank">1</div>
-            <div class="lb-name">Peterborough Dental Clinic</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:90%;background:var(--teal);"></div></div>
-            <div class="lb-score" style="color:var(--teal);">90</div>
-          </div>
-          <div class="lb-row">
-            <div class="lb-rank">2</div>
-            <div class="lb-name">Maple Leaf Dentistry</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:85%;background:var(--teal);"></div></div>
-            <div class="lb-score" style="color:var(--teal);">85</div>
-          </div>
-          <div class="lb-row">
-            <div class="lb-rank">3</div>
-            <div class="lb-name">Lily Lake Dental</div>
-            <div class="lb-bar-w"><div class="lb-bar" style="width:82.5%;background:var(--teal);"></div></div>
-            <div class="lb-score" style="color:var(--teal);">82.5</div>
-          </div>
-          <div class="lb-row locked-row" style="border-left:2px solid var(--teal); padding-left:18px;">
-            <div class="lb-rank" style="color:var(--teal);">?</div>
-            <div class="locked-name">Your practice</div>
-            <div class="locked-bar-wrap"><div class="locked-bar-fill"></div></div>
-            <div class="locked-score-cell">
-              <span class="locked-pill">Unlock</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="your-score-teaser">
-          <div class="tease-icon">🔐</div>
-          <div>
-            <h4>Your score is ready — unlock it to see where you land</h4>
-            <p>We've scanned your site across 12 signals. Choose a plan to reveal your score, full breakdown, and fix recommendations.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 3: PLAN SELECT -->
-      <div class="modal-step" id="s3">
-        <p style="font-size:15px; color:var(--text-muted); font-weight:300; line-height:1.75; margin-bottom:16px;">Choose your report to reveal your score, see all 12 checks, and get a prioritised action plan.</p>
-        <div class="plan-opts">
-          <div class="plan-opt" onclick="selectPlan(this,'aivi-your-score','Your Score','$149','one-time')">
-            <div class="radio"></div>
-            <div class="plan-opt-info">
-              <div class="pon">Your Score</div>
-              <div class="pod">Full audit + PDF scorecard + action plan</div>
-            </div>
-            <div class="ppr">$149</div>
-          </div>
-          <div class="plan-opt pop" onclick="selectPlan(this,'aivi-full-report','Full Competitive Report','$299','one-time')">
-            <div class="radio"></div>
-            <div class="plan-opt-info">
-              <div class="pon">Full Competitive Report</div>
-              <div class="pod">Your score + 3 competitor scans + side-by-side analysis</div>
-            </div>
-            <div class="ppr">$299</div>
-          </div>
-          <div class="plan-opt" onclick="selectPlan(this,'aivi-monitoring','Monthly Monitoring','$79/mo','subscription')">
-            <div class="radio"></div>
-            <div class="plan-opt-info">
-              <div class="pon">Monthly Monitoring</div>
-              <div class="pod">Monthly rescan + city rank tracking + competitor alerts</div>
-            </div>
-            <div class="ppr">$79<span>/mo</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 3.5: CONTACT CAPTURE — fires GHL lead creation before payment -->
-      <div class="modal-step" id="s35">
-        <p style="font-size:15px; color:var(--text-muted); font-weight:300; line-height:1.75; margin-bottom:20px;">Almost there — where should we deliver your report?</p>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <div>
-              <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">First name</label>
-              <input type="text" id="f-fname" class="url-input" placeholder="Sarah" autocomplete="given-name">
-            </div>
-            <div>
-              <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Last name</label>
-              <input type="text" id="f-lname" class="url-input" placeholder="Miller" autocomplete="family-name">
-            </div>
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Email address</label>
-            <input type="email" id="f-email" class="url-input" placeholder="you@yourpractice.com" autocomplete="email">
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Practice name</label>
-            <input type="text" id="f-practice" class="url-input" placeholder="Peterborough Smiles" autocomplete="organization">
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:7px;">Phone <span style="color:var(--text-dim); font-weight:300; text-transform:none; letter-spacing:0;">(optional)</span></label>
-            <input type="tel" id="f-phone" class="url-input" placeholder="+1 (705) 555-0100" autocomplete="tel">
-          </div>
-        </div>
-        <p style="font-size:12px; color:var(--text-dim); margin-top:14px; font-weight:300; line-height:1.6;">
-          🔒 Your details are used to deliver your report and are never shared with third parties.
-        </p>
-        <div id="s35-error" style="display:none; margin-top:12px; padding:11px 14px; background:rgba(255,95,109,0.08); border:1px solid rgba(255,95,109,0.2); border-radius:8px; font-size:13px; color:var(--coral); font-weight:300;"></div>
-      </div>
-
-      <!-- STEP 4: PAYMENT — FastSpring embedded storefront iframe -->
-      <div class="modal-step" id="s4">
-        <!-- Order summary bar stays in your UI above the iframe -->
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0 14px; border-bottom:1px solid var(--navy-border); margin-bottom:16px;">
-          <div>
-            <div id="s4-plan-name" style="font-size:14px; color:var(--white); font-weight:500;">Full Competitive Report</div>
-            <div id="s4-plan-type" style="font-size:11px; color:var(--text-dim); font-weight:300; margin-top:2px;">One-time payment · 24hr delivery</div>
-          </div>
-          <div style="text-align:right;">
-            <div id="s4-plan-price" style="font-family:'DM Serif Display',serif; font-size:26px; color:var(--white);">$299</div>
-            <div style="font-size:10px; color:var(--text-dim); font-weight:300;">+ applicable tax</div>
-          </div>
-        </div>
-
-        <!-- FastSpring embedded iframe container -->
-        <!-- In production: FastSpring renders their full checkout form here -->
-        <!-- including name, email, billing address, card fields, and tax calculation -->
-        <div id="fs-embed-container" style="border-radius:10px; overflow:hidden; border:1px solid var(--navy-border); background:var(--navy); min-height:320px; display:flex; align-items:center; justify-content:center;">
-
-          <!-- DEV PLACEHOLDER — replace with real FastSpring embedded storefront -->
-          <!-- Production: FastSpring injects their iframe into #fs-embed-container -->
-          <!-- via fastspring.builder.checkout() with the embedded storefront configured -->
-          <div id="fs-embed-placeholder" style="text-align:center; padding:32px 24px;">
-            <div style="font-size:28px; margin-bottom:14px;">🔒</div>
-            <div style="font-size:14px; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">
-              FastSpring embedded checkout loads here.
-            </div>
-            <div style="font-size:12px; color:var(--text-dim); font-weight:300;">
-              Card fields, billing address, and tax calculation<br>all rendered inside this iframe.
-            </div>
-            <div style="margin-top:20px; padding:12px 18px; background:var(--navy-mid); border:1px solid var(--navy-border); border-radius:8px; font-size:12px; color:var(--text-dim); text-align:left; line-height:1.7;">
-              <strong style="color:var(--text-muted); font-weight:500;">Kevin — to activate:</strong><br>
-              1. Configure embedded storefront in FS dashboard<br>
-              2. Add the FS script tag to &lt;head&gt;<br>
-              3. Call <code style="color:var(--teal); font-size:11px;">fastspring.builder.checkout()</code> in <code style="color:var(--teal); font-size:11px;">mountFSEmbed()</code>
-            </div>
-          </div>
-          <!-- END DEV PLACEHOLDER -->
-
-        </div>
-
-        <div style="margin-top:12px; display:flex; align-items:center; justify-content:center; gap:6px;">
-          <span style="font-size:11px; color:var(--text-dim);">🔐</span>
-          <span style="font-size:11px; color:var(--text-dim); font-weight:300;">Card data secured by FastSpring · PCI DSS Level 1 · Never touches our servers</span>
-        </div>
-      </div>
-
-      <!-- STEP 5: CONFIRMATION -->
-      <div class="modal-step" id="s5">
-        <div style="text-align:center; padding:16px 0;">
-          <div style="width:56px; height:56px; background:rgba(0,201,167,0.1); border:1px solid rgba(0,201,167,0.3); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 20px;">✓</div>
-          <h4 style="font-family:'DM Serif Display',serif; font-size:24px; font-weight:400; color:var(--white); margin-bottom:10px; letter-spacing:-0.01em;">You're in — report on its way</h4>
-          <p style="font-size:14px; color:var(--text-muted); font-weight:300; line-height:1.7; max-width:360px; margin:0 auto 28px;">
-            We'll complete your full scan and deliver your AI visibility report within 24 hours. Check your inbox for a confirmation.
-          </p>
-          <div style="padding:20px 24px; background:var(--navy); border:1px solid var(--navy-border); border-radius:12px; text-align:left; display:flex; flex-direction:column; gap:14px;">
-            <div style="display:flex; align-items:center; gap:14px;">
-              <span style="font-size:20px; flex-shrink:0;">📋</span>
-              <div>
-                <div style="font-size:14px; font-weight:500; color:var(--white); margin-bottom:2px;">Full 12-point audit</div>
-                <div style="font-size:12px; color:var(--text-muted); font-weight:300;">PDF scorecard with pass / partial / fail ratings</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:14px;">
-              <span style="font-size:20px; flex-shrink:0;">🛠️</span>
-              <div>
-                <div style="font-size:14px; font-weight:500; color:var(--white); margin-bottom:2px;">AI Visibility Action Plan</div>
-                <div style="font-size:12px; color:var(--text-muted); font-weight:300;">Every failed check ranked by priority with clear guidance</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:14px;">
-              <span style="font-size:20px; flex-shrink:0;">📍</span>
-              <div>
-                <div style="font-size:14px; font-weight:500; color:var(--white); margin-bottom:2px;">Your score + city rank</div>
-                <div style="font-size:12px; color:var(--text-muted); font-weight:300;">See exactly where you stand and what to fix first</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="modal-foot">
-      <span class="foot-note" id="m-note">Secure checkout via FastSpring</span>
-      <div class="foot-actions">
-        <button class="btn-back" id="back-btn" onclick="goBack()" style="display:none;">Back</button>
-        <button class="btn-next" id="next-btn" onclick="goNext()">Start my audit →</button>
-      </div>
+    <div class="site-footer__legal">
+      <span>© 2026 AIVI Labs SEZC · Cayman Islands</span>
+      <span class="mono">support@aivilabs.io</span>
     </div>
   </div>
-</div>
-
-<!--
-  ============================================================
-  FASTSPRING + GOHIGHLEVEL INTEGRATION NOTES (for Kevin)
-  ============================================================
-
-  DATA FLOW OVERVIEW:
-  ┌─────────────────────────────────────────────────────────┐
-  │  Step 3.5 (contact form)                                │
-  │    → POST to GHL API  → creates Contact (lead)          │
-  │    → stores lead in JS state for FastSpring pre-fill    │
-  │                                                         │
-  │  Step 4 (FastSpring embedded iframe)                    │
-  │    → FS collects card, billing address, tax             │
-  │    → onFastSpringClosed() fires on order complete       │
-  │    → POST order data to GHL API → updates Contact       │
-  │       (tags: "paid", "aivi-[plan]", city)               │
-  │                                                         │
-  │  FastSpring webhook (server-side, use Make.com/Pipedream)│
-  │    → Receives order.completed from FastSpring           │
-  │    → Updates GHL contact to "Paid" pipeline stage       │
-  │    → Triggers report delivery queue                     │
-  └─────────────────────────────────────────────────────────┘
-
-  ── STEP 1: FASTSPRING EMBEDDED STOREFRONT ──────────────────
-  Add this script tag to <head>. Replace YOUR_STORE_ID.
-  For embedded storefronts, configure in FS Dashboard →
-  Storefronts → Add Storefront → Embedded.
-
-  <script
-    id="fsc-api"
-    src="https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.8.5/fastspring-builder.min.js"
-    type="text/javascript"
-    data-storefront="YOUR_STORE_ID.onfastspring.com/embedded"
-    data-popup-webhook-received="onFastSpringEvent"
-    data-popup-closed="onFastSpringClosed"
-    data-before-markup-request-callback="onBeforeFSRequest">
-  </script>
-
-  ── STEP 2: GHL API KEY ─────────────────────────────────────
-  GHL Settings → Integrations → API Keys → Create Key.
-  Scope needed: contacts.write, contacts.readonly
-  Add to GHL_API_KEY constant below.
-
-  ── STEP 3: GHL PIPELINE (optional but recommended) ─────────
-  In GHL: Opportunities → Pipelines → Create "AIVI Sales"
-  Stages: Lead → Payment Started → Paid → Report Delivered
-  Add your pipeline ID and stage IDs to the GHL_CONFIG below.
-
-  ── STEP 4: FASTSPRING WEBHOOK via Make.com ─────────────────
-  1. Create a free Make.com account
-  2. New scenario: Webhook trigger → GoHighLevel action
-  3. Webhook receives FastSpring order.completed event
-  4. Maps order data to GHL contact update + pipeline move
-  5. Paste your Make webhook URL into FastSpring dashboard:
-     FS Dashboard → Integrations → Webhooks → Add endpoint
-     Event: order.completed
-  This covers the server-side confirmation, separate from
-  the client-side callbacks below.
-
-  ── STEP 5: PRODUCTS IN FASTSPRING ──────────────────────────
-  Create 3 products in FS Dashboard, use these path IDs:
-    aivi-your-score    → one-time  $149
-    aivi-full-report   → one-time  $299
-    aivi-monitoring    → recurring $79/mo
-  ============================================================
--->
+</footer>
 
 <script>
-  // ============================================================
-  // CONFIG — fill these in before going live
-  // ============================================================
-  const GHL_CONFIG = {
-    apiKey:       'YOUR_GHL_API_KEY',           // GHL Settings → API Keys
-    locationId:   'YOUR_GHL_LOCATION_ID',       // GHL Settings → Business Profile → Location ID
-    pipelineId:   'YOUR_GHL_PIPELINE_ID',       // GHL Opportunities → Pipelines
-    stageLead:    'YOUR_STAGE_ID_LEAD',         // "Lead" stage ID
-    stagePaid:    'YOUR_STAGE_ID_PAID',         // "Paid" stage ID
-  };
+(function(){
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var CITY_ENDPOINT = 'https://api.aivilabs.io/city/request';
+  var TIMEOUT_MS = 15000;
 
-  // FastSpring product path IDs → display info
-  const FS_PRODUCTS = {
-    'aivi-your-score':  { label: 'Your Score',              price: '$149',   type: 'one-time'     },
-    'aivi-full-report': { label: 'Full Competitive Report', price: '$299',   type: 'one-time'     },
-    'aivi-monitoring':  { label: 'Monthly Monitoring',      price: '$79/mo', type: 'subscription' },
-  };
-
-  // ============================================================
-  // STATE
-  // ============================================================
-  let step         = 's1';
-  let chosen       = null;
-  let cityDetected = true;
-  let scannedUrl   = '';
-  let detectedCity = '';
-  let ghlContactId = null;   // set after GHL lead creation
-  let contactData  = {};     // captured in s35
-
-  // ============================================================
-  // STEP CONFIG
-  // pip map: s1/s1b=1, s2=2, s3=3, s35=4, s4=4, s5=5
-  // ============================================================
-  const config = {
-    s1:  { title: 'Scan your website',          sub: 'See how the top practices in your city score.',         note: 'Secure checkout via FastSpring',                 btn: 'Start my audit →',       back: false, hideNext: false, pip: 1 },
-    s1b: { title: 'Confirm your location',      sub: 'We couldn\'t detect your city — just takes a second.', note: 'Secure checkout via FastSpring',                 btn: 'Continue →',             back: true,  hideNext: false, pip: 1 },
-    s2:  { title: 'Your city\'s AI landscape',  sub: 'Here\'s how the top practices in your city score.',    note: 'Practices scanned in your city',              btn: 'Unlock my score →',      back: false, hideNext: false, pip: 2 },
-    s3:  { title: 'Choose your report',         sub: 'Your site has been scanned — your score is ready.',    note: 'Secure checkout via FastSpring',                 btn: null,                     back: true,  hideNext: true,  pip: 3 },
-    s35: { title: 'Where to send your report',  sub: 'Enter your details — we\'ll deliver your report here.',note: 'Your data is never shared with third parties',   btn: 'Continue to payment →',  back: true,  hideNext: false, pip: 4 },
-    s4:  { title: 'Complete your payment',      sub: 'Secured by FastSpring · PCI DSS Level 1 compliant.',   note: 'Card data never touches our servers',            btn: null,                     back: false, hideNext: true,  pip: 4 },
-    s5:  { title: 'Report confirmed',           sub: 'Check your inbox — your report is being prepared.',    note: 'Questions? hello@aivilabs.io',                  btn: 'Done',                   back: false, hideNext: false, pip: 5 },
-  };
-
-  function pips(active) {
-    const map = { s1: 1, s1b: 1, s2: 2, s3: 3, s35: 4, s4: 4, s5: 5 };
-    const n = map[active] || 1;
-    for (let i = 1; i <= 5; i++) {
-      const p = document.getElementById('p' + i);
-      if (!p) continue;
-      if (active === 's5') { p.className = 'pip done'; continue; }
-      p.className = 'pip' + (i < n ? ' done' : i === n ? ' active' : '');
-    }
+  var okSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#7EE2BC" stroke-width="1.4"/><path d="M6 10.2l2.6 2.6L14 7.4" stroke="#7EE2BC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function successHTML(title, sub){
+    return '<div class="form-success">' + okSvg +
+      '<div><div class="t">' + title + '</div><div class="s">' + sub + '</div></div></div>';
   }
 
-  function goTo(id) {
-    step = id;
-    document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
-    document.getElementById('loading').classList.remove('visible');
+  // Field guide capture -> /city/request with the sentinel city "_fieldguide".
+  var form = document.getElementById('fieldguide-form');
+  var btn = form.querySelector('button[type=submit]');
+  var errEl = form.querySelector('.form-error');
+  var busy = false;
+  function showErr(msg){ errEl.textContent = msg; errEl.style.display = 'block'; }
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if(busy) return;
+    errEl.style.display = 'none'; errEl.textContent = '';
+    var email = (document.getElementById('fg-email').value || '').trim();
+    if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return; }
 
-    const c = config[id];
-    document.getElementById('m-title').textContent    = c.title;
-    document.getElementById('m-sub').textContent      = c.sub;
-    document.getElementById('m-note').textContent     = c.note;
-    document.getElementById('back-btn').style.display = c.back ? 'block' : 'none';
-
-    const nextBtn = document.getElementById('next-btn');
-    if (c.hideNext || c.btn === null) {
-      nextBtn.style.display = 'none';
-    } else {
-      nextBtn.style.display  = 'block';
-      nextBtn.textContent    = c.btn;
-      nextBtn.disabled       = false;
-      nextBtn.onclick        = goNext;
-    }
-
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
-    pips(id);
-
-    // Pre-load FS embed when entering s35 so iframe is ready by s4
-    if (id === 's35') preloadFSEmbed();
-  }
-
-  // ============================================================
-  // OPEN / CLOSE
-  // ============================================================
-  function openModal() {
-    chosen = null; scannedUrl = ''; detectedCity = '';
-    ghlContactId = null; contactData = {};
-    document.getElementById('modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    document.getElementById('url-field').value = '';
-    ['li3','li4'].forEach(id => document.getElementById(id).classList.remove('done'));
-    document.querySelectorAll('.plan-opt').forEach(p => p.classList.remove('sel'));
-    goTo('s1');
-  }
-
-  function closeModal() {
-    if (step === 's4') return; // block accidental close during payment
-    document.getElementById('modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.getElementById('modal').addEventListener('click', e => {
-    if (e.target.id === 'modal') closeModal();
+    busy = true;
+    var label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending…';
+    var controller = new AbortController();
+    var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT_MS);
+    fetch(CITY_ENDPOINT, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ city:'_fieldguide', email: email }),
+      signal: controller.signal
+    }).then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json().catch(function(){ return {}; });
+    }).then(function(){
+      clearTimeout(timer);
+      form.innerHTML = successHTML("You're on the list", "The guide lands in your inbox soon.");
+    }).catch(function(err){
+      clearTimeout(timer);
+      if(window.console && console.error) console.error('field guide signup failed:', err);
+      busy = false; btn.disabled = false; btn.textContent = label;
+      showErr('Something went wrong — please try again.');
+    });
   });
-
-  // ============================================================
-  // NAVIGATION
-  // ============================================================
-  function goNext() {
-    if (step === 's1') {
-      scannedUrl = document.getElementById('url-field').value.trim();
-      if (!scannedUrl) return;
-      if (scannedUrl === 'https://cannotdetect.com') {
-        cityDetected = false; goTo('s1b');
-      } else {
-        cityDetected = true;
-        detectedCity = 'Peterborough, Ontario'; // prod: from your scan API
-        runScan();
-      }
-    } else if (step === 's1b') {
-      detectedCity = document.getElementById('city-field').value.trim() || 'your city';
-      runScan();
-    } else if (step === 's2') {
-      goTo('s3');
-    } else if (step === 's35') {
-      submitContactAndProceed();
-    } else if (step === 's5') {
-      closeModal();
-    }
-  }
-
-  function goBack() {
-    if (step === 's1b') goTo('s1');
-    else if (step === 's3')  goTo('s2');
-    else if (step === 's35') goTo('s3');
-  }
-
-  function showCityInput() { goTo('s1b'); }
-
-  // ============================================================
-  // SCAN
-  // ============================================================
-  function runScan() {
-    document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
-    document.getElementById('loading').classList.add('visible');
-    document.getElementById('back-btn').style.display  = 'none';
-    document.getElementById('next-btn').style.display  = 'none';
-    document.getElementById('m-title').textContent     = 'Scanning your market...';
-    document.getElementById('m-sub').textContent       = 'Pulling city competitor data — about 15 seconds.';
-    document.getElementById('loading-msg').textContent = 'Scanning city competitors...';
-
-    setTimeout(() => document.getElementById('li3').classList.add('done'), 1100);
-    setTimeout(() => document.getElementById('li4').classList.add('done'), 2400);
-    setTimeout(() => { document.getElementById('loading').classList.remove('visible'); goTo('s2'); }, 3400);
-  }
-
-  // ============================================================
-  // PLAN SELECTION
-  // ============================================================
-  function selectPlan(el, productId, label, price, type) {
-    document.querySelectorAll('.plan-opt').forEach(p => p.classList.remove('sel'));
-    el.classList.add('sel');
-    chosen = productId;
-
-    // Update s4 order summary
-    document.getElementById('s4-plan-name').textContent  = label;
-    document.getElementById('s4-plan-price').textContent = price;
-    document.getElementById('s4-plan-type').textContent  =
-      type === 'subscription' ? 'Recurring monthly · Cancel anytime' : 'One-time payment · 24hr delivery';
-
-    const nextBtn = document.getElementById('next-btn');
-    nextBtn.style.display = 'block';
-    nextBtn.textContent   = 'Continue →';
-    nextBtn.disabled      = false;
-    nextBtn.onclick       = () => goTo('s35');
-  }
-
-  // ============================================================
-  // CONTACT CAPTURE → GHL LEAD CREATION (Step 3.5)
-  // ============================================================
-  function validateContactForm() {
-    const fname    = document.getElementById('f-fname').value.trim();
-    const lname    = document.getElementById('f-lname').value.trim();
-    const email    = document.getElementById('f-email').value.trim();
-    const practice = document.getElementById('f-practice').value.trim();
-    const emailRe  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!fname)              return 'Please enter your first name.';
-    if (!lname)              return 'Please enter your last name.';
-    if (!email)              return 'Please enter your email address.';
-    if (!emailRe.test(email))return 'Please enter a valid email address.';
-    if (!practice)           return 'Please enter your practice name.';
-    return null;
-  }
-
-  async function submitContactAndProceed() {
-    const err = validateContactForm();
-    const errEl = document.getElementById('s35-error');
-    if (err) {
-      errEl.textContent    = err;
-      errEl.style.display  = 'block';
-      return;
-    }
-    errEl.style.display = 'none';
-
-    contactData = {
-      firstName:    document.getElementById('f-fname').value.trim(),
-      lastName:     document.getElementById('f-lname').value.trim(),
-      email:        document.getElementById('f-email').value.trim(),
-      phone:        document.getElementById('f-phone').value.trim(),
-      practiceName: document.getElementById('f-practice').value.trim(),
-    };
-
-    // Disable button, show loading state
-    const btn = document.getElementById('next-btn');
-    btn.disabled    = true;
-    btn.textContent = 'Saving...';
-
-    try {
-      await createGHLContact(contactData);
-    } catch(e) {
-      // GHL failure is non-blocking — still proceed to payment
-      // Log silently; don't block the customer
-      console.error('[AIVI] GHL lead creation failed:', e);
-    }
-
-    goTo('s4');
-    mountFSEmbed();
-  }
-
-  // ── GHL: Create Contact (lead) ────────────────────────────
-  async function createGHLContact(data) {
-    // ============================================================
-    // PRODUCTION: uncomment and wire up
-    // This call creates a Contact in GHL the moment the customer
-    // submits their details — before any payment attempt.
-    // Even if they abandon at payment, you have the lead.
-    // ============================================================
-
-    // const res = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${GHL_CONFIG.apiKey}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     firstName:    data.firstName,
-    //     lastName:     data.lastName,
-    //     email:        data.email,
-    //     phone:        data.phone || undefined,
-    //     companyName:  data.practiceName,
-    //     source:       'AIVI Labs Landing Page',
-    //     tags:         ['aivi-lead', `plan-${chosen}`, detectedCity],
-    //     customField: [
-    //       { key: 'scanned_url',    fieldValue: scannedUrl   },
-    //       { key: 'detected_city',  fieldValue: detectedCity },
-    //       { key: 'selected_plan',  fieldValue: chosen       },
-    //     ],
-    //     // Add to pipeline as "Lead" stage
-    //     // Requires Opportunities API — add separately if needed
-    //   }),
-    // });
-    // const json = await res.json();
-    // if (json.contact && json.contact.id) {
-    //   ghlContactId = json.contact.id;
-    //   console.log('[AIVI] GHL contact created:', ghlContactId);
-    // }
-
-    // DEV STUB — remove in production
-    console.log('[AIVI] GHL createContact (stub):', data, chosen, detectedCity);
-    ghlContactId = 'GHL-SIM-' + Date.now();
-  }
-
-  // ── GHL: Update Contact after payment ─────────────────────
-  async function updateGHLContactPaid(orderRef) {
-    // ============================================================
-    // PRODUCTION: uncomment to mark contact as paid in GHL.
-    // This fires client-side on payment success.
-    // The Make.com webhook (server-side) is your reliable backup.
-    // ============================================================
-
-    // if (!ghlContactId) return;
-    // await fetch(`https://rest.gohighlevel.com/v1/contacts/${ghlContactId}`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Authorization': `Bearer ${GHL_CONFIG.apiKey}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     tags: ['aivi-paid', `plan-${chosen}`, detectedCity],
-    //     customField: [
-    //       { key: 'order_id',       fieldValue: orderRef.id || '' },
-    //       { key: 'payment_status', fieldValue: 'paid'           },
-    //     ],
-    //   }),
-    // });
-
-    console.log('[AIVI] GHL updateContact paid (stub):', ghlContactId, orderRef);
-  }
-
-  // ============================================================
-  // FASTSPRING EMBEDDED STOREFRONT
-  // ============================================================
-
-  // Pre-load when customer hits s35 — iframe is warm by the time they hit s4
-  function preloadFSEmbed() {
-    // PRODUCTION: pre-populate FastSpring session with contact data
-    // called here so the iframe is ready when step 4 mounts
-    //
-    // fastspring.builder.recognize({
-    //   email:     contactData.email     || '',
-    //   firstName: contactData.firstName || '',
-    //   lastName:  contactData.lastName  || '',
-    // });
-    // fastspring.builder.tag({
-    //   scannedUrl:    scannedUrl,
-    //   detectedCity:  detectedCity,
-    //   ghlContactId:  ghlContactId || '',
-    // });
-    console.log('[AIVI] FS session pre-populated (stub)');
-  }
-
-  // Mount the embedded iframe into #fs-embed-container
-  function mountFSEmbed() {
-    // PRODUCTION: trigger FastSpring to render embedded checkout
-    //
-    // fastspring.builder.add(chosen);
-    // fastspring.builder.checkout(); // renders into configured embedded storefront div
-    //
-    // FastSpring will inject their iframe into the element configured
-    // as your embedded storefront target in the FS dashboard.
-    // Point it at #fs-embed-container.
-
-    console.log('[AIVI] FS embed mounted (stub):', chosen);
-    simulatePayment(); // DEV ONLY — remove in production
-  }
-
-  // ============================================================
-  // FASTSPRING CALLBACKS
-  // Wire via data-popup-webhook-received / data-popup-closed
-  // on the FastSpring <script> tag in <head>
-  // ============================================================
-
-  function onFastSpringEvent(orderRef) {
-    // Fires when FS webhook confirms order client-side
-    if (orderRef && orderRef.id) handlePaymentSuccess(orderRef);
-  }
-
-  function onFastSpringClosed(orderRef) {
-    // Fires when FS checkout closes (success or abandoned)
-    if (orderRef && orderRef.id) {
-      handlePaymentSuccess(orderRef);
-    } else {
-      goTo('s4'); // stay on payment step if abandoned
-    }
-  }
-
-  async function handlePaymentSuccess(orderRef) {
-    try {
-      await updateGHLContactPaid(orderRef);
-    } catch(e) {
-      console.error('[AIVI] GHL paid update failed:', e);
-      // Non-blocking — Make.com webhook is the reliable fallback
-    }
-    goTo('s5');
-  }
-
-  // ============================================================
-  // DEV SIMULATION — remove in production
-  // ============================================================
-  function simulatePayment() {
-    setTimeout(() => onFastSpringClosed({ id: 'SIM-ORDER-' + Date.now() }), 3000);
-  }
-
-  // ============================================================
-  // PRACTICE DATABASE (288 practices across 6 cities)
-  // ============================================================
-  const PRACTICE_DB = {
-    // --- Peterborough (29 practices) ---
-    'lotusfamilydental.ca': { name: 'Lotus Family Dental Peterborough', score: 0.0, city: 'Peterborough' },
-    'komfs.com': { name: 'Dr. Jokay', score: 0.0, city: 'Peterborough' },
-    'davincidentalcentre.com': { name: 'DaVinci Dental Centre', score: 0.0, city: 'Peterborough' },
-    'kawarthadentalclinic.com': { name: 'Kawartha Dental Clinic', score: 0.0, city: 'Peterborough' },
-    'chemongfamilydental.com': { name: 'Chemong Family Dental Peterborough', score: 0.0, city: 'Peterborough' },
-    'peterboroughfamilydentistry.com': { name: 'Peterborough Family Dentistry', score: 0.0, city: 'Peterborough' },
-    'peterboroughorthodontist.com': { name: 'Hiro Urabe, DDS', score: 17.5, city: 'Peterborough' },
-    'ritaendo.com': { name: 'Specialty Endodontics by Dr. Rita', score: 37.5, city: 'Peterborough' },
-    'cottagecountrysmiles.ca': { name: 'Cottage Country Smiles Dentistry', score: 40.0, city: 'Peterborough' },
-    'parkstreetdentistry.com': { name: 'Park Street Dentistry', score: 45.0, city: 'Peterborough' },
-    'parkhilleastdentalcare.ca': { name: 'Parkhill East Dental Care', score: 47.5, city: 'Peterborough' },
-    'louisdiamandakos.ca': { name: 'Louis Diamandakos, DDS', score: 50.0, city: 'Peterborough' },
-    'ptboperio.ca': { name: 'Peterborough Periodontics', score: 50.0, city: 'Peterborough' },
-    'kawarthaorthodontics.com': { name: 'Kawartha Orthodontics', score: 52.5, city: 'Peterborough' },
-    '2032dentistry.com': { name: '2032 Dentistry - For Life', score: 52.5, city: 'Peterborough' },
-    'braganzaperiodontics.com': { name: 'Dr. Annabel Braganza - Peterborough Periodontist', score: 55.0, city: 'Peterborough' },
-    'eastcitydental.com': { name: 'East City Dental', score: 57.5, city: 'Peterborough' },
-    'brookdaledentalclinic.com': { name: 'Brookdale Dental Clinic', score: 60.0, city: 'Peterborough' },
-    'peterboroughsmiles.ca': { name: 'Peterborough Smiles Dental Centre', score: 60.0, city: 'Peterborough' },
-    'everesdentistry.com': { name: 'Everes Dentistry', score: 60.0, city: 'Peterborough' },
-    'dentistryonsherbrooke.ca': { name: 'Dentistry on Sherbrooke', score: 62.5, city: 'Peterborough' },
-    'peterborough.horizonfamilydentistry.com': { name: 'Horizon Family Dentistry Peterborough', score: 65.0, city: 'Peterborough' },
-    'grandvillagedental.ca': { name: 'Grand Village Dental', score: 67.5, city: 'Peterborough' },
-    'cornerstonefamilydentistry.ca': { name: 'Cornerstone Family Dentistry', score: 70.0, city: 'Peterborough' },
-    'brucecoledentistrypeterborough.ca': { name: 'Bruce Cole, DDS', score: 80.0, city: 'Peterborough' },
-    'lilylakedental.com': { name: 'Lily Lake Dental', score: 82.5, city: 'Peterborough' },
-    'drchristophermoore.ca': { name: 'Christopher Moore, DDS', score: 82.5, city: 'Peterborough' },
-    'mapleleafdentistry.com': { name: 'Maple Leaf Dentistry: Dr Cam Crawford', score: 85.0, city: 'Peterborough' },
-    'ptbodental.com': { name: 'Peterborough Dental Clinic', score: 90.0, city: 'Peterborough' },
-    // --- Kingston (35 practices) ---
-    'audenparkfamilydentistry.com': { name: 'Auden Park Family Dentistry Kingston', score: 0.0, city: 'Kingston' },
-    'limestoneperio.com': { name: 'Limestone Periodontics', score: 0.0, city: 'Kingston' },
-    'kingstonwestdental.ca': { name: 'Kingston West Dental Centre', score: 0.0, city: 'Kingston' },
-    'cataraquiwoodsdentistry.com': { name: 'Cataraqui Woods Dentistry', score: 25.0, city: 'Kingston' },
-    'wajikhan.ca': { name: 'Dr Waji Khan', score: 30.0, city: 'Kingston' },
-    'tonguetieclinic.ca': { name: 'Kingston Tongue Tie Institute', score: 30.0, city: 'Kingston' },
-    'kingstonendodontics.com': { name: 'Kingston Endodontics', score: 37.5, city: 'Kingston' },
-    'davidcraigdds.com': { name: 'Dr. David Craig', score: 42.5, city: 'Kingston' },
-    'smithfamilyorthodontics.com': { name: 'Smith Family Orthodontics', score: 45.0, city: 'Kingston' },
-    'gillisdentistry.com': { name: 'Gillis Dentistry', score: 45.0, city: 'Kingston' },
-    'smilekingston.ca': { name: 'Nguyen Anh Dr', score: 45.0, city: 'Kingston' },
-    'hedgewoodhousedental.com': { name: 'Hedgewood House', score: 47.5, city: 'Kingston' },
-    'greenwoodparkdentistry.com': { name: 'Greenwood Park Dentistry', score: 50.0, city: 'Kingston' },
-    'andersondentistry.ca': { name: 'Anderson Dentistry', score: 52.5, city: 'Kingston' },
-    'westendental.ca': { name: 'Westend Dental Clinic', score: 55.0, city: 'Kingston' },
-    'cataraquidental.com': { name: 'Cataraqui Dental Centre', score: 55.0, city: 'Kingston' },
-    'wsmdentistry.com': { name: 'William S Motruk Dentistry', score: 55.0, city: 'Kingston' },
-    'bracesdoc.ca': { name: 'Dr. Timothy Agapas, Orthodontist, Kingston - East', score: 55.0, city: 'Kingston' },
-    'dentistryatkingston.ca': { name: 'Dentistry @ Palace Road', score: 62.5, city: 'Kingston' },
-    'gardinersdentalclinic.com': { name: 'Gardiners Dental Clinic', score: 65.0, city: 'Kingston' },
-    'limestonecitydental.com': { name: 'Limestone City Dental', score: 65.0, city: 'Kingston' },
-    'rideautowndentalcare.com': { name: 'Rideau Town Dental Care', score: 65.0, city: 'Kingston' },
-    'kingstoncreeksidedental.com': { name: 'Creekside Dental', score: 72.5, city: 'Kingston' },
-    'eastenddentalcentre.com': { name: 'East End Dental Centre', score: 72.5, city: 'Kingston' },
-    'drparkfamilydentistry.ca': { name: 'Dr. Park Family Dentistry', score: 75.0, city: 'Kingston' },
-    'harbourdentalkingston.ca': { name: 'Harbour Dental', score: 75.0, city: 'Kingston' },
-    'altimakingstondental.com': { name: 'Altima Kingston Dental Centre', score: 77.5, city: 'Kingston' },
-    'meadowbrookdentalcentre.ca': { name: 'Meadowbrook Dental Centre', score: 80.0, city: 'Kingston' },
-    'kmadental.ca': { name: 'KMA Dental Kingston', score: 80.0, city: 'Kingston' },
-    'dawsondental.ca': { name: 'Dawson Dental - Kingston', score: 80.0, city: 'Kingston' },
-    'smiledentalkingston.ca': { name: 'Smile Dental Centre', score: 85.0, city: 'Kingston' },
-    'dentistkingston.com': { name: 'Dentistry on Queen', score: 85.0, city: 'Kingston' },
-    'pearldentalcarekingston.ca': { name: 'Pearl Dental Care', score: 85.0, city: 'Kingston' },
-    'kingston.lighthousedental.ca': { name: 'LightHouse Dental Kingston', score: 90.0, city: 'Kingston' },
-    'cataraquifamilydental.ca': { name: 'Cataraqui Family Dental', score: 90.0, city: 'Kingston' },
-    // --- Austin (51 practices) ---
-    'swishsmiles.com': { name: 'Swish Dental South', score: 0.0, city: 'Austin' },
-    'castordds.com': { name: 'Sunset Hills Dentistry', score: 0.0, city: 'Austin' },
-    'bartonoaksdentalgroup.com': { name: 'Barton Oaks Dental Group', score: 0.0, city: 'Austin' },
-    'austinendo.com': { name: 'Austin Endodontics, LLP', score: 0.0, city: 'Austin' },
-    'littlehousedentistry.com': { name: 'little house dentistry', score: 0.0, city: 'Austin' },
-    'downtowndentaldesign.com': { name: 'Downtown Dental Design', score: 0.0, city: 'Austin' },
-    'westerntrailsdental.com': { name: 'Western Trails Dental', score: 15.0, city: 'Austin' },
-    'va.gov': { name: 'Burcin Jennifer DDS', score: 32.5, city: 'Austin' },
-    'nantzorthodontics.com': { name: 'Nantz Orthodontics', score: 35.0, city: 'Austin' },
-    'thielpediatricdentistry.com': { name: 'Thiel Pediatric Dentistry', score: 40.0, city: 'Austin' },
-    'periosurgicalarts.com': { name: 'Periodontal Surgical Arts', score: 42.5, city: 'Austin' },
-    'ianiroendo.com': { name: 'Ianiro Endodontics', score: 45.0, city: 'Austin' },
-    'lonestarcares.org': { name: 'Lone Star Circle of Care at Stassney', score: 45.0, city: 'Austin' },
-    'toothinctx.com': { name: 'The Tooth Inc', score: 45.0, city: 'Austin' },
-    'communitycaretx.org': { name: 'Carousel Pediatrics-Riverside', score: 47.5, city: 'Austin' },
-    'dentalrepublic.com': { name: 'Dental Republic - Riverside', score: 50.0, city: 'Austin' },
-    'dentalshub.com': { name: 'Kaelan Dental Care', score: 50.0, city: 'Austin' },
-    'eastaustindental.com': { name: 'East Austin Dental', score: 52.5, city: 'Austin' },
-    'naturaltoothfairy.com': { name: 'Dr. Margaret E. Rayne, DDS', score: 60.0, city: 'Austin' },
-    'emilyzaramelladds.com': { name: 'Emily Ianno Zaramella, DDS', score: 60.0, city: 'Austin' },
-    'glintatx.com': { name: 'Glint Dental Studio Austin', score: 62.5, city: 'Austin' },
-    'koladentistry.com': { name: 'KoLa Family & Cosmetic Dentistry', score: 62.5, city: 'Austin' },
-    'austinsmilefixer.com': { name: 'Becher & Gil Orthodontics', score: 65.0, city: 'Austin' },
-    'altadentalcare.com': { name: 'Alta Dental', score: 65.0, city: 'Austin' },
-    'belldentalstudio.com': { name: 'Bell Dental Studio', score: 65.0, city: 'Austin' },
-    'austinmicroendo.com': { name: 'South Austin Microendodontics', score: 70.0, city: 'Austin' },
-    'veneerloungeaustin.com': { name: 'Veneer Lounge Austin TX', score: 70.0, city: 'Austin' },
-    'hillcountryoralsurgery.com': { name: 'Hill Country Oral Surgery', score: 70.0, city: 'Austin' },
-    'westlakehillsdental.com': { name: 'West Lake Hills Dental', score: 72.5, city: 'Austin' },
-    'toothbar.com': { name: 'Toothbar', score: 72.5, city: 'Austin' },
-    'blvddentistry.com': { name: 'BLVD Dentistry & Orthodontics of 5th Street', score: 72.5, city: 'Austin' },
-    'lonestarpediatricdental.com': { name: 'Lone Star Pediatric Dental & Braces - South Austin', score: 75.0, city: 'Austin' },
-    'superkidsaustin.com': { name: 'Super Kids Austin', score: 75.0, city: 'Austin' },
-    'honestfamilydental.com': { name: 'Honest Family Dental', score: 75.0, city: 'Austin' },
-    'bossorthodontics.com': { name: 'Boss Orthodontics', score: 75.0, city: 'Austin' },
-    'riverrockdentalfamily.com': { name: 'River Rock Dental Austin - East Riverside', score: 77.5, city: 'Austin' },
-    'ladybirddental.com': { name: 'Lady Bird Dental', score: 77.5, city: 'Austin' },
-    'myavenuedental.com': { name: 'Avenue Dental of South Austin', score: 77.5, city: 'Austin' },
-    'smile360atx.com': { name: 'Smile 360', score: 77.5, city: 'Austin' },
-    'brident.com': { name: 'Brident Dental & Orthodontics', score: 80.0, city: 'Austin' },
-    'longhornpediatricdentist.com': { name: 'Longhorn Pediatric Dentistry and Orthodontics', score: 80.0, city: 'Austin' },
-    'carussouthcentral.com': { name: 'Carus Dental South Central', score: 82.5, city: 'Austin' },
-    'myidealdental.com': { name: 'Ideal Dental South Lamar', score: 82.5, city: 'Austin' },
-    'blunncreekdental.com': { name: 'Blunn Creek Family Dentistry', score: 82.5, city: 'Austin' },
-    'breezeoralcare.com': { name: 'Breeze Dental', score: 82.5, city: 'Austin' },
-    'enameldentistry.com': { name: 'Enamel Dentistry Saltillo (East Austin)', score: 82.5, city: 'Austin' },
-    'highpointsmilestx.com': { name: 'High Point Dentistry', score: 82.5, city: 'Austin' },
-    'southaustindentalassociates.com': { name: 'South Austin Dental Associates', score: 85.0, city: 'Austin' },
-    'daybreakdentalcare.com': { name: 'Daybreak Dental', score: 85.0, city: 'Austin' },
-    'midtowndentalassociates.com': { name: 'Midtown Dental Associates', score: 87.5, city: 'Austin' },
-    'elite-dentistry.net': { name: 'Elite Dentistry ATX', score: 90.0, city: 'Austin' },
-    // --- Charlotte (76 practices) ---
-    'charlotteendodontics.com': { name: 'Charlotte Endodontics', score: 0.0, city: 'Charlotte' },
-    'linebergerorthodontics.com': { name: 'Lineberger Orthodontics - Charlotte', score: 0.0, city: 'Charlotte' },
-    'kalonsandglidewell.com': { name: 'Kalons, Glidewell & Grewal DDS PA', score: 0.0, city: 'Charlotte' },
-    'charlotteorthodontists.com': { name: 'Lume Orthodontics - Eastover', score: 10.0, city: 'Charlotte' },
-    'premiersmilesnc.com': { name: 'Dr. Marcus Jean', score: 10.0, city: 'Charlotte' },
-    'goldnerdental.com': { name: 'Preston Jan Goldner, DDS', score: 15.0, city: 'Charlotte' },
-    'cotswold.alliancedentalgroupnc.com': { name: 'Alliance Dental Group - Cotswold', score: 20.0, city: 'Charlotte' },
-    'sackstederorthodontics.com': { name: 'Sacksteder Orthodontics', score: 30.0, city: 'Charlotte' },
-    'linebergerdentistry.com': { name: 'Lineberger Dentistry', score: 30.0, city: 'Charlotte' },
-    'dualimagesmiles.com': { name: 'Dual Image Dentistry and Orthodontics', score: 32.5, city: 'Charlotte' },
-    'wirysmilesnc.com': { name: 'Wiry Smiles Orthodontics', score: 35.0, city: 'Charlotte' },
-    'lakepointedentistry.com': { name: 'Dr. Naureen Qazi, DDS', score: 37.5, city: 'Charlotte' },
-    'tranquilfamilydentistry.com': { name: 'Tranquil Family Dentistry', score: 37.5, city: 'Charlotte' },
-    'robertscottcharlottenc.com': { name: 'Robert E. Scott, D.M.D.', score: 37.5, city: 'Charlotte' },
-    'smilecharlotte.com': { name: 'Smile Charlotte', score: 47.5, city: 'Charlotte' },
-    'hannonorthodontics.com': { name: 'Hannon Orthodontics', score: 50.0, city: 'Charlotte' },
-    'webberdentistry.com': { name: 'Webber Dentistry', score: 50.0, city: 'Charlotte' },
-    'smilestarterdental.com': { name: 'Dr. Jeffrey F. Zieziula, DDS', score: 50.0, city: 'Charlotte' },
-    'smilestartersdental.com': { name: 'Dr. MI H. Kim, DDS', score: 52.5, city: 'Charlotte' },
-    'bubblespediatricdentistry.com': { name: 'Bubbles Pediatric Dentistry', score: 52.5, city: 'Charlotte' },
-    'bloomingsmilespd.com': { name: 'Blooming Smiles Pediatric Dentistry', score: 55.0, city: 'Charlotte' },
-    'teamfinancials.com': { name: 'TEAM Financials CPA', score: 55.0, city: 'Charlotte' },
-    'pearlcharlotte.com': { name: 'Pearl. Dentistry Reimagined', score: 60.0, city: 'Charlotte' },
-    'drrobertwatson.com': { name: 'Robert Watson Jr., DDS, PA', score: 60.0, city: 'Charlotte' },
-    'citydentalclt.com': { name: 'City Dental', score: 60.0, city: 'Charlotte' },
-    'mf-dentistry.com': { name: 'Merlo & Fahrney Dentistry', score: 60.0, city: 'Charlotte' },
-    'beacondentalcharlotte.com': { name: 'Beacon Dental Center', score: 60.0, city: 'Charlotte' },
-    'drlinger.com': { name: 'William Linger, DDS, MAGD & Barlan Barrero, DDS', score: 62.5, city: 'Charlotte' },
-    'eastoverdental.com': { name: 'Eastover Dental', score: 62.5, city: 'Charlotte' },
-    'dualimagedentistry.com': { name: 'Dual Image Dentistry', score: 62.5, city: 'Charlotte' },
-    'growingsmilesnc.com': { name: 'Growing Smiles Pediatric Dentistry - Madison Park', score: 65.0, city: 'Charlotte' },
-    'charlottedentalpro.com': { name: 'Charlotte DentalPro', score: 65.0, city: 'Charlotte' },
-    'charlotteperio.com': { name: 'CharlottePerio', score: 65.0, city: 'Charlotte' },
-    'bwilliamsdds.com': { name: 'D. Brian Williams, DDS, PA', score: 65.0, city: 'Charlotte' },
-    'districtdentistryclt.com': { name: 'District Dentistry', score: 65.0, city: 'Charlotte' },
-    'dentistryontheplaza.com': { name: 'Dentistry on The Plaza', score: 65.0, city: 'Charlotte' },
-    'dentistryofthecarolinas.com': { name: 'Dentistry of the Carolinas - Dilworth/South End', score: 67.5, city: 'Charlotte' },
-    'cltpediatricdentistry.com': { name: 'Lume Pediatric Dentistry & Orthodontics - Cotswold', score: 67.5, city: 'Charlotte' },
-    'charlottedentist.org': { name: 'Nelsen Dental Excellence', score: 67.5, city: 'Charlotte' },
-    'smilesatisfaction.com': { name: 'Advanced Dentistry of Charlotte - Dr Chris Bowman', score: 70.0, city: 'Charlotte' },
-    'southendpremierdentistry.com': { name: 'SouthEnd Premier Dentistry', score: 70.0, city: 'Charlotte' },
-    'belvederedentistry.com': { name: 'Belvedere Family Dentistry', score: 70.0, city: 'Charlotte' },
-    'charlottedentistry.com': { name: 'Charlotte Dentistry', score: 72.5, city: 'Charlotte' },
-    'clearsmilecharlotte.com': { name: 'Clearsmile Orthodontics (South End)', score: 72.5, city: 'Charlotte' },
-    'affordabledentures.com': { name: 'C Gregory Martin PA', score: 72.5, city: 'Charlotte' },
-    'genesisfamilydentistrync.com': { name: 'Genesis Family Dentistry - Plaza Midwood', score: 72.5, city: 'Charlotte' },
-    'premierdentalnc.com': { name: 'Premier Dental Noda', score: 72.5, city: 'Charlotte' },
-    'akasmiles.com': { name: 'All Kids Pediatric Dentistry', score: 72.5, city: 'Charlotte' },
-    'citypark.dental': { name: 'City Park Dental of Charlotte', score: 75.0, city: 'Charlotte' },
-    'charlottedentalcare.com': { name: 'Porter Dental Group', score: 75.0, city: 'Charlotte' },
-    'dentistryatcotswold.com': { name: 'Dentistry at Cotswold', score: 75.0, city: 'Charlotte' },
-    'skyviewdentistrycharlotte.com': { name: 'Skyview Dentistry', score: 75.0, city: 'Charlotte' },
-    'kidzdentalsouth.com': { name: 'Kidz Dental South', score: 77.5, city: 'Charlotte' },
-    'cltfamilydentistry.com': { name: 'Charlotte Family Dentistry', score: 77.5, city: 'Charlotte' },
-    'flossflossfloss.com': { name: 'Eastover Pediatric Dentistry', score: 77.5, city: 'Charlotte' },
-    'kidzdentalcentral.com': { name: 'Kidz Dental Central', score: 77.5, city: 'Charlotte' },
-    'pmdent.com': { name: 'Plaza Midwood Dentistry', score: 77.5, city: 'Charlotte' },
-    'smilesbypayet.com': { name: 'Smiles By Payet Dentistry', score: 80.0, city: 'Charlotte' },
-    'randolphdentalcare.com': { name: 'Randolph Dental Care', score: 80.0, city: 'Charlotte' },
-    'urbanfamilydental.com': { name: 'Urban Family Dental', score: 80.0, city: 'Charlotte' },
-    'dentistryatsouthend.com': { name: 'Dentistry at South End', score: 80.0, city: 'Charlotte' },
-    'friendlydentalgroup.com': { name: 'Friendly Dental', score: 82.5, city: 'Charlotte' },
-    'vayadental.com': { name: 'Vaya Dental - Madison Park', score: 82.5, city: 'Charlotte' },
-    'southviewdentistrycharlotte.com': { name: 'SouthView Dentistry', score: 82.5, city: 'Charlotte' },
-    'queensroaddentistry.com': { name: 'Queens Road Dentistry', score: 82.5, city: 'Charlotte' },
-    'dentistryonmonroe.com': { name: 'Dentistry On Monroe', score: 82.5, city: 'Charlotte' },
-    'seitlindental.com': { name: 'Seitlin Dental', score: 85.0, city: 'Charlotte' },
-    'providencepdo.com': { name: 'Providence Pediatric Dentistry & Orthodontics', score: 85.0, city: 'Charlotte' },
-    'cotswoldfamilydentistry.com': { name: 'Cotswold Family Dentistry', score: 85.0, city: 'Charlotte' },
-    'mydentists.org': { name: 'My Dentists', score: 85.0, city: 'Charlotte' },
-    'fourthwarddentistry.com': { name: 'Fourth Ward Dentistry', score: 85.0, city: 'Charlotte' },
-    'centralavenuedental.com': { name: 'Central Avenue Dental', score: 85.0, city: 'Charlotte' },
-    'thelandmarksmile.com': { name: 'LandMark Dentistry Charlotte', score: 87.5, city: 'Charlotte' },
-    'stewartdentalgroupcharlotte.com': { name: 'Stewart Dental Group', score: 90.0, city: 'Charlotte' },
-    'charlotteemergencydental.com': { name: 'Charlotte Emergency Dental', score: 92.5, city: 'Charlotte' },
-    'harlowdentalnc.com': { name: 'Harlow Dental at 7th Street', score: 95.0, city: 'Charlotte' },
-    // --- Scottsdale (45 practices) ---
-    'scottsdaletrailsdentistry.com': { name: 'Scottsdale Trails Dentistry', score: 0.0, city: 'Scottsdale' },
-    'toothologydental.com': { name: 'Toothology Dental', score: 0.0, city: 'Scottsdale' },
-    'dentistsonchaparral.com': { name: 'Dentists on Chaparral', score: 0.0, city: 'Scottsdale' },
-    'scottsdalefamilysmiles.com': { name: 'Scottsdale Family Smiles', score: 0.0, city: 'Scottsdale' },
-    'aspendental.com': { name: 'John Snee', score: 0.0, city: 'Scottsdale' },
-    'denturecenterofarizona.com': { name: 'Denture Center of Arizona', score: 35.0, city: 'Scottsdale' },
-    'noahhelps.org': { name: 'Marianne Youssef, DMD', score: 42.5, city: 'Scottsdale' },
-    'azdentalwellness.com': { name: 'AZ Dental Wellness', score: 42.5, city: 'Scottsdale' },
-    'valleyendodontic.com': { name: 'Valley Endodontics & Oral Surgery', score: 45.0, city: 'Scottsdale' },
-    'owtadortho.com': { name: 'Owtad Orthodontics', score: 45.0, city: 'Scottsdale' },
-    'stiegandwachtel.com': { name: 'Stieg & Wachtel Orthodontics', score: 47.5, city: 'Scottsdale' },
-    'a101dentalcare.com': { name: 'A-101 Dental Care, PC', score: 47.5, city: 'Scottsdale' },
-    'arcadiapediatricdental.com': { name: 'Arcadia Pediatric Dental', score: 50.0, city: 'Scottsdale' },
-    'drbroermann.com': { name: 'Martin Broermann DDS pc', score: 50.0, city: 'Scottsdale' },
-    'arcadiaorthoaz.com': { name: 'Arcadia Orthodontics', score: 52.5, city: 'Scottsdale' },
-    'modestdentistry.com': { name: 'Modest Dentistry - Scottsdale', score: 52.5, city: 'Scottsdale' },
-    'omsphx.com': { name: 'Nicolas Bebeau MD, DDS, FACS: Oral & Maxillofacial Surgery of Phoenix', score: 52.5, city: 'Scottsdale' },
-    'sabaandfowler.com': { name: 'Fowler Christopher DDS', score: 52.5, city: 'Scottsdale' },
-    'childrens-dental.com': { name: 'Children\'s Dental Specialty', score: 55.0, city: 'Scottsdale' },
-    'sadlondentistry.com': { name: 'Dr. Scott D. Sadlon, DDS', score: 57.5, city: 'Scottsdale' },
-    'brattonryan.com': { name: 'Roy R. Bratton, DDS, PLLC', score: 57.5, city: 'Scottsdale' },
-    'kgndental.com': { name: 'Kathleen C Green Naughton, DMD, PC', score: 57.5, city: 'Scottsdale' },
-    'southscottsdaledentalcare.com': { name: 'South Scottsdale Dental Care', score: 60.0, city: 'Scottsdale' },
-    'wowsmilez.com': { name: 'Dr. Keiko H. Willcox, DDS', score: 60.0, city: 'Scottsdale' },
-    'fourpeaksdental.com': { name: 'Four Peaks Family Dentistry', score: 60.0, city: 'Scottsdale' },
-    'c-orthostudio.com': { name: 'Camelback Orthodontic Studio', score: 60.0, city: 'Scottsdale' },
-    'azoralhealth.com': { name: 'AZ Oral Health Center', score: 62.5, city: 'Scottsdale' },
-    'gentledental.interdent.com': { name: 'Gentle Dental Scottsdale', score: 65.0, city: 'Scottsdale' },
-    'alpersdentistry.com': { name: 'Alpers Family and Cosmetic Dentistry', score: 67.5, city: 'Scottsdale' },
-    'saltriverdental.com': { name: 'Salt River Dental Care', score: 70.0, city: 'Scottsdale' },
-    'scottsdaleperio.com': { name: 'Scottsdale Implants and Periodontics - Braydon Haskell, DMD, MS', score: 70.0, city: 'Scottsdale' },
-    'milldental.com': { name: 'Millennium Dental Associates', score: 72.5, city: 'Scottsdale' },
-    'pvsmiles.com': { name: 'PV Smiles Reem Kidess', score: 72.5, city: 'Scottsdale' },
-    'snldental.com': { name: 'S&L Dental', score: 75.0, city: 'Scottsdale' },
-    'scottsdaledentalcare.net': { name: 'Scottsdale Dental Care', score: 80.0, city: 'Scottsdale' },
-    'woodruffdental.com': { name: 'Woodruff Dental', score: 80.0, city: 'Scottsdale' },
-    'myradiantfamilydentistry.com': { name: 'Radiant Family Dentistry', score: 80.0, city: 'Scottsdale' },
-    'omnidds.com': { name: 'Omni Dental Studio', score: 80.0, city: 'Scottsdale' },
-    'happyfamilydentalcare.com': { name: 'Happy Family Dental Care', score: 82.5, city: 'Scottsdale' },
-    'southtowndentalcare.com': { name: 'Southtown Dental Care: Matthew E Nelson DDS', score: 85.0, city: 'Scottsdale' },
-    'smilearizonadentistry.com': { name: 'Smile Arizona Dentistry', score: 85.0, city: 'Scottsdale' },
-    'dentistryofoldtownscottsdale.com': { name: 'Dentistry of Old Town Scottsdale', score: 85.0, city: 'Scottsdale' },
-    'pristinedentalaz.com': { name: 'Pristine Dental', score: 85.0, city: 'Scottsdale' },
-    'mitchelldentalaz.com': { name: 'Mitchell Dental', score: 87.5, city: 'Scottsdale' },
-    'scottsdalesdentist.com': { name: 'Scottsdale\'s Dentist: Top Cosmetic & Emergency Care', score: 92.5, city: 'Scottsdale' },
-    // --- Naples (52 practices) ---
-    'mysagedental.com': { name: 'Sage Dental of East Naples', score: 0.0, city: 'Naples' },
-    'naplesbaydentalgroup.com': { name: 'Naples Bay Dental Group', score: 0.0, city: 'Naples' },
-    'daveyfamilydentistry.com': { name: 'Dr Davey Dental', score: 0.0, city: 'Naples' },
-    'cohendentalstudio.com': { name: 'Cohen Dental Studio', score: 0.0, city: 'Naples' },
-    'westshoreoms.com': { name: 'WestShore Oral and Maxillofacial Specialists', score: 0.0, city: 'Naples' },
-    'mydentaldesigns.com': { name: 'Dental Designs', score: 0.0, city: 'Naples' },
-    'pagefamilydentalgroup.com': { name: 'Page Family Dental Group', score: 0.0, city: 'Naples' },
-    'naplesendodontist.com': { name: 'Endodontic Specialists of Naples - Dr. Kevin R. Kunz', score: 0.0, city: 'Naples' },
-    'naplesdentists.com': { name: 'Jaime Davenport DMD', score: 10.0, city: 'Naples' },
-    'drkellidmdnaples.com': { name: 'Kelli Salomon, DMD', score: 10.0, city: 'Naples' },
-    'towncaredental.com': { name: 'Towncare Dental of Naples', score: 22.5, city: 'Naples' },
-    'dentalspecialtyflorida.com': { name: 'Dental Specialty Center of Naples', score: 22.5, city: 'Naples' },
-    'cpswfl.com': { name: 'Wilson Professional Center', score: 32.5, city: 'Naples' },
-    'meyerdentalcare.com': { name: 'Leigh T. Meyer, DMD', score: 40.0, city: 'Naples' },
-    'puredentalnaples.com': { name: 'Pure Dental Naples', score: 42.5, city: 'Naples' },
-    'harbordentalfl.com': { name: 'Harbor Dental', score: 47.5, city: 'Naples' },
-    'ayandentistry.com': { name: 'Ayan Dentistry', score: 47.5, city: 'Naples' },
-    'naplesdentalstudio.com': { name: 'Naples Dental Studio', score: 52.5, city: 'Naples' },
-    'precisiondentalcarenaples.com': { name: 'Dr. Fonseca', score: 57.5, city: 'Naples' },
-    'alexanderbraodds.com': { name: 'Alexander Brao, DDS', score: 57.5, city: 'Naples' },
-    'drtaranov.com': { name: 'Dr. Kristina Taranov, DDS', score: 60.0, city: 'Naples' },
-    'naples-smiles.com': { name: 'Naples General & Cosmetic Dentistry LLC', score: 60.0, city: 'Naples' },
-    'bayfrontdentistry.com': { name: 'Aesthetic Dentistry at Bayfront', score: 62.5, city: 'Naples' },
-    'engleimplantdentistry.com': { name: 'Engle Dentistry Naples', score: 65.0, city: 'Naples' },
-    'oldenaplesperio.com': { name: 'Olde Naples Periodontics - Denise C. Gay, D.D.S, M.D.S', score: 65.0, city: 'Naples' },
-    'dentistsnaples.com': { name: 'For Smiles Dentists', score: 65.0, city: 'Naples' },
-    'naplesperiodontist.com': { name: 'Naples Periodontist- Timothy Davis, D.D.S. and Miguel Jusino, D.M.D., M.S.', score: 65.0, city: 'Naples' },
-    'gulfsidedentalnaples.com': { name: 'Dr. Delia Reyes', score: 67.5, city: 'Naples' },
-    'drjbhansen.com': { name: 'Hansen II James B DDS PA', score: 67.5, city: 'Naples' },
-    'familyorthonaples.com': { name: 'Family Orthodontics of Naples', score: 67.5, city: 'Naples' },
-    'periodontistofnaples.com': { name: 'Periodontics and Implant Center of Naples: Dr. Jennifer Araya', score: 67.5, city: 'Naples' },
-    'townedentalnaples.com': { name: 'Towne Dental Naples', score: 70.0, city: 'Naples' },
-    'naplescomprehensivedentist.com': { name: 'Implant and Comprehensive Dentistry of Naples', score: 70.0, city: 'Naples' },
-    'myparkdental.com': { name: 'Park Family and Cosmetic Dentistry', score: 70.0, city: 'Naples' },
-    'healthcareswfl.org': { name: 'Network of Southwest Florida News', score: 72.5, city: 'Naples' },
-    'implantcenternearme.com': { name: 'Florida Dental Implant Institute', score: 77.5, city: 'Naples' },
-    'coastalsmilesfamilyorthodontics.com': { name: 'Coastal Smiles Family Orthodontics', score: 77.5, city: 'Naples' },
-    'castordentalassociates.com': { name: 'Castor Dental Associates', score: 77.5, city: 'Naples' },
-    'bayviewdentalarts.com': { name: 'BayView Dental Arts', score: 80.0, city: 'Naples' },
-    'childrensdentistryofnaples.com': { name: 'Children\'s Dentistry of Naples', score: 80.0, city: 'Naples' },
-    'zerocavity.com': { name: 'Gerardo Santiago DDS', score: 80.0, city: 'Naples' },
-    'palmroyaldentalcare.com': { name: 'Palm Royal Dental Care', score: 82.5, city: 'Naples' },
-    'camerondentalstudio.com': { name: 'Cameron Dental Studio', score: 82.5, city: 'Naples' },
-    'gulfviewdentistry.com': { name: 'Gulfview Dental', score: 82.5, city: 'Naples' },
-    'cosmeticdentistryofnaples.com': { name: 'Gulf Shore Cosmetic and Family Dentistry', score: 82.5, city: 'Naples' },
-    'hesterpediatricdentistry.com': { name: 'Hester Pediatric Dentistry', score: 82.5, city: 'Naples' },
-    'gatewayofnaplesdental.com': { name: 'Gateway of Naples Dental', score: 82.5, city: 'Naples' },
-    'altamardental.com': { name: 'Altamar Dental Studio | Naples', score: 85.0, city: 'Naples' },
-    'coastdental.com': { name: 'Coast Dental', score: 85.0, city: 'Naples' },
-    'naplesdentist.com': { name: 'Dr. Randold Binns DMD, MS', score: 87.5, city: 'Naples' },
-    'banyandentalcarenaples.com': { name: 'Banyan Dental Care', score: 87.5, city: 'Naples' },
-    'eastlakesdentalcare.com': { name: 'East Lakes Dental Care', score: 87.5, city: 'Naples' },
-  };
-
-  // ============================================================
-  // CITY DISPLAY NAMES
-  // ============================================================
-  const CITY_DISPLAY = {
-    'Peterborough': 'Peterborough, ON',
-    'Kingston': 'Kingston, ON',
-    'Austin': 'Austin, TX',
-    'Charlotte': 'Charlotte, NC',
-    'Scottsdale': 'Scottsdale, AZ',
-    'Naples': 'Naples, FL',
-  };
-
-  // ============================================================
-  // AGGREGATE STATS (computed at page load)
-  // ============================================================
-  function showAggregateStats() {
-    const all = Object.values(PRACTICE_DB).filter(p => p.score > 0);
-    const total = Object.keys(PRACTICE_DB).length;
-    const avg = Math.round(all.reduce((s, p) => s + p.score, 0) / total * 10) / 10;
-    const belowPct = Math.round(all.filter(p => p.score < 60).length / total * 100);
-    document.getElementById('stat-avg-score').textContent = avg;
-    document.getElementById('stat-avg-label').textContent = 'Avg. AI visibility score';
-    document.getElementById('stat-count').textContent = total;
-    document.getElementById('stat-count-label').textContent = 'Practices scanned';
-    document.getElementById('stat-below').textContent = belowPct + '%';
-    document.getElementById('stat-below-label').textContent = 'Score below average';
-  }
-  showAggregateStats();
-
-  // ============================================================
-  // LABEL STYLING
-  // ============================================================
-  const LABEL_STYLE = {
-    'PREFERRED':  { color: 'var(--teal)',   bg: 'rgba(0,201,167,0.12)',   msg: 'Your practice is highly findable by AI search.' },
-    'VISIBLE':    { color: 'var(--teal)',   bg: 'rgba(0,201,167,0.10)',   msg: 'Your practice is visible \u2014 but there\u2019s room to reach the top tier.' },
-    'UNRELIABLE': { color: 'var(--amber)',  bg: 'rgba(255,197,66,0.12)',  msg: 'AI search may not consistently recommend your practice.' },
-    'INVISIBLE':  { color: 'var(--coral)',  bg: 'rgba(255,95,109,0.12)', msg: 'Your practice is largely invisible to AI search.' },
-  };
-
-  // ============================================================
-  // URL NORMALISATION
-  // ============================================================
-  function normalizeUrl(input) {
-    let url = input.trim().toLowerCase();
-    // Strip UTM and other query params
-    url = url.split('?')[0];
-    // Add protocol if missing
-    if (!url.startsWith('http')) url = 'https://' + url;
-    try {
-      const parsed = new URL(url);
-      let host = parsed.hostname;
-      // Remove www.
-      if (host.startsWith('www.')) host = host.slice(4);
-      return host;
-    } catch(e) {
-      return url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].split('?')[0];
-    }
-  }
-
-  // ============================================================
-  // SCORE COLOUR HELPER
-  // ============================================================
-  function scoreColor(score) {
-    if (score >= 85) return 'var(--teal)';
-    if (score >= 70) return 'var(--teal)';
-    if (score >= 50) return 'var(--amber)';
-    return 'var(--coral)';
-  }
-
-  // ============================================================
-  // LOOKUP
-  // ============================================================
-  function runLookup() {
-    const raw = document.getElementById('lookup-url').value;
-    if (!raw.trim()) return;
-
-    const domain = normalizeUrl(raw);
-    const practice = PRACTICE_DB[domain];
-
-    // Hide both panels first
-    document.getElementById('lookup-result').style.maxHeight = '0';
-    document.getElementById('lookup-notfound').style.display = 'none';
-
-    if (!practice || practice.score === 0) {
-      // Not found — show inline message and reset stats to aggregate
-      document.getElementById('lookup-notfound').style.display = 'block';
-      document.getElementById('notify-email').disabled = false;
-      document.getElementById('notify-confirm').style.display = 'none';
-      showAggregateStats();
-      return;
-    }
-
-    // Format score — drop .0, keep .5
-    const fmt = s => Number.isInteger(s) ? String(s) : String(s);
-
-    // Derive label from score
-    function getLabel(score) {
-      if (score >= 85) return 'PREFERRED';
-      if (score >= 70) return 'VISIBLE';
-      if (score >= 50) return 'UNRELIABLE';
-      return 'INVISIBLE';
-    }
-    const label = getLabel(practice.score);
-
-    // Filter to same-city practices (exclude score-0: blocked/unreachable sites)
-    const cityPractices = Object.values(PRACTICE_DB).filter(p => p.city === practice.city && p.score > 0);
-    const cityAvg = Math.round(cityPractices.reduce((sum, p) => sum + p.score, 0) / cityPractices.length * 10) / 10;
-    const cityName = CITY_DISPLAY[practice.city] || practice.city;
-
-    // Update stat boxes to city-specific stats
-    const cityBelowPct = Math.round(cityPractices.filter(p => p.score < 60).length / cityPractices.length * 100);
-    document.getElementById('stat-avg-score').textContent = cityAvg;
-    document.getElementById('stat-avg-label').textContent = cityName + ' avg. score';
-    document.getElementById('stat-count').textContent = cityPractices.length;
-    document.getElementById('stat-count-label').textContent = 'Practices scanned';
-    document.getElementById('stat-below').textContent = cityBelowPct + '%';
-    document.getElementById('stat-below-label').textContent = 'Score below average';
-
-    // Populate score card
-    const style = LABEL_STYLE[label] || LABEL_STYLE['INVISIBLE'];
-    const scoreEl = document.getElementById('result-score-num');
-    scoreEl.textContent = fmt(practice.score);
-    scoreEl.style.color = style.color;
-
-    document.getElementById('result-practice-name').textContent = practice.name;
-
-    const badge = document.getElementById('result-label-badge');
-    badge.textContent = label;
-    badge.style.color = style.color;
-    badge.style.background = style.bg;
-
-    document.getElementById('result-message').textContent = style.msg;
-
-    // Rank within same city
-    const cityRanked = cityPractices.sort((a, b) => b.score - a.score);
-    const rank = cityRanked.findIndex(p => p.score === practice.score && p.name === practice.name) + 1;
-    document.getElementById('result-rank').textContent = '#' + rank;
-    document.getElementById('result-city-avg').textContent = cityAvg;
-    document.getElementById('result-city-name').textContent = cityName;
-    document.getElementById('result-city-count').textContent = 'of ' + cityPractices.length + ' practices';
-
-    // Pick two competitors: one ahead (higher score), one behind (lower score)
-    // sorted descending so index 0 = highest score
-    const sorted = [...cityPractices].sort((a, b) => b.score - a.score);
-    const myIdx = sorted.findIndex(p => p.name === practice.name);
-    const comps = [];
-    // One ahead (lower index = higher score)
-    if (myIdx > 0) comps.push(sorted[myIdx - 1]);
-    // One behind (higher index = lower score)
-    if (myIdx < sorted.length - 1) comps.push(sorted[myIdx + 1]);
-    // If practice is #1, show two behind; if last, show two ahead
-    if (comps.length < 2) {
-      if (myIdx === 0 && sorted.length > 2) comps.push(sorted[myIdx + 2]);
-      if (myIdx === sorted.length - 1 && sorted.length > 2) comps.unshift(sorted[myIdx - 2]);
-    }
-
-    // Combine all entries including city average and sort by score desc
-    const allEntries = [
-      { name: practice.name, score: practice.score, type: 'you' },
-      { name: cityName + ' average', score: cityAvg, type: 'avg' },
-    ];
-    comps.forEach(c => allEntries.push({ name: c.name, score: c.score, type: 'comp' }));
-    allEntries.sort((a, b) => b.score - a.score);
-
-    let rows = allEntries.map(e => {
-      if (e.type === 'you') {
-        return `
-          <div style="display:flex; align-items:center; gap:12px; padding:11px 12px; margin:0 -12px; border-radius:8px; background:rgba(0,201,167,0.06); border-left:2px solid var(--teal); padding-left:10px;">
-            <div style="flex:1; font-size:14px; font-weight:500; color:var(--teal);">${e.name}</div>
-            <div style="font-size:11px; font-weight:500; color:var(--teal); background:rgba(0,201,167,0.12); padding:3px 10px; border-radius:100px; white-space:nowrap;">you · ${fmt(e.score)}</div>
-          </div>`;
-      }
-      if (e.type === 'avg') {
-        return `
-          <div style="display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-            <div style="flex:1; font-size:13px; font-weight:300; color:var(--text-dim); font-style:italic;">${cityName} average</div>
-            <div style="font-size:12px; font-weight:500; color:#ffc542; background:rgba(255,197,66,0.1); padding:3px 10px; border-radius:100px; white-space:nowrap;">${fmt(e.score)}</div>
-          </div>`;
-      }
-      const ahead = e.score > practice.score;
-      const posLabel = ahead ? 'ahead' : 'behind';
-      const posColor = ahead ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)';
-      const posBg = ahead ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)';
-      return `
-        <div style="display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-          <div style="flex:1; font-size:14px; color:var(--text); font-weight:400;">${e.name}</div>
-          <div style="font-size:11px; font-weight:400; color:${posColor}; background:${posBg}; padding:3px 10px; border-radius:100px; white-space:nowrap; font-style:italic;">${posLabel}</div>
-        </div>`;
-    }).join('');
-
-    document.getElementById('comp-rows').innerHTML = rows;
-
-    // Slide open result panel
-    const resultPanel = document.getElementById('lookup-result');
-    resultPanel.style.maxHeight = '800px';
-    setTimeout(() => resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-  }
-
-  // ============================================================
-  // NOTIFY (not-found email capture)
-  // ============================================================
-  function submitNotify() {
-    const email = document.getElementById('notify-email').value.trim();
-    if (!email || !email.includes('@')) return;
-    // Production: POST to GHL or Make.com webhook
-    console.log('[AIVI] Notify request:', email);
-    document.getElementById('notify-confirm').style.display = 'block';
-    document.getElementById('notify-email').disabled = true;
-  }
-
+})();
 </script>
-
 </body>
 </html>
