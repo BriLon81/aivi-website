@@ -137,14 +137,14 @@
         <div class="panel panel--primary">
           <span class="panel__tag live"><span class="dot"></span>Measured now</span>
           <h2>Practices we've measured — Peterborough, ON</h2>
-          <p class="panel__sub">All 31 Peterborough dental practices are measured. Find yours, add your email, and we'll send your report link.</p>
+          <p class="panel__sub">Peterborough dental practices are measured. Find yours, add your email, and we'll send your report link.</p>
 
           <form id="report-form" novalidate>
             <div class="field">
               <label class="field-label" for="practice">Your practice</label>
               <input type="text" id="practice" name="practice_name" list="practice-list" placeholder="Start typing your practice name…" autocomplete="off" required />
               <datalist id="practice-list"></datalist>
-              <div class="hint">Choose from the 31 measured Peterborough practices.</div>
+              <div class="hint">Choose from the measured Peterborough practices.</div>
             </div>
             <div class="field">
               <label class="field-label" for="report-email">Email</label>
@@ -232,37 +232,41 @@
 <script>
 (function(){
   // Measured Peterborough practice NAMES (public). No tokens, ids, or links here.
+  // KEEP THIS LIST ALPHABETICAL. It ships in the page body, so its ORDER is
+  // public too — in rates-file order it published the city ranking (most-named
+  // practice first) to anyone reading source. Appending a name out of order
+  // re-leaks it; the sort at render time is a safety net, not a substitute.
   var PRACTICES = [
-    "Chemong Family Dental Peterborough",
-    "Kawartha Dental Clinic",
-    "Maple Leaf Dentistry: Dr Cam Crawford",
-    "Cornerstone Family Dentistry",
-    "Grand Village Dental",
-    "Peterborough Dental Clinic",
     "2032 Dentistry - For Life",
-    "Christopher Moore, DDS",
-    "Louis Diamandakos, DDS",
-    "Horizon Family Dentistry Peterborough",
-    "Lily Lake Dental",
-    "Peterborough Family Dentistry",
-    "DaVinci Dental Centre",
-    "Everes Dentistry",
-    "Lotus Family Dental Peterborough",
-    "Peterborough Smiles Dental Centre",
-    "Bruce Cole, DDS",
-    "Brookdale Dental Clinic",
-    "East City Dental",
-    "Dr. Jokay",
-    "Parkhill East Dental Care",
-    "Cottage Country Smiles Dentistry",
-    "Dentistry on Sherbrooke",
     "Anderson Kenneth R Dr",
+    "Brookdale Dental Clinic",
+    "Bruce Cole, DDS",
+    "Chemong Family Dental Peterborough",
+    "Christopher Moore, DDS",
+    "Cornerstone Family Dentistry",
+    "Cottage Country Smiles Dentistry",
+    "DaVinci Dental Centre",
     "Dean Dental Lab",
+    "Dentistry on Sherbrooke",
     "Dr. Annabel Braganza - Peterborough Periodontist",
+    "Dr. Jokay",
+    "East City Dental",
+    "Everes Dentistry",
+    "Grand Village Dental",
     "Hiro Urabe, DDS",
+    "Horizon Family Dentistry Peterborough",
+    "Kawartha Dental Clinic",
     "Kawartha Orthodontics",
+    "Lily Lake Dental",
+    "Lotus Family Dental Peterborough",
+    "Louis Diamandakos, DDS",
+    "Maple Leaf Dentistry: Dr Cam Crawford",
     "Park Street Dentistry",
+    "Parkhill East Dental Care",
+    "Peterborough Dental Clinic",
+    "Peterborough Family Dentistry",
     "Peterborough Periodontics",
+    "Peterborough Smiles Dental Centre",
     "Specialty Endodontics by Dr. Rita"
   ];
 
@@ -271,9 +275,12 @@
   var CITY_ENDPOINT = 'https://api.aivilabs.io/city/request';
   var TIMEOUT_MS = 15000;
 
-  // Populate the searchable datalist from the names array.
+  // Populate the searchable datalist, alphabetically. Sorted on a copy so the
+  // match loop below still sees the source array untouched.
   var dl = document.getElementById('practice-list');
-  dl.innerHTML = PRACTICES.map(function(n){
+  dl.innerHTML = PRACTICES.slice().sort(function(a,b){
+    return a.localeCompare(b, 'en', { sensitivity: 'base' });
+  }).map(function(n){
     return '<option value="' + n.replace(/"/g,'&quot;') + '"></option>';
   }).join('');
 
@@ -336,7 +343,7 @@
       for(var i=0;i<PRACTICES.length;i++){
         if(PRACTICES[i].toLowerCase() === name.toLowerCase()){ match = PRACTICES[i]; break; }
       }
-      if(!match){ showErr('Please choose your practice from the list of 31 measured practices.'); return null; }
+      if(!match){ showErr('Please choose your practice from the list of measured practices.'); return null; }
       if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return null; }
       return { practice_name: match, email: email };
     }
