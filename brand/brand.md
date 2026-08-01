@@ -167,3 +167,57 @@ font-to-tile ratio is tuned for 34px and up.
 5. **"SEZC" never appears in brand surfaces.** The legal entity name belongs in
    footers, About sections and contracts only — never in the wordmark, the
    social cover, or any header.
+
+---
+
+## Avatar variants
+
+**Avatar-only.** The masthead lockup keeps the shipping `AI` square — nothing
+about the site header or the report changes.
+
+Two candidates were rendered and measured at the size that decides it: 40px,
+circle-masked, which is Facebook's comment-thread avatar.
+
+| file | glyphs | cap @40px | min stroke @40px | verdict |
+|---|---|---|---|---|
+| `mark-green-tile.svg` *(shipping)* | `AI` | 10px | 2px | OK |
+| `avatar-aivi-tile.svg` | `AIVI` | 8px | **1px** | **fails** |
+| `avatar-a-monogram.svg` | `A` | 20px | **4px** | **strongest** |
+
+### The AIVI tile does not hold at 40px in a circle
+
+Four mono glyphs across ~36 visible pixels leaves each stem **1px wide**. A 1px
+stem cannot render as a stem — it survives only as anti-aliased grey, so the
+letterforms stop resolving as shapes. Cap height falls to 8px, below the
+shipping mark's 10px, because four glyphs must be sized down to fit at all.
+
+See `avatar-40px-circle-magnified.png` (each 40px render upscaled 10×,
+nearest-neighbour). Read left to right — `AI`, `AIVI`, `A` — the middle one is a
+smear that is only readable if you already know what it says. That is not a test
+it passes.
+
+It is fine at 512 and acceptable at 80. **The failure is specific to avatar
+sizes, which is the only thing it was built for.**
+
+### Recommendation
+
+**Use `avatar-a-monogram` as the standalone social avatar.** At 4px minimum
+stroke and 20px cap it is the only one of the three that is unambiguous at 40px,
+and it has room to spare as platforms shrink avatars further.
+
+The cost is that a lone `A` carries less brand information than `AI` — but an
+illegible mark carries none, and the wordmark does the naming everywhere the
+avatar appears (profile name, page title, post attribution).
+
+| context | use |
+|---|---|
+| Social avatar, favicon, any circular crop, anything ≤64px | `avatar-a-monogram` |
+| Site header, report masthead, lockups | `mark-green-tile` *(the `AI` square — unchanged)* |
+| Large square placements ≥192px where the full name helps | `avatar-aivi-tile` is viable, but the lockup is better |
+
+### Circle-crop safety
+
+The circle mask removes the tile's corners entirely. All three candidates keep
+their glyphs well inside the inscribed circle, so nothing load-bearing is lost —
+verified, not assumed. Any future avatar must keep artwork inside a centred
+circle of 0.9 × tile width.

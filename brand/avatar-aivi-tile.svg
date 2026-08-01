@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34" role="img" aria-label="AIVI Labs">
+  <title>AIVI Labs avatar — AIVI</title>
+  <rect width="34" height="34" rx="8.0000" ry="8.0000" fill="#7EE2BC"/>
+  <g>
+    <path d="M435 0 391 168H200L157 0H5L194 698H406L595 0ZM300 553H292L224 289H368Z" fill="#062418" transform="translate(3.4000 20.7227) scale(0.010667 -0.010667)"/>
+    <path d="M75 0V111H225V587H75V698H525V587H375V111H525V0Z" fill="#062418" transform="translate(10.3333 20.7227) scale(0.010667 -0.010667)"/>
+    <path d="M194 0 9 698H176L258 343L299 142H307L349 343L432 698H591L406 0Z" fill="#062418" transform="translate(17.2667 20.7227) scale(0.010667 -0.010667)"/>
+    <path d="M75 0V111H225V587H75V698H525V587H375V111H525V0Z" fill="#062418" transform="translate(24.2000 20.7227) scale(0.010667 -0.010667)"/>
+  </g>
+</svg>
