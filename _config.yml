@@ -1,0 +1,23 @@
+# GitHub Pages / Jekyll configuration for aivilabs.io
+#
+# This file exists for ONE reason: to keep brand/ out of the published site.
+# The repo publishes from the branch root, so without an exclude rule every
+# folder here is served at aivilabs.io/<folder>/. brand/ is a source folder —
+# master artwork and tokens — not site content.
+#
+# NOTE: `exclude` REPLACES Jekyll's built-in default list rather than adding to
+# it, so the defaults are restated below. Dropping them would start publishing
+# vendor/ and node_modules/ if either ever appears.
+exclude:
+  - brand/
+  # Jekyll defaults, restated because the key above overrides them:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

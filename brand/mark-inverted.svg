@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34" role="img" aria-label="AIVI">
+  <title>AIVI mark</title>
+  <rect width="34" height="34" rx="8" ry="8" fill="#0B1220"/>
+  <g>
+    <path d="M435 0 391 168H200L157 0H5L194 698H406L595 0ZM300 553H292L224 289H368Z" fill="#7EE2BC" transform="translate(8.8750 21.5370) scale(0.013000 -0.013000)"/>
+    <path d="M75 0V111H225V587H75V698H525V587H375V111H525V0Z" fill="#7EE2BC" transform="translate(17.3250 21.5370) scale(0.013000 -0.013000)"/>
+  </g>
+</svg>
