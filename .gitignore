@@ -4,3 +4,5 @@ desktop.ini
 r/
 # Generated per-practice reports (build output)
 reports/
+# design-sync build output
+ds-bundle/
