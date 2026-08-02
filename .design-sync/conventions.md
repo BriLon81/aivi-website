@@ -74,6 +74,28 @@ sides is at least 0.235 × mark height.
 **"SEZC" never appears in brand surfaces.** The legal entity name belongs in
 footers, About sections and contracts — never in a wordmark, header or cover.
 
+## Tagline
+
+Two canonical forms — use one verbatim, never a paraphrase:
+
+- **Short**, for sign-offs, footers and meta labels: `We measure AI responses`
+- **Long**, for heroes and About-style copy: `We measure the answers AI gives your customers`
+
+`We measure AI search visibility` is **retired** (2026-08-02). Do not use it,
+even though it still appears on the social-cover artwork.
+
+## Copy is never yours to invent
+
+Numbers in this brand are **measured claims**, not decoration. Never invent a
+metric, sample size, platform count, price, guarantee or timeframe to make a
+mockup look finished — a fabricated number read as approved copy is the single
+most expensive mistake you can make here. Use obvious placeholders
+(`XX%`, `[practice name]`) and let a human supply the real value.
+
+The same applies to legal and contact surfaces: don't author expiry terms,
+refund promises or addresses. Footer contact details come from the approved
+delivery copy, never from memory.
+
 ## Where the truth lives
 
 - `styles.css` and its imports under `tokens/` — the real, current values.
@@ -93,6 +115,6 @@ authored — so if this file and `tokens/` ever disagree, `tokens/` wins.
     AI SEARCH VISIBILITY
   </div>
   <div style={{ fontFamily: 'var(--mono)', fontSize: '40px', color: 'var(--pos)' }}>34%</div>
-  <p style={{ color: 'var(--text-3)', margin: 0 }}>Measured across 12 prompts.</p>
+  <p style={{ color: 'var(--text-3)', margin: 0 }}>Mention rate across measured answers.</p>
 </section>
 ```
