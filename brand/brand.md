@@ -103,6 +103,32 @@ font-size 0.382 × tile size (13px on a 34px tile).
 
 ---
 
+## Tagline
+
+Two canonical forms. Both are current; pick by the space, not by preference.
+
+| Form | Text | Use |
+|---|---|---|
+| **Short** | `We measure AI responses` | Sign-offs, footers, meta labels, anywhere a one-liner sits beside the wordmark |
+| **Long** | `We measure the answers AI gives your customers` | Heroes, About-style copy, title tags — anywhere a full sentence already lives |
+
+Do not invent a third form, and do not mix them in one surface.
+
+**Superseded:** `We measure AI search visibility`. Retired 2026-08-02. It still
+appears in two places, both deliberate:
+
+- `social-cover-1640x856.svg` / `.png` — the artwork carries the old line as
+  outlined paths. Regenerating it is **visual work, out of scope** until the
+  post-launch identity rollout. The Files table below describes the asset as it
+  currently is, not as it should read.
+- The three Instantly outreach step cards — hand-maintained in the dashboard,
+  inside Andrea-approved copy.
+
+`aivi-delivery-state/email/render.py` bans the retired line outright, so it
+cannot return to a delivery email.
+
+---
+
 ## Files
 
 Glyphs in every SVG are **outlined to paths** from the real IBM Plex fonts
@@ -129,7 +155,7 @@ Editing the letterforms means regenerating from the font, not nudging paths.
 
 | File | Size | Contents |
 |---|---|---|
-| `social-cover-1640x856.svg` / `.png` | 1640×856 | Ink background, mark + wordmark lockup, "We measure AI search visibility" in Text 3 |
+| `social-cover-1640x856.svg` / `.png` | 1640×856 | Ink background, mark + wordmark lockup, "We measure AI search visibility" in Text 3 — **the retired tagline**; the artwork is unchanged pending the identity rollout (see Tagline above) |
 
 Facebook page cover. Content is centred so the mobile crop keeps it inside the
 safe area.
