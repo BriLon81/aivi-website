@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AIVI Labs — We measure the answers AI gives your customers</title>
-<meta name="description" content="AIVI Labs measures how often AI assistants name local businesses. We asked AI about dentists in Peterborough 1035 times across six AI surfaces. We don't predict the shift to AI search — we measure it." />
+<meta name="description" content="AIVI Labs measures how often AI assistants name local businesses. We asked AI about dentists in Peterborough 5009 times across six AI surfaces. We don't predict the shift to AI search — we measure it." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet" />
@@ -68,6 +68,8 @@
   .hero h1{margin:24px 0 0;max-width:16ch}
   .hero .lede{margin-top:clamp(20px,3vw,30px);max-width:60ch;font-size:clamp(17px,1.6vw,20px);line-height:1.6;color:var(--text-3)}
   .hero .lede b{color:var(--text-1);font-weight:600}
+  .hero .lede--points{margin-top:clamp(12px,1.6vw,18px);padding-left:1.15em;list-style:disc}
+  .hero .lede--points li{margin:.35em 0}
   .hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(28px,4vw,40px)}
   .hero__note{margin-top:16px;font-size:13px;color:var(--text-5)}
 
@@ -181,8 +183,14 @@ framing. Decision 2026-07-23. -->
   <section class="hero">
     <div class="wrap">
       <span class="kicker"><span class="dot"></span>Measurement, not marketing</span>
-      <h1>We asked AI about dentists in Peterborough <span class="em-pos">1035 times</span>. Here's who it recommends.</h1>
-      <p class="lede">When a patient asks ChatGPT, Claude, or Gemini for a dentist, a handful of names come back again and again — and most practices barely appear. <b>AIVI Labs measures exactly how often each practice is named</b>, across six AI surfaces. No scores, no guesswork — measured facts.</p>
+      <h1>We asked AI about dentists in Peterborough <span class="em-pos">5009 times</span>. Here's who it names.</h1>
+      <p class="lede">When patients ask ChatGPT, Claude, or Gemini for a dentist:</p>
+      <ul class="lede lede--points">
+        <li>the same few names come back again and again</li>
+        <li>most practices barely appear</li>
+        <li><b>we measure exactly how often each practice is named</b> — six AI surfaces</li>
+        <li>no scores, no guesswork — measured facts</li>
+      </ul>
       <div class="hero__cta">
         <a class="btn btn--lg" href="report.html">Get your practice's report</a>
         <a class="btn btn--lg btn--ghost" href="#fieldguide">Join the field guide list</a>
@@ -191,22 +199,31 @@ framing. Decision 2026-07-23. -->
 
       <div class="statband">
         <div class="stat">
-          <div class="stat__num tnum"><span class="pos">1035</span></div>
+          <div class="stat__num tnum"><span class="pos">5009</span></div>
           <div class="stat__label">Measured AI answers about local dentists, aggregated into a mention rate per practice.</div>
         </div>
         <div class="stat">
           <div class="stat__num tnum">6</div>
           <div class="stat__label">AI surfaces: ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and the Google Local Pack.</div>
         </div>
-        <!-- The "8" is the count of measured practices with ZERO mentions across
-             every surface. Source of truth: 1b-analysis-<city>/<city>_final_rates.csv,
-             rows where final_deduped == 0 (equivalently final_rate_pct == 0) — 8 of
-             31 in Peterborough. Recompute it per city; do NOT carry this number over.
-             NB it is deliberately NOT the reports' §07 "not yet named by any AI"
-             figure, which counts final_rate_pct < 1 and so reads 12 — that predicate
-             also catches four practices that WERE named at least once. -->
+        <!-- The "4" is the count of measured practices with ZERO mentions across
+             every surface. Source of truth: 1c-analysis-2026Q3/peterborough_final_rates.csv,
+             rows where final_deduped == 0 — 4 of 31 in Peterborough. Recompute it
+             per city AND per quarter; do NOT carry this number over.
+
+             Read final_deduped, NEVER final_rate_pct. They are NOT equivalent: that
+             column is stored rounded to one decimal, so as n grows a practice named
+             once or twice rounds to 0.0 and would publish as "never named". At May's
+             n=1,035 both predicates read 8 and the difference was invisible; at
+             n=5,009 the rounded one still reads 8 while the true count is 4.
+             The four it wrongly catches — Brookdale, Dr. Jokay, Kawartha
+             Orthodontics, Specialty Endodontics — were each named twice.
+
+             The reports' §07 "not yet named by any AI" tile now uses this same raw
+             predicate (dc.is_never_named) and so agrees at 4. It previously used
+             final_rate_pct < 1 and read 12. -->
         <div class="stat">
-          <div class="stat__num tnum">8</div>
+          <div class="stat__num tnum">4</div>
           <div class="stat__label">Peterborough practices never named in a single AI answer.</div>
         </div>
       </div>
@@ -267,7 +284,7 @@ framing. Decision 2026-07-23. -->
     <div class="wrap">
       <div class="eyebrow section__label">Proof point · Peterborough, Ontario</div>
       <h2>One city, measured end to end.</h2>
-      <p class="intro">Peterborough is our first fully measured market — its dental practices measured across the six AI surfaces and aggregated from 1035 answers into a mention rate for each practice.</p>
+      <p class="intro">Peterborough is our first fully measured market — its dental practices measured across the six AI surfaces and aggregated from 5009 answers into a mention rate for each practice.</p>
 
       <div class="surfaces">
         <div class="surface"><span class="surface__mono">GP</span><span><span class="surface__name">ChatGPT</span><span class="surface__vendor">OpenAI</span></span></div>

@@ -184,9 +184,9 @@
   "band":          "{{BAND}}",
   "bandClass":     "{{BAND_CLASS}}",
   "chartRows": [
-    { "name": "{{ROW1_NAME}}", "value": {{ROW1_VALUE}}, "tone": "{{ROW1_TONE}}", "visitor": {{ROW1_VISITOR}} },
-    { "name": "{{ROW2_NAME}}", "value": {{ROW2_VALUE}}, "tone": "{{ROW2_TONE}}", "visitor": {{ROW2_VISITOR}} },
-    { "name": "{{ROW3_NAME}}", "value": {{ROW3_VALUE}}, "tone": "{{ROW3_TONE}}", "visitor": {{ROW3_VISITOR}} }
+    { "name": "{{ROW1_NAME}}", "value": {{ROW1_VALUE}}, "display": "{{ROW1_DISPLAY}}", "tone": "{{ROW1_TONE}}", "visitor": {{ROW1_VISITOR}} },
+    { "name": "{{ROW2_NAME}}", "value": {{ROW2_VALUE}}, "display": "{{ROW2_DISPLAY}}", "tone": "{{ROW2_TONE}}", "visitor": {{ROW2_VISITOR}} },
+    { "name": "{{ROW3_NAME}}", "value": {{ROW3_VALUE}}, "display": "{{ROW3_DISPLAY}}", "tone": "{{ROW3_TONE}}", "visitor": {{ROW3_VISITOR}} }
   ],
   "chartScaleMax": {{CHART_SCALE_MAX}},
   "checkoutUrlStandard":    "{{CHECKOUT_URL_STANDARD}}",
@@ -224,7 +224,7 @@
     return '<div class="chart-row' + (r.visitor ? ' visitor' : '') + '">' +
       '<div><span class="chart-name" style="color:' + t.color + '">' + esc(r.name) + you + '</span></div>' +
       '<div class="chart-track"><div class="chart-fill" style="width:' + w + '%;background:' + t.bar + ';' + shadow + '"></div></div>' +
-      '<div class="chart-val" style="color:' + t.color + '">' + r.value + '<span class="pct">%</span></div>' +
+      '<div class="chart-val" style="color:' + t.color + '">' + (r.display != null ? r.display : r.value) + '<span class="pct">%</span></div>' +
       '</div>';
   }
 
