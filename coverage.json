@@ -1,0 +1,238 @@
+{
+  "cities": [
+    {
+      "analysis_dir": "belleville-analysis-2026Q3",
+      "country": "CA",
+      "display": "Belleville, Ontario",
+      "key": "belleville",
+      "measured_period": "August 2026",
+      "name": "Belleville",
+      "practices": [
+        {
+          "key": "Bayside Oral & Maxillofacial Surgery Centre",
+          "label": "Bayside Oral & Maxillofacial Surgery Centre"
+        },
+        {
+          "key": "Bellesmile Dentistry",
+          "label": "Bellesmile Dentistry"
+        },
+        {
+          "key": "Belleville Dental Care",
+          "label": "Belleville Dental Care"
+        },
+        {
+          "key": "Belleville Smiles Family Dentistry",
+          "label": "Belleville Smiles Family Dentistry"
+        },
+        {
+          "key": "dentalhouse - Victoria Dental Arts Belleville Dentist",
+          "label": "dentalhouse Belleville"
+        },
+        {
+          "key": "Dentistry By The Bay",
+          "label": "Dentistry By The Bay"
+        },
+        {
+          "key": "Li Frank Dr",
+          "label": "Dr. Frank Li Family Dentistry"
+        },
+        {
+          "key": "Zaichick Robert Dr",
+          "label": "Dr. Robert Zaichick"
+        },
+        {
+          "key": "East Hill Family Dentistry",
+          "label": "East Hill Family Dentistry"
+        },
+        {
+          "key": "Family Dental Centre Belleville",
+          "label": "Family Dental Centre Belleville"
+        },
+        {
+          "key": "Persaud Dental Care",
+          "label": "Persaud Dental Care"
+        },
+        {
+          "key": "Peterson Julianne Dr",
+          "label": "Peterson Julianne Dr"
+        },
+        {
+          "key": "Ponikvar Orthodontics",
+          "label": "Ponikvar Orthodontics"
+        },
+        {
+          "key": "Quinte Denture Clinic",
+          "label": "Quinte Denture Clinic"
+        },
+        {
+          "key": "Quinte Mall Dental",
+          "label": "Quinte Mall Dental"
+        },
+        {
+          "key": "Quinte Smiles Dental Centre",
+          "label": "Quinte Smiles Dental Centre"
+        },
+        {
+          "key": "Smile Dentist Belleville",
+          "label": "Smile Dentist Belleville"
+        },
+        {
+          "key": "Smile Garden Dentistry",
+          "label": "Smile Garden Dentistry"
+        },
+        {
+          "key": "Waterfront Dentistry",
+          "label": "Waterfront Dentistry"
+        },
+        {
+          "key": "You Make Me Smile Dental Centre Belleville",
+          "label": "You Make Me Smile Dental Centre"
+        }
+      ],
+      "practices_measured": 26,
+      "practices_with_report": 20,
+      "surfaces_measured": 6,
+      "total_runs": 2512,
+      "zero_mention_count": 2
+    },
+    {
+      "analysis_dir": "1c-analysis-2026Q3",
+      "country": "CA",
+      "display": "Peterborough, Ontario",
+      "key": "peterborough",
+      "measured_period": "July–August 2026",
+      "name": "Peterborough",
+      "practices": [
+        {
+          "key": "2032 Dentistry - For Life",
+          "label": "2032 Dentistry - For Life"
+        },
+        {
+          "key": "Brookdale Dental Clinic",
+          "label": "Brookdale Dental Clinic"
+        },
+        {
+          "key": "Bruce Cole, DDS",
+          "label": "Bruce Cole, DDS"
+        },
+        {
+          "key": "Chemong Family Dental Peterborough",
+          "label": "Chemong Family Dental Peterborough"
+        },
+        {
+          "key": "Christopher Moore, DDS",
+          "label": "Christopher Moore, DDS"
+        },
+        {
+          "key": "Cornerstone Family Dentistry",
+          "label": "Cornerstone Family Dentistry"
+        },
+        {
+          "key": "Cottage Country Smiles Dentistry",
+          "label": "Cottage Country Smiles Dentistry"
+        },
+        {
+          "key": "DaVinci Dental Centre",
+          "label": "DaVinci Dental Centre"
+        },
+        {
+          "key": "Dentistry on Sherbrooke",
+          "label": "Dentistry on Sherbrooke"
+        },
+        {
+          "key": "Dr. Annabel Braganza - Peterborough Periodontist",
+          "label": "Dr. Annabel Braganza - Peterborough Periodontist"
+        },
+        {
+          "key": "Dr. Jokay",
+          "label": "Dr. Jokay"
+        },
+        {
+          "key": "East City Dental",
+          "label": "East City Dental"
+        },
+        {
+          "key": "Everes Dentistry",
+          "label": "Everes Dentistry"
+        },
+        {
+          "key": "Grand Village Dental",
+          "label": "Grand Village Dental"
+        },
+        {
+          "key": "Hiro Urabe, DDS",
+          "label": "Hiro Urabe, DDS"
+        },
+        {
+          "key": "Horizon Family Dentistry Peterborough",
+          "label": "Horizon Family Dentistry Peterborough"
+        },
+        {
+          "key": "Kawartha Dental Clinic",
+          "label": "Kawartha Dental Clinic"
+        },
+        {
+          "key": "Kawartha Orthodontics",
+          "label": "Kawartha Orthodontics"
+        },
+        {
+          "key": "Lily Lake Dental",
+          "label": "Lily Lake Dental"
+        },
+        {
+          "key": "Lotus Family Dental Peterborough",
+          "label": "Lotus Family Dental Peterborough"
+        },
+        {
+          "key": "Louis Diamandakos, DDS",
+          "label": "Louis Diamandakos, DDS"
+        },
+        {
+          "key": "Maple Leaf Dentistry: Dr Cam Crawford",
+          "label": "Maple Leaf Dentistry: Dr Cam Crawford"
+        },
+        {
+          "key": "Park Street Dentistry",
+          "label": "Park Street Dentistry"
+        },
+        {
+          "key": "Parkhill East Dental Care",
+          "label": "Parkhill East Dental Care"
+        },
+        {
+          "key": "Peterborough Dental Clinic",
+          "label": "Peterborough Dental Clinic"
+        },
+        {
+          "key": "Peterborough Family Dentistry",
+          "label": "Peterborough Family Dentistry"
+        },
+        {
+          "key": "Peterborough Periodontics",
+          "label": "Peterborough Periodontics"
+        },
+        {
+          "key": "Peterborough Smiles Dental Centre",
+          "label": "Peterborough Smiles Dental Centre"
+        },
+        {
+          "key": "Specialty Endodontics by Dr. Rita",
+          "label": "Specialty Endodontics by Dr. Rita"
+        }
+      ],
+      "practices_measured": 31,
+      "practices_with_report": 29,
+      "surfaces_measured": 6,
+      "total_runs": 5009,
+      "zero_mention_count": 4
+    }
+  ],
+  "generated_at": "2026-09-09T04:00:11+00:00",
+  "totals": {
+    "cities": 2,
+    "practices_measured": 57,
+    "practices_with_report": 49,
+    "total_runs": 7521,
+    "zero_mention_count": 6
+  }
+}

@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AIVI Labs — We measure the answers AI gives your customers</title>
-<meta name="description" content="AIVI Labs measures how often AI assistants name local businesses. We asked AI about dentists in Peterborough 5009 times across six AI surfaces. We don't predict the shift to AI search — we measure it." />
+<!-- The city list and the count are data: edit the data-cov-template text, never the
+     content attribute — content is overwritten by build_coverage.py on every build. -->
+<meta name="description" data-cov-template="We asked AI who the best dentist is in {text.city_names_and} — {totals.total_runs} times — and counted every practice named. Independent measurement, not marketing." content="We asked AI who the best dentist is in Belleville and Peterborough — 7521 times — and counted every practice named. Independent measurement, not marketing." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet" />
@@ -79,6 +81,16 @@
   .stat__num{font-family:var(--serif);font-size:clamp(34px,4.5vw,52px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--text-1)}
   .stat__num .pos{color:var(--pos)}
   .stat__label{margin-top:12px;font-size:13.5px;color:var(--text-3);line-height:1.45}
+  /* coverage section (source: _components/coverage-section.html) */
+  .cov-list{list-style:none;margin:clamp(24px,3.5vw,36px) 0 0;padding:0;display:grid;gap:12px}
+  .cov-row{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:16px;align-items:baseline;padding:18px 22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+  .cov-row__city{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--text-1)}
+  .cov-row__num{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--text-1);letter-spacing:-0.01em}
+  .cov-row__num .pos{color:var(--pos)}
+  .cov-row__label{display:block;margin-top:3px;font-size:12.5px;color:var(--text-4);line-height:1.4}
+  .cov-row__period{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-5)}
+  .cov-total{margin-top:18px;font-size:14px;color:var(--text-4)}
+  .cov-total b{color:var(--text-2);font-weight:600}
 
   /* section scaffolding */
   .section{padding:clamp(52px,8vw,96px) 0;border-top:1px solid var(--border)}
@@ -147,6 +159,7 @@
 
   @media (max-width:820px){
     .statband{grid-template-columns:1fr}
+    .cov-row{grid-template-columns:1fr 1fr}
     .three{grid-template-columns:1fr}
     .surfaces{grid-template-columns:1fr 1fr}
     .site-footer__inner{grid-template-columns:1fr}
@@ -161,7 +174,18 @@
 <!-- COPY NOTE: Hero + stats are deliberately Peterborough-specific
 (first market). When city #2 publishes: update hero city + stat band.
 When aggregate numbers justify it: switch to generic ratings-agency
-framing. Decision 2026-07-23. -->
+framing. Decision 2026-07-23.
+
+2026-09-08: city #2 (Belleville) has published. Every NUMBER on this page
+now reads from coverage.json via build_coverage.py (aivi-delivery-state):
+elements marked data-cov="…" are overwritten on every build, so never edit
+the digits inside them.
+
+2026-09-14: Andrea's copy pass applied (approved by Brian and Andrea). The
+hero, live-now line, stat band and proof point read the aggregate
+(totals.*) and the coverage list (text.city_names_and); the coverage
+section from _components/coverage-section.html sits directly under the
+stat band. City names are never typed on this page. -->
 
 <header class="site-header">
   <div class="site-header__inner">
@@ -183,7 +207,7 @@ framing. Decision 2026-07-23. -->
   <section class="hero">
     <div class="wrap">
       <span class="kicker"><span class="dot"></span>Measurement, not marketing</span>
-      <h1>We asked AI about dentists in Peterborough <span class="em-pos">5009 times</span>. Here's who it names.</h1>
+      <h1>We asked AI for the best dentist in <span data-cov="text.city_names_and">Belleville and Peterborough</span> — <span class="em-pos"><span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> times</span>.</h1>
       <p class="lede">When patients ask ChatGPT, Claude, or Gemini for a dentist:</p>
       <ul class="lede lede--points">
         <li>the same few names come back again and again</li>
@@ -195,21 +219,27 @@ framing. Decision 2026-07-23. -->
         <a class="btn btn--lg" href="report.html">Get your practice's report</a>
         <a class="btn btn--lg btn--ghost" href="#fieldguide">Join the field guide list</a>
       </div>
-      <p class="hero__note">Peterborough, Ontario is live now. Not your city? We'll measure it — ask on the report page.</p>
+      <p class="hero__note"><span data-cov="text.city_names_and">Belleville and Peterborough</span> are live now. Not your city? We'll measure it — ask on the report page.</p>
 
       <div class="statband">
         <div class="stat">
-          <div class="stat__num tnum"><span class="pos">5009</span></div>
-          <div class="stat__label">Measured AI answers about local dentists, aggregated into a mention rate per practice.</div>
+          <div class="stat__num tnum"><span class="pos" data-cov="totals.total_runs" data-cov-format="comma">7,521</span></div>
+          <div class="stat__label">answers measured</div>
         </div>
+        <!-- The 6 is typed: coverage.json has no totals.surfaces_measured (only the
+             per-city value, six in every city so far). Known debt #31 in
+             AIVI_CODEBASE_REFERENCE.md — add the total to build_coverage.py and
+             turn this into a data-cov slot when a city measures a different count. -->
         <div class="stat">
           <div class="stat__num tnum">6</div>
-          <div class="stat__label">AI surfaces: ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews, and the Google Local Pack.</div>
+          <div class="stat__label">AI surfaces</div>
         </div>
-        <!-- The "4" is the count of measured practices with ZERO mentions across
-             every surface. Source of truth: 1c-analysis-2026Q3/peterborough_final_rates.csv,
-             rows where final_deduped == 0 — 4 of 31 in Peterborough. Recompute it
-             per city AND per quarter; do NOT carry this number over.
+        <!-- The never-named count is measured practices with ZERO mentions across
+             every surface. Since 2026-09-08 it is GENERATED: build_coverage.py reads
+             rows where final_deduped == 0 from each city's rates CSV into
+             coverage.json (zero_mention_count per city, summed in totals) and
+             fills the data-cov slot below.
+             Nothing to recompute by hand; a new quarter's build changes it.
 
              Read final_deduped, NEVER final_rate_pct. They are NOT equivalent: that
              column is stored rounded to one decimal, so as n grows a practice named
@@ -223,10 +253,50 @@ framing. Decision 2026-07-23. -->
              predicate (dc.is_never_named) and so agrees at 4. It previously used
              final_rate_pct < 1 and read 12. -->
         <div class="stat">
-          <div class="stat__num tnum">4</div>
-          <div class="stat__label">Peterborough practices never named in a single AI answer.</div>
+          <div class="stat__num tnum" data-cov="totals.zero_mention_count">6</div>
+          <div class="stat__label">practices never named</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- COVERAGE — placed directly under the stat band 2026-09-14 (Andrea's call).
+       Source component: _components/coverage-section.html; build_coverage.py
+       fills both. Every number here is data: the rows between the data-cov-each
+       markers and every data-cov slot are overwritten on each build. -->
+  <section class="section" id="coverage">
+    <div class="wrap">
+      <div class="eyebrow section__label">Coverage</div>
+      <h2>Cities we've measured.</h2>
+      <p class="intro">Every practice in each city, measured the same way across the same AI surfaces, in the same window.</p>
+
+      <!-- One row per city in coverage.json. {field} placeholders resolve against
+           the city record; {totals.*} and {text.*} are also available. -->
+      <template id="cov-city-row">
+  <li class="cov-row">
+    <div><span class="cov-row__city">{display}</span><span class="cov-row__label">measured {measured_period}</span></div>
+    <div><span class="cov-row__num tnum">{practices_measured}</span><span class="cov-row__label">practices measured</span></div>
+    <div><span class="cov-row__num tnum"><span class="pos">{total_runs|comma}</span></span><span class="cov-row__label">AI answers measured</span></div>
+    <div><span class="cov-row__num tnum">{zero_mention_count}</span><span class="cov-row__label">never named in a single answer</span></div>
+  </li>
+      </template>
+      <ul class="cov-list" data-cov-each="cities" data-cov-item="cov-city-row">
+  <!-- rows generated by build_coverage.py — do not edit -->
+<li class="cov-row">
+    <div><span class="cov-row__city">Belleville, Ontario</span><span class="cov-row__label">measured August 2026</span></div>
+    <div><span class="cov-row__num tnum">26</span><span class="cov-row__label">practices measured</span></div>
+    <div><span class="cov-row__num tnum"><span class="pos">2,512</span></span><span class="cov-row__label">AI answers measured</span></div>
+    <div><span class="cov-row__num tnum">2</span><span class="cov-row__label">never named in a single answer</span></div>
+  </li>
+<li class="cov-row">
+    <div><span class="cov-row__city">Peterborough, Ontario</span><span class="cov-row__label">measured July–August 2026</span></div>
+    <div><span class="cov-row__num tnum">31</span><span class="cov-row__label">practices measured</span></div>
+    <div><span class="cov-row__num tnum"><span class="pos">5,009</span></span><span class="cov-row__label">AI answers measured</span></div>
+    <div><span class="cov-row__num tnum">4</span><span class="cov-row__label">never named in a single answer</span></div>
+  </li>
+</ul>
+
+      <p class="cov-total"><b><span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> AI answers</b> across <b><span data-cov="totals.cities">2</span> cities</b> and <b><span data-cov="totals.practices_measured">57</span> practices</b>.</p>
     </div>
   </section>
 
@@ -282,9 +352,9 @@ framing. Decision 2026-07-23. -->
   <!-- PROOF POINT -->
   <section class="section">
     <div class="wrap">
-      <div class="eyebrow section__label">Proof point · Peterborough, Ontario</div>
-      <h2>One city, measured end to end.</h2>
-      <p class="intro">Peterborough is our first fully measured market — its dental practices measured across the six AI surfaces and aggregated from 5009 answers into a mention rate for each practice.</p>
+      <div class="eyebrow section__label">Proof point</div>
+      <h2><span data-cov="totals.cities">2</span> cities, measured end to end.</h2>
+      <p class="intro">Dental practices in <span data-cov="text.city_names_and">Belleville and Peterborough</span>, measured across the six AI surfaces and aggregated from <span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> answers into a mention rate for each practice.</p>
 
       <div class="surfaces">
         <div class="surface"><span class="surface__mono">GP</span><span><span class="surface__name">ChatGPT</span><span class="surface__vendor">OpenAI</span></span></div>
