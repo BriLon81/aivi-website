@@ -1,0 +1,87 @@
+{
+  "_comment": "One entry per built page. `source` is the body in _src/pages/; `out` is the committed file GitHub Pages serves; `url` is the canonical path. `description` must be one sentence from the page's own intro (never new copy). `scripts` are added before </body>; `extra_head` is raw HTML for page-only CSS.",
+  "pages": [
+    {
+      "source": "index.html",
+      "out": "index.html",
+      "url": "/",
+      "title": "AIVI Labs — Know exactly what AI says about your business",
+      "description": "We ask the questions your customers ask, hundreds or thousands of times, and show you where you're named, where you're not, and which websites the AI is reading.",
+      "scripts": ["/assets/site.js"]
+    },
+    {
+      "source": "study.html",
+      "out": "study/index.html",
+      "url": "/study/",
+      "title": "Get your own study — AIVI Labs",
+      "description": "A study of your business shows you what AI answers say about you and your competitors, measured properly, with the sources behind them.",
+      "scripts": ["/assets/site.js"]
+    },
+    {
+      "source": "how-we-measure.html",
+      "out": "how-we-measure/index.html",
+      "url": "/how-we-measure/",
+      "title": "How we measure — AIVI Labs",
+      "description": "Every number we publish is a rate built from many repeated questions, not a screenshot."
+    },
+    {
+      "source": "studies-dentists.html",
+      "out": "studies/dentists/index.html",
+      "url": "/studies/dentists/",
+      "title": "Dentists in two Ontario cities — AIVI Labs",
+      "description": "We asked AI and Google for the best dentist in two Ontario cities more than 11,500 times."
+    },
+    {
+      "source": "studies-toronto.html",
+      "out": "studies/toronto/index.html",
+      "url": "/studies/toronto/",
+      "title": "Toronto, neighbourhood by neighbourhood — AIVI Labs",
+      "description": "We asked ChatGPT, Gemini and Google's map for dentists in 186 areas of Toronto, more than 14,000 times."
+    },
+    {
+      "source": "studies-sources.html",
+      "out": "studies/sources/index.html",
+      "url": "/studies/sources/",
+      "title": "Where AI gets its answers — AIVI Labs",
+      "description": "We recorded more than 70,000 sources behind AI answers, and each AI turned out to read from its own shelf."
+    },
+    {
+      "source": "studies-injury-law-ontario.html",
+      "out": "studies/injury-law-ontario/index.html",
+      "url": "/studies/injury-law-ontario/",
+      "title": "Personal injury law across Ontario — AIVI Labs",
+      "description": "We asked AI and Google for the best injury lawyer in 20 Ontario cities, 2,400 times."
+    },
+    {
+      "source": "studies-ask-twice.html",
+      "out": "studies/ask-twice/index.html",
+      "url": "/studies/ask-twice/",
+      "title": "Ask twice: how consistent are AI answers? — AIVI Labs",
+      "description": "We asked identical questions thousands of times, on ChatGPT, Gemini, Claude, Perplexity and Google."
+    },
+    {
+      "source": "lab-coke-or-pepsi.html",
+      "out": "lab/coke-or-pepsi/index.html",
+      "url": "/lab/coke-or-pepsi/",
+      "title": "Coke or Pepsi? Two AIs pick. Two won't. — AIVI Labs",
+      "description": "We asked four AI assistants simple either/or questions about five famous brand rivalries, worded the way people really ask."
+    },
+    {
+      "source": "about.html",
+      "out": "about/index.html",
+      "url": "/about/",
+      "title": "About AIVI Labs",
+      "description": "AIVI Labs measures what AI assistants say about businesses."
+    },
+    {
+      "source": "report.html",
+      "out": "report.html",
+      "url": "/report.html",
+      "title": "Get your report — AIVI Labs",
+      "description": "Find your practice's AI mention rate. Measured in Belleville and Peterborough. Free to look at, no sign-up.",
+      "description_tag": "<meta name=\"description\" data-cov-template=\"Find your practice's AI mention rate. Measured in {text.city_names_and}. Free to look at, no sign-up.\" content=\"Find your practice's AI mention rate. Measured in Belleville and Peterborough. Free to look at, no sign-up.\" />",
+      "extra_head": "<link rel=\"stylesheet\" href=\"/assets/report.css\">",
+      "coverage_island": true
+    }
+  ]
+}

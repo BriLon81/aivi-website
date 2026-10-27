@@ -1,496 +1,263 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AIVI Labs — We measure the answers AI gives your customers</title>
-<!-- The city list and the count are data: edit the data-cov-template text, never the
-     content attribute — content is overwritten by build_coverage.py on every build. -->
-<meta name="description" data-cov-template="We asked AI who the best dentist is in {text.city_names_and} — {totals.total_runs} times — and counted every practice named. Independent measurement, not marketing." content="We asked AI who the best dentist is in Belleville and Peterborough — 7521 times — and counted every practice named. Independent measurement, not marketing." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet" />
-<style>
-  :root{
-    --bg:#0B1220; --surface:#101A2E; --elevated:#16213A;
-    --border:rgba(255,255,255,0.07); --border-em:rgba(255,255,255,0.16);
-    --text-1:#FFFFFF; --text-2:#E0E5F0; --text-3:#C8D0E0; --text-4:#B0B8CC; --text-5:#7B85A0;
-    --neg:#F47B7B; --pos:#7EE2BC; --pos-deep:#5DD0A8; --warn:#FFD66B;
-    --pos-tint:rgba(126,226,188,0.10); --pos-tint-strong:rgba(126,226,188,0.18);
-    --warn-tint:rgba(255,214,107,0.10); --neg-tint:rgba(244,123,123,0.10);
-    --radius:16px; --radius-sm:10px; --radius-pill:999px;
-    --serif:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
-    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
-    --maxw:1100px; --pad-x:clamp(20px,5vw,48px);
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--text-2)}
-  body{font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:
-      radial-gradient(ellipse 1100px 700px at 18% -12%, color-mix(in oklab, var(--pos) 7%, transparent), transparent 60%),
-      radial-gradient(ellipse 900px 600px at 112% 22%, color-mix(in oklab, var(--pos) 3%, transparent), transparent 60%);}
-  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x)}
-  h1,h2,h3{font-family:var(--serif);color:var(--text-1);margin:0;text-wrap:pretty}
-  h1{font-size:clamp(34px,5.2vw,58px);line-height:1.05;letter-spacing:-0.02em;font-weight:600}
-  h2{font-size:clamp(26px,3.4vw,38px);line-height:1.15;letter-spacing:-0.01em;font-weight:600}
-  h3{font-size:20px;font-weight:600;line-height:1.3}
-  p{margin:0}
-  a{color:inherit;text-decoration:none}
-  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:0.13em;font-size:12px;color:var(--text-3);font-weight:600}
-  .mono{font-family:var(--mono)}
-  .tnum{font-variant-numeric:tabular-nums}
-  .em-pos{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--pos)}
-  .em-neg{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--neg)}
-  ::selection{background:color-mix(in oklab, var(--pos) 40%, transparent);color:var(--text-1)}
-
-  /* header */
-  .site-header{position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg) 82%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-  .site-header__inner{max-width:var(--maxw);margin:0 auto;padding:13px var(--pad-x);display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .brand{display:flex;align-items:center;gap:11px}
-  .logo-mark{background:var(--pos);color:#062418;width:34px;height:34px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:0.05em}
-  .wordmark{font-family:var(--sans);font-weight:600;font-size:17px;color:var(--text-1);letter-spacing:-0.005em}
-  .wordmark span{color:var(--pos);font-weight:400}
-  .site-nav{display:flex;align-items:center;gap:24px}
-  .site-nav .nav-link{font-size:14px;color:var(--text-3);font-weight:500}
-  .site-nav .nav-link:hover{color:var(--text-1)}
-  .site-nav .nav-link.active{color:var(--text-1)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;background:var(--pos);color:#062418;border-radius:var(--radius-pill);font-family:var(--sans);font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background 120ms ease,transform 120ms ease;box-shadow:0 6px 20px -8px color-mix(in oklab, var(--pos) 60%, transparent)}
-  .btn:hover{background:var(--pos-deep);transform:translateY(-1px)}
-  .btn--lg{padding:15px 26px;font-size:15px}
-  .btn--ghost{background:transparent;color:var(--text-2);border:1px solid var(--border-em);box-shadow:none}
-  .btn--ghost:hover{background:var(--elevated);color:var(--text-1)}
-  .btn--block{width:100%}
-
-  /* hero */
-  .hero{padding:clamp(56px,9vw,104px) 0 clamp(32px,5vw,56px)}
-  .hero .kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border:1px solid var(--border-em);border-radius:var(--radius-pill);font-size:12px;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-3);font-weight:600;background:var(--surface)}
-  .hero .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--pos);box-shadow:0 0 8px var(--pos)}
-  .hero h1{margin:24px 0 0;max-width:16ch}
-  .hero .lede{margin-top:clamp(20px,3vw,30px);max-width:60ch;font-size:clamp(17px,1.6vw,20px);line-height:1.6;color:var(--text-3)}
-  .hero .lede b{color:var(--text-1);font-weight:600}
-  .hero .lede--points{margin-top:clamp(12px,1.6vw,18px);padding-left:1.15em;list-style:disc}
-  .hero .lede--points li{margin:.35em 0}
-  .hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(28px,4vw,40px)}
-  .hero__note{margin-top:16px;font-size:13px;color:var(--text-5)}
-
-  /* stat band */
-  .statband{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:clamp(40px,6vw,64px)}
-  .stat{background:var(--surface);padding:26px 28px;min-width:0}
-  .stat__num{font-family:var(--serif);font-size:clamp(34px,4.5vw,52px);font-weight:600;letter-spacing:-0.02em;line-height:1;color:var(--text-1)}
-  .stat__num .pos{color:var(--pos)}
-  .stat__label{margin-top:12px;font-size:13.5px;color:var(--text-3);line-height:1.45}
-  /* coverage section (source: _components/coverage-section.html) */
-  .cov-list{list-style:none;margin:clamp(24px,3.5vw,36px) 0 0;padding:0;display:grid;gap:12px}
-  .cov-row{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:16px;align-items:baseline;padding:18px 22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
-  .cov-row__city{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--text-1)}
-  .cov-row__num{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--text-1);letter-spacing:-0.01em}
-  .cov-row__num .pos{color:var(--pos)}
-  .cov-row__label{display:block;margin-top:3px;font-size:12.5px;color:var(--text-4);line-height:1.4}
-  .cov-row__period{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-5)}
-  .cov-total{margin-top:18px;font-size:14px;color:var(--text-4)}
-  .cov-total b{color:var(--text-2);font-weight:600}
-
-  /* section scaffolding */
-  .section{padding:clamp(52px,8vw,96px) 0;border-top:1px solid var(--border)}
-  .section__label{margin-bottom:16px}
-  .section h2{max-width:22ch}
-  .section .intro{margin-top:18px;max-width:64ch;font-size:clamp(16px,1.4vw,18px);color:var(--text-3);line-height:1.6}
-
-  /* shift cards */
-  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(28px,4vw,44px)}
-  .era-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:12px}
-  .era-card.now{border-color:color-mix(in oklab, var(--pos) 45%, var(--border));background:linear-gradient(180deg, var(--pos-tint) 0%, var(--surface) 60%)}
-  .era{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-5);font-weight:500}
-  .era-card.now .era{color:var(--pos)}
-  .era-card h3{font-size:19px}
-  .era-card p{font-size:15px;color:var(--text-3);line-height:1.55}
-  .tagchip{margin-top:auto;align-self:flex-start;font-size:11px;text-transform:uppercase;letter-spacing:0.10em;font-weight:700;padding:4px 11px;border-radius:var(--radius-pill);border:1px solid var(--border-em);color:var(--text-4)}
-  .era-card.now .tagchip{color:var(--pos);border-color:color-mix(in oklab, var(--pos) 45%, transparent);background:var(--pos-tint)}
-  .shift-foot{margin-top:26px;padding:18px 22px;border:1px solid var(--border-em);border-left:2px solid var(--pos);border-radius:var(--radius-sm);background:var(--elevated);font-size:15.5px;color:var(--text-2);line-height:1.6}
-  .shift-foot b{color:var(--text-1);font-weight:600}
-
-  /* positioning box */
-  .posbox{margin-top:clamp(28px,4vw,40px);background:var(--elevated);border:1px solid var(--border-em);border-left:2px solid var(--pos);border-radius:var(--radius-sm);padding:clamp(24px,3.5vw,36px)}
-  .posbox .eyebrow{color:var(--pos);margin-bottom:14px}
-  .posbox p{font-size:clamp(16px,1.4vw,19px);color:var(--text-1);line-height:1.6;font-weight:400;max-width:70ch}
-  .posbox p + p{margin-top:16px;color:var(--text-3)}
-
-  /* surfaces */
-  .surfaces{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:clamp(24px,3.5vw,36px)}
-  .surface{display:flex;align-items:center;gap:13px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
-  .surface__mono{width:36px;height:36px;flex-shrink:0;background:var(--elevated);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-4);letter-spacing:0.04em}
-  .surface__name{font-size:15px;color:var(--text-1);font-weight:600;line-height:1.2}
-  .surface__vendor{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-5);margin-top:2px}
-
-  /* capture card */
-  .capture{margin-top:clamp(28px,4vw,40px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(24px,3.5vw,36px);max-width:640px}
-  .capture h3{font-size:22px}
-  .capture p{margin-top:10px;color:var(--text-3);font-size:15.5px;line-height:1.55}
-  .form-row{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
-  .field{flex:1 1 240px;min-width:0}
-  label.field-label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-4);font-weight:600;margin-bottom:7px}
-  input[type=email],input[type=text]{width:100%;padding:13px 15px;background:var(--bg);border:1px solid var(--border-em);border-radius:var(--radius-sm);color:var(--text-1);font-family:var(--sans);font-size:15px;transition:border-color 120ms ease}
-  input[type=email]:focus,input[type=text]:focus{outline:none;border-color:var(--pos)}
-  input::placeholder{color:var(--text-5)}
-  .form-error{display:none;margin-top:12px;font-size:13.5px;color:var(--neg);line-height:1.45}
-  .form-success{display:flex;gap:12px;align-items:flex-start;padding:18px 20px;background:var(--pos-tint);border:1px solid color-mix(in oklab, var(--pos) 40%, transparent);border-radius:var(--radius-sm)}
-  .form-success svg{flex-shrink:0;margin-top:2px}
-  .form-success .t{font-size:16px;color:var(--text-1);font-weight:600}
-  .form-success .s{font-size:14px;color:var(--text-3);margin-top:4px}
-  .form-fineprint{margin-top:12px;font-size:12px;color:var(--text-5);line-height:1.5}
-
-  /* closing cta */
-  .closer{text-align:center;padding:clamp(56px,9vw,104px) 0}
-  .closer h2{margin:0 auto;max-width:20ch}
-  .closer p{margin:18px auto 0;max-width:56ch;color:var(--text-3);font-size:clamp(16px,1.4vw,18px)}
-  .closer .hero__cta{justify-content:center}
-
-  /* footer */
-  .site-footer{border-top:1px solid var(--border);margin-top:clamp(40px,7vw,80px);padding:48px 0 40px}
-  .site-footer__inner{display:grid;grid-template-columns:1.3fr 2fr;gap:40px}
-  .site-footer__tag{margin-top:16px;max-width:34ch;color:var(--text-4);font-size:14px;line-height:1.55}
-  .site-footer__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  .foot-h{font-size:12px;text-transform:uppercase;letter-spacing:0.11em;color:var(--text-5);font-weight:600;margin-bottom:12px}
-  .site-footer__cols a{display:block;color:var(--text-3);font-size:14px;padding:5px 0}
-  .site-footer__cols a:hover{color:var(--text-1)}
-  .site-footer__legal{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-5)}
-
-  @media (max-width:820px){
-    .statband{grid-template-columns:1fr}
-    .cov-row{grid-template-columns:1fr 1fr}
-    .three{grid-template-columns:1fr}
-    .surfaces{grid-template-columns:1fr 1fr}
-    .site-footer__inner{grid-template-columns:1fr}
-  }
-  @media (max-width:640px){
-    .site-nav .nav-link{display:none}
-    .surfaces{grid-template-columns:1fr}
-  }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIVI Labs — Know exactly what AI says about your business</title>
+<meta name="description" content="We ask the questions your customers ask, hundreds or thousands of times, and show you where you're named, where you're not, and which websites the AI is reading.">
+<link rel="canonical" href="https://aivilabs.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AIVI Labs">
+<meta property="og:title" content="AIVI Labs — Know exactly what AI says about your business">
+<meta property="og:description" content="We ask the questions your customers ask, hundreds or thousands of times, and show you where you're named, where you're not, and which websites the AI is reading.">
+<meta property="og:url" content="https://aivilabs.io/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-<!-- COPY NOTE: Hero + stats are deliberately Peterborough-specific
-(first market). When city #2 publishes: update hero city + stat band.
-When aggregate numbers justify it: switch to generic ratings-agency
-framing. Decision 2026-07-23.
-
-2026-09-08: city #2 (Belleville) has published. Every NUMBER on this page
-now reads from coverage.json via build_coverage.py (aivi-delivery-state):
-elements marked data-cov="…" are overwritten on every build, so never edit
-the digits inside them.
-
-2026-09-14: Andrea's copy pass applied (approved by Brian and Andrea). The
-hero, live-now line, stat band and proof point read the aggregate
-(totals.*) and the coverage list (text.city_names_and); the coverage
-section from _components/coverage-section.html sits directly under the
-stat band. City names are never typed on this page. -->
-
 <header class="site-header">
-  <div class="site-header__inner">
-    <a class="brand" href="index.html" aria-label="AIVI Labs home">
-      <span class="logo-mark">AI</span>
-      <span class="wordmark">AIVI <span>Labs</span></span>
-    </a>
-    <nav class="site-nav">
-      <a class="nav-link active" href="index.html">Home</a>
-      <a class="nav-link" href="methodology.html">Methodology</a>
-      <a class="nav-link" href="about.html">About</a>
-      <a class="btn" href="report.html">Get your report</a>
-    </nav>
-  </div>
+<div class="site-header__in">
+<a href="/" aria-current="page" class="logo" aria-label="AIVI Labs home">
+<svg aria-hidden="true" width="34" height="34" viewBox="0 0 512 512"><rect width="512" height="512" rx="104" fill="#7EE2BC"></rect><polygon points="153,208 232,208 190,387 110,387" fill="#062418" stroke="#062418" stroke-width="22" stroke-linejoin="round"></polygon><polygon points="323,125 401,125 338,387 258,387" fill="#062418" stroke="#062418" stroke-width="22" stroke-linejoin="round"></polygon></svg>
+<span class="wordmark">AIVI <b>Labs</b></span>
+</a>
+<nav aria-label="Main" class="site-nav">
+<a href="/#studies">Studies</a>
+<a href="/#lab-finds">Lab finds</a>
+<a href="/how-we-measure/">How we measure</a>
+<a href="/study/" class="btn--nav">Get your own study</a>
+</nav>
+</div>
 </header>
-
 <main>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <span class="kicker"><span class="dot"></span>Measurement, not marketing</span>
-      <h1>We asked AI for the best dentist in <span data-cov="text.city_names_and">Belleville and Peterborough</span> — <span class="em-pos"><span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> times</span>.</h1>
-      <p class="lede">When patients ask ChatGPT, Claude, or Gemini for a dentist:</p>
-      <ul class="lede lede--points">
-        <li>the same few names come back again and again</li>
-        <li>most practices barely appear</li>
-        <li><b>we measure exactly how often each practice is named</b> — six AI surfaces</li>
-        <li>no scores, no guesswork — measured facts</li>
-      </ul>
-      <div class="hero__cta">
-        <a class="btn btn--lg" href="report.html">Get your practice's report</a>
-        <a class="btn btn--lg btn--ghost" href="#fieldguide">Join the field guide list</a>
-      </div>
-      <p class="hero__note"><span data-cov="text.city_names_and">Belleville and Peterborough</span> are live now. Not your city? We'll measure it — ask on the report page.</p>
-
-      <div class="statband">
-        <div class="stat">
-          <div class="stat__num tnum"><span class="pos" data-cov="totals.total_runs" data-cov-format="comma">7,521</span></div>
-          <div class="stat__label">answers measured</div>
-        </div>
-        <!-- The 6 is typed: coverage.json has no totals.surfaces_measured (only the
-             per-city value, six in every city so far). Known debt #31 in
-             AIVI_CODEBASE_REFERENCE.md — add the total to build_coverage.py and
-             turn this into a data-cov slot when a city measures a different count. -->
-        <div class="stat">
-          <div class="stat__num tnum">6</div>
-          <div class="stat__label">AI surfaces</div>
-        </div>
-        <!-- The never-named count is measured practices with ZERO mentions across
-             every surface. Since 2026-09-08 it is GENERATED: build_coverage.py reads
-             rows where final_deduped == 0 from each city's rates CSV into
-             coverage.json (zero_mention_count per city, summed in totals) and
-             fills the data-cov slot below.
-             Nothing to recompute by hand; a new quarter's build changes it.
-
-             Read final_deduped, NEVER final_rate_pct. They are NOT equivalent: that
-             column is stored rounded to one decimal, so as n grows a practice named
-             once or twice rounds to 0.0 and would publish as "never named". At May's
-             n=1,035 both predicates read 8 and the difference was invisible; at
-             n=5,009 the rounded one still reads 8 while the true count is 4.
-             The four it wrongly catches — Brookdale, Dr. Jokay, Kawartha
-             Orthodontics, Specialty Endodontics — were each named twice.
-
-             The reports' §07 "not yet named by any AI" tile now uses this same raw
-             predicate (dc.is_never_named) and so agrees at 4. It previously used
-             final_rate_pct < 1 and read 12. -->
-        <div class="stat">
-          <div class="stat__num tnum" data-cov="totals.zero_mention_count">6</div>
-          <div class="stat__label">practices never named</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COVERAGE — placed directly under the stat band 2026-09-14 (Andrea's call).
-       Source component: _components/coverage-section.html; build_coverage.py
-       fills both. Every number here is data: the rows between the data-cov-each
-       markers and every data-cov slot are overwritten on each build. -->
-  <section class="section" id="coverage">
-    <div class="wrap">
-      <div class="eyebrow section__label">Coverage</div>
-      <h2>Cities we've measured.</h2>
-      <p class="intro">Every practice in each city, measured the same way across the same AI surfaces, in the same window.</p>
-
-      <!-- One row per city in coverage.json. {field} placeholders resolve against
-           the city record; {totals.*} and {text.*} are also available. -->
-      <template id="cov-city-row">
-  <li class="cov-row">
-    <div><span class="cov-row__city">{display}</span><span class="cov-row__label">measured {measured_period}</span></div>
-    <div><span class="cov-row__num tnum">{practices_measured}</span><span class="cov-row__label">practices measured</span></div>
-    <div><span class="cov-row__num tnum"><span class="pos">{total_runs|comma}</span></span><span class="cov-row__label">AI answers measured</span></div>
-    <div><span class="cov-row__num tnum">{zero_mention_count}</span><span class="cov-row__label">never named in a single answer</span></div>
-  </li>
-      </template>
-      <ul class="cov-list" data-cov-each="cities" data-cov-item="cov-city-row">
-  <!-- rows generated by build_coverage.py — do not edit -->
-<li class="cov-row">
-    <div><span class="cov-row__city">Belleville, Ontario</span><span class="cov-row__label">measured August 2026</span></div>
-    <div><span class="cov-row__num tnum">26</span><span class="cov-row__label">practices measured</span></div>
-    <div><span class="cov-row__num tnum"><span class="pos">2,512</span></span><span class="cov-row__label">AI answers measured</span></div>
-    <div><span class="cov-row__num tnum">2</span><span class="cov-row__label">never named in a single answer</span></div>
-  </li>
-<li class="cov-row">
-    <div><span class="cov-row__city">Peterborough, Ontario</span><span class="cov-row__label">measured July–August 2026</span></div>
-    <div><span class="cov-row__num tnum">31</span><span class="cov-row__label">practices measured</span></div>
-    <div><span class="cov-row__num tnum"><span class="pos">5,009</span></span><span class="cov-row__label">AI answers measured</span></div>
-    <div><span class="cov-row__num tnum">4</span><span class="cov-row__label">never named in a single answer</span></div>
-  </li>
+<section class="band-alt">
+<div class="wrap wrap--wide pt-96 pb-88 cols gap-56 ac">
+<div class="f-560">
+<p class="eyebrow mb-20">AI visibility research</p>
+<h1 class="h1 h1--home">Know exactly what AI says about your business.</h1>
+<p class="t17-165 mt-28 mw-620" style="font-size: 20px">When your customers ask ChatGPT, Gemini, Claude, Perplexity or Google for a recommendation, are you in the answer? Is your competitor? We ask the questions your customers ask, hundreds or thousands of times, and show you where you're named, where you're not, and which websites the AI is reading.</p>
+<div class="cols gap-12 mt-36">
+<a href="/study/" class="btn btn--primary">Get your own study</a>
+<a href="#studies" class="btn btn--secondary">See our studies</a>
+</div>
+</div>
+<div class="f-380 card-feature" style="padding: 32px">
+<p class="fig fig-48 c-ink">45,000+</p>
+<p class="t14-muted mt-6 mb-24" style="font-size: 16px">times asked so far, across every study</p>
+<ul aria-label="Platforms we ask" class="chips">
+<li class="chip">ChatGPT</li>
+<li class="chip">Claude</li>
+<li class="chip">Gemini</li>
+<li class="chip">Perplexity</li>
+<li class="chip">Google AI answers</li>
+<li class="chip">Google map results</li>
 </ul>
+</div>
+</div>
+</section>
 
-      <p class="cov-total"><b><span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> AI answers</b> across <b><span data-cov="totals.cities">2</span> cities</b> and <b><span data-cov="totals.practices_measured">57</span> practices</b>.</p>
-    </div>
-  </section>
+<section>
+<div class="wrap wrap--wide pt-96 pb-0">
+<p class="eyebrow">What your own study shows you</p>
+<h2 class="h2-40">Clarity on where you stand, and why</h2>
+<p class="t19 mt-18 mw-760">We work out the questions your customers actually ask, then put them to every major AI platform, over and over. You come away with a clear picture of four things.</p>
+<div class="cols gap-20 mt-36">
+<div class="f-260 card-num">
+<p class="mono-14">01</p>
+<h3 class="h3-22 mt-10">Where you're named</h3>
+<p class="t16 mt-10">How often each AI and Google names you: question by question, platform by platform, market by market.</p>
+</div>
+<div class="f-260 card-num">
+<p class="mono-14">02</p>
+<h3 class="h3-22 mt-10">Where competitors beat you</h3>
+<p class="t16 mt-10">The questions, places and platforms where a competitor is named and you're not.</p>
+</div>
+<div class="f-260 card-num">
+<p class="mono-14">03</p>
+<h3 class="h3-22 mt-10">What the AI is reading</h3>
+<p class="t16 mt-10">The websites behind the answers: which list you, which list your competitors, and what they say.</p>
+</div>
+<div class="f-260 card-num">
+<p class="mono-14">04</p>
+<h3 class="h3-22 mt-10">What changes over time</h3>
+<p class="t16 mt-10">Ask again later and see what moved, for you and for them.</p>
+</div>
+</div>
+<p class="t16 mt-28 mw-760 c-muted"><strong class="c-ink">What we don't do:</strong> we don't sell fixes, rankings or placements. We're the independent measure, so the numbers mean something. What you do with them is up to you.</p>
 
-  <!-- THE SHIFT -->
-  <section class="section">
-    <div class="wrap">
-      <div class="eyebrow section__label">The shift</div>
-      <h2>How patients find a dentist is changing — and it's measurable.</h2>
-      <p class="intro">The way people choose a local provider has moved through three eras. We don't ask you to take the shift on faith. We measure where it stands today.</p>
+<h3 class="h2-30 mt-64">What it looks like for you</h3>
+<div class="cols gap-16 mt-24">
+<a href="/studies/dentists/" class="f-340 card-link">
+<span class="b18">A local business in a competitive town</span>
+<span class="s16">How often you're named next to every competitor in town, on each platform we measure.</span>
+<span class="go-15">See it in our dentist study →</span>
+</a>
+<a href="/studies/toronto/" class="f-340 card-link">
+<span class="b18">A group with several locations</span>
+<span class="s16">Neighbourhood by neighbourhood: where each location shows up, and where it doesn't.</span>
+<span class="go-15">See it in our Toronto study →</span>
+</a>
+<a href="/studies/injury-law-ontario/" class="f-340 card-link">
+<span class="b18">A firm working across many cities</span>
+<span class="s16">Which cities you're named in, and who's named in the ones you're not.</span>
+<span class="go-15">See it in our injury law study →</span>
+</a>
+<a href="/studies/sources/" class="f-340 card-link">
+<span class="b18">A directory, review site or publisher</span>
+<span class="s16">How much the AIs rely on you, on which platforms, and for which questions.</span>
+<span class="go-15">See it in our sources study →</span>
+</a>
+<a href="/lab/coke-or-pepsi/" class="f-340 card-link">
+<span class="b18">A brand with a rival</span>
+<span class="s16">Which AIs pick you, which pick them, and which won't choose at all.</span>
+<span class="go-15">See our Coke vs Pepsi find →</span>
+</a>
+</div>
+</div>
+</section>
 
-      <div class="three">
-        <div class="era-card">
-          <div class="era">Yesterday</div>
-          <h3>Patients Googled and clicked</h3>
-          <p>Practices surfaced on keywords, backlinks, and page speed. SEO agencies owned that playbook — and a whole industry grew up to game it.</p>
-          <span class="tagchip">Traditional SEO</span>
-        </div>
-        <div class="era-card now">
-          <div class="era">Today</div>
-          <h3>Patients ask AI and trust the answer</h3>
-          <p>ChatGPT, Claude, and Gemini answer directly — often with no click at all. A few practices get named; the rest are simply absent from the conversation.</p>
-          <span class="tagchip">AI answers directly</span>
-        </div>
-        <div class="era-card">
-          <div class="era">Tomorrow</div>
-          <h3>Agents book on a patient's behalf</h3>
-          <p>As assistants start scheduling appointments directly, a practice AI doesn't name with confidence won't even make the shortlist.</p>
-          <span class="tagchip">Agentic booking</span>
-        </div>
-      </div>
+<section id="how">
+<div class="wrap wrap--wide pt-96 pb-96 cols gap-56 ac">
+<div class="f-440">
+<h2 class="h2-38">Why ask more than once?</h2>
+<p class="t19 mt-20">Ask an AI the same question twice and you can get a different answer. A single screenshot shows what happened once. We ask the same question hundreds or thousands of times, across platforms and days, so what we report is a rate, not a guess.</p>
+<p class="mt-24"><a href="/how-we-measure/" class="b17">How we measure →</a></p>
+</div>
+<figure class="f-440 figure" style="padding: 32px; border-radius: 20px">
+<div aria-hidden="true" class="cols gap-8">
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+<span class="ask"></span>
+<span class="ask ask--empty"></span>
+</div>
+<figcaption class="t15-muted mt-18" style="line-height: 1.55">Illustration. Each square is one answer to the same question: green where a business was named, white where it wasn't. No single square tells you much. The pattern does.</figcaption>
+</figure>
+</div>
+</section>
 
-      <div class="shift-foot">
-        <b>We don't predict this — we measure it.</b> Yesterday and Tomorrow are context. Today is a fact: we ran the queries, recorded every practice named, and counted. What you get from us is the measurement, not a forecast.
-      </div>
-    </div>
-  </section>
+<section id="studies" class="band-alt band-alt--rules">
+<div class="wrap wrap--wide pt-96 pb-96">
+<p class="eyebrow">Studies</p>
+<h2 class="h2-40">Studies we've run</h2>
+<p class="t18 mt-16 mw-760">Each one is real work in a real market. Together they show what your own study could uncover.</p>
+<div class="cols gap-20 mt-40">
 
-  <!-- WHAT AIVI IS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="eyebrow section__label">What AIVI Labs is</div>
-      <h2>A measurement company for AI search.</h2>
-      <p class="intro">Think of us as a ratings agency for the AI era — an independent measurement layer, not another agency selling you traffic.</p>
+<a href="/studies/dentists/" class="f-520 card-study">
+<span class="card-study__meta">Peterborough &amp; Belleville · Jul–Aug 2026 · 11,500+ searches</span>
+<span class="card-study__t">Dentists in two Ontario cities</span>
+<span class="s17">When people ask AI and Google for the best dentist in town, who gets named? We measured every practice in two cities.</span>
+<span class="card-study__go">Read the study →</span>
+</a>
 
-      <div class="posbox">
-        <div class="eyebrow">Our posture</div>
-        <p>AIVI Labs is the measurement layer. We don't sell SEO services. We don't make recommendations to AI platforms, and we don't promise to move you up their answers. We measure what is actually happening — how often each practice is named — and we report it plainly.</p>
-        <p>Every practice is measured the same way, in the same week, against the same six AI surfaces. That's what makes the number a fact you can act on rather than a score we invented.</p>
-      </div>
-    </div>
-  </section>
+<a href="/studies/ask-twice/" class="f-520 card-study">
+<span class="card-study__meta">Across all studies · May–Oct 2026</span>
+<span class="card-study__t">Ask twice: how consistent are AI answers?</span>
+<span class="s17">We asked identical questions thousands of times to see how much the answers move from one try to the next, and between platforms.</span>
+<span class="card-study__go">Read the study →</span>
+</a>
 
-  <!-- PROOF POINT -->
-  <section class="section">
-    <div class="wrap">
-      <div class="eyebrow section__label">Proof point</div>
-      <h2><span data-cov="totals.cities">2</span> cities, measured end to end.</h2>
-      <p class="intro">Dental practices in <span data-cov="text.city_names_and">Belleville and Peterborough</span>, measured across the six AI surfaces and aggregated from <span data-cov="totals.total_runs" data-cov-format="comma">7,521</span> answers into a mention rate for each practice.</p>
+<a href="/studies/toronto/" class="f-520 card-study">
+<span class="card-study__meta">Toronto · Aug–Oct 2026 · 14,000+ searches</span>
+<span class="card-study__t">Toronto, neighbourhood by neighbourhood</span>
+<span class="s17">Does AI treat Leslieville and The Beaches as different places? We asked about more than 180 areas of Toronto to find out.</span>
+<span class="card-study__go">Read the study →</span>
+</a>
 
-      <div class="surfaces">
-        <div class="surface"><span class="surface__mono">GP</span><span><span class="surface__name">ChatGPT</span><span class="surface__vendor">OpenAI</span></span></div>
-        <div class="surface"><span class="surface__mono">CL</span><span><span class="surface__name">Claude</span><span class="surface__vendor">Anthropic</span></span></div>
-        <div class="surface"><span class="surface__mono">GM</span><span><span class="surface__name">Gemini</span><span class="surface__vendor">Google</span></span></div>
-        <div class="surface"><span class="surface__mono">PX</span><span><span class="surface__name">Perplexity</span><span class="surface__vendor">Perplexity</span></span></div>
-        <div class="surface"><span class="surface__mono">AI</span><span><span class="surface__name">Google AI Overviews</span><span class="surface__vendor">Google · SERP</span></span></div>
-        <div class="surface"><span class="surface__mono">LP</span><span><span class="surface__name">Google Local Pack</span><span class="surface__vendor">Google · SERP</span></span></div>
-      </div>
-      <p class="intro" style="margin-top:22px">See exactly how it's done on the <a href="methodology.html" style="color:var(--pos);border-bottom:1px solid color-mix(in oklab, var(--pos) 45%, transparent)">methodology page</a>.</p>
-    </div>
-  </section>
+<a href="/studies/sources/" class="f-520 card-study">
+<span class="card-study__meta">Dentists &amp; injury law · Jul–Oct 2026 · 70,000+ sources recorded</span>
+<span class="card-study__t">Where AI gets its answers</span>
+<span class="s17">When AI names a business, which websites was it reading? We recorded every source the AIs cited.</span>
+<span class="card-study__go">Read the study →</span>
+</a>
 
-  <!-- FIELD GUIDE CAPTURE -->
-  <section class="section" id="fieldguide">
-    <div class="wrap">
-      <div class="eyebrow section__label">Free field guide · Coming soon</div>
-      <h2>The small-business playbook for AI search.</h2>
-      <p class="intro">A plain-language guide to what AI assistants actually read when they decide which local businesses to name — and what you can do about it. We're writing it now. It'll be free.</p>
+<a href="/studies/injury-law-ontario/" class="f-520 card-study">
+<span class="card-study__meta">20 Ontario cities · Oct 2026 · 2,400 asks</span>
+<span class="card-study__t">Personal injury law across Ontario</span>
+<span class="s17">Which law firms do AI and Google name when someone has been hurt? Twenty cities, six platforms.</span>
+<span class="card-study__go">Read the study →</span>
+</a>
 
-      <div class="capture">
-        <h3>The AIVI field guide to AI visibility — coming soon</h3>
-        <p>Leave your email and we'll send it the day it's out. One email, no spam.</p>
-        <form id="fieldguide-form" novalidate>
-          <div class="form-row">
-            <div class="field">
-              <label class="field-label" for="fg-email">Email</label>
-              <input type="email" id="fg-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
-            </div>
-            <div class="field" style="flex:0 0 auto;display:flex;align-items:flex-end">
-              <button type="submit" class="btn btn--lg btn--block">Notify me when it's out</button>
-            </div>
-          </div>
-          <div class="form-error" role="alert"></div>
-          <p class="form-fineprint">We'll email you the field guide when it's published, plus the occasional measurement update. Unsubscribe anytime.</p>
-        </form>
-      </div>
-    </div>
-  </section>
+</div>
+</div>
+</section>
 
-  <!-- CLOSER -->
-  <section class="closer">
-    <div class="wrap">
-      <h2>Find out how often AI names your practice.</h2>
-      <p>Pick your practice, and we'll email your measured report. Instant, automated delivery — no sales call.</p>
-      <div class="hero__cta">
-        <a class="btn btn--lg" href="report.html">Get your practice's report</a>
-      </div>
-    </div>
-  </section>
+<section id="lab-finds">
+<div class="wrap wrap--wide pt-88 pb-88 cols gap-32 ac">
+<div class="f-340">
+<p class="eyebrow">Lab finds</p>
+<h2 class="h2-32">Quick experiments</h2>
+<p class="t17-165 mt-16">Small, quick experiments. Not studies, and we say so. They're here because the behaviour is worth seeing.</p>
+</div>
+<a href="/lab/coke-or-pepsi/" class="card-lab" style="flex: 2 1 520px">
+<span class="card-lab__meta">Lab find · 240 answers · 21 Oct 2026</span>
+<span class="card-lab__t">Coke or Pepsi? Two AIs pick. Two won't.</span>
+<span class="card-lab__go">Read the find →</span>
+</a>
+</div>
+</section>
+
+<section id="commission" class="band-forest">
+<div class="wrap wrap--wide pt-96 pb-96 cta__in gap-32">
+<div class="f-560">
+<h2 class="cta__h cta__h--home">Find out exactly what AI says about you.</h2>
+<p class="cta__p mt-20 mw-640" style="font-size: 19px">Tell us your business, your competitors and your markets. We'll work out the questions your customers ask, measure the answers, and show you where you stand.</p>
+</div>
+<a href="/study/" class="btn btn--mint">Get your own study</a>
+</div>
+</section>
+
+<section>
+<div class="wrap wrap--wide pt-80 pb-80 cta__in gap-32">
+<div class="f-420">
+<h2 class="h2-30">New findings by email</h2>
+<p class="t17-165 mt-12">When a study turns up something worth knowing, we'll send it. Only when there's something new.</p>
+</div>
+<form id="findings-form" class="f-420 cols gap-12" style="align-items: flex-end" novalidate>
+<div class="f-240 field">
+<label for="email" class="label">Email address</label>
+<input id="email" name="email" type="email" placeholder="you@company.com" class="input" autocomplete="email">
+</div>
+<button type="submit" class="btn-submit btn-submit--s">Send me findings</button>
+<div class="hp" aria-hidden="true">
+<label for="findings-website">Website</label>
+<input id="findings-website" name="website" type="text" tabindex="-1" autocomplete="off">
+</div>
+<p id="findings-consent" class="form-hint form-row">We'll email you when a study finds something new. Unsubscribe any time.</p>
+<p class="form-error form-row" role="alert"></p>
+</form>
+</div>
+</section>
 </main>
-
 <footer class="site-footer">
-  <div class="wrap">
-    <div class="site-footer__inner">
-      <div>
-        <a class="brand" href="index.html" aria-label="AIVI Labs home">
-          <span class="logo-mark">AI</span>
-          <span class="wordmark">AIVI <span>Labs</span></span>
-        </a>
-        <p class="site-footer__tag">We measure the answers AI gives your customers — and report the facts.</p>
-      </div>
-      <div class="site-footer__cols">
-        <div>
-          <div class="foot-h">Product</div>
-          <a href="report.html">Get your report</a>
-          <a href="methodology.html">Methodology</a>
-        </div>
-        <div>
-          <div class="foot-h">Company</div>
-          <a href="about.html">About</a>
-          <a href="mailto:support@aivilabs.io">Contact</a>
-        </div>
-        <div>
-          <div class="foot-h">Legal</div>
-          <a href="privacy/">Privacy</a>
-          <a href="terms/">Terms</a>
-          <a href="refund/">Refund</a>
-        </div>
-      </div>
-    </div>
-    <div class="site-footer__legal">
-      <span>© 2026 AIVI Labs SEZC · Cayman Islands</span>
-      <span class="mono">support@aivilabs.io</span>
-    </div>
-  </div>
+<div class="site-footer__in">
+<span>AIVI Labs SEZC · Grand Cayman, Cayman Islands</span>
+<span class="site-footer__links">
+<a href="/how-we-measure/">How we measure</a>
+<a href="/about/">About</a>
+<a href="/privacy/">Privacy</a>
+<a href="/terms/">Terms</a>
+</span>
+</div>
 </footer>
-
-<script>
-(function(){
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  var CITY_ENDPOINT = 'https://api.aivilabs.io/city/request';
-  var TIMEOUT_MS = 15000;
-
-  var okSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#7EE2BC" stroke-width="1.4"/><path d="M6 10.2l2.6 2.6L14 7.4" stroke="#7EE2BC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  function successHTML(title, sub){
-    return '<div class="form-success">' + okSvg +
-      '<div><div class="t">' + title + '</div><div class="s">' + sub + '</div></div></div>';
-  }
-
-  // Field guide capture -> /city/request with the sentinel city "_fieldguide".
-  var form = document.getElementById('fieldguide-form');
-  var btn = form.querySelector('button[type=submit]');
-  var errEl = form.querySelector('.form-error');
-  var busy = false;
-  function showErr(msg){ errEl.textContent = msg; errEl.style.display = 'block'; }
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    if(busy) return;
-    errEl.style.display = 'none'; errEl.textContent = '';
-    var email = (document.getElementById('fg-email').value || '').trim();
-    if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return; }
-
-    busy = true;
-    var label = btn.textContent;
-    btn.disabled = true; btn.textContent = 'Sending…';
-    var controller = new AbortController();
-    var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT_MS);
-    fetch(CITY_ENDPOINT, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ city:'_fieldguide', email: email }),
-      signal: controller.signal
-    }).then(function(r){
-      if(!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json().catch(function(){ return {}; });
-    }).then(function(){
-      clearTimeout(timer);
-      form.innerHTML = successHTML("You're on the list", "We'll email you the field guide the day it's published.");
-    }).catch(function(err){
-      clearTimeout(timer);
-      if(window.console && console.error) console.error('field guide signup failed:', err);
-      busy = false; btn.disabled = false; btn.textContent = label;
-      showErr('Something went wrong — please try again.');
-    });
-  });
-})();
-</script>
+<script src="/assets/site.js"></script>
 </body>
 </html>

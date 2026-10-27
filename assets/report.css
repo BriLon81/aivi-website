@@ -1,0 +1,28 @@
+/* report.html only — the two request panels, on top of site.css.
+   Class names are the ones the page's form script and build_coverage.py
+   already rely on (.panel, .field, .hint, .form-error, .form-success, [hidden]). */
+.cards { display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
+.panel { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; padding: 32px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
+.panel--primary { border-color: var(--green); }
+.panel__tag { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-bottom: 18px; padding: 6px 12px; border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 13px; }
+.panel__tag.live { color: var(--green-deep); background: var(--green-tint); }
+.panel__tag.soon { color: var(--ink-3); background: var(--surface-alt); border: 1px solid var(--border); }
+.panel__tag .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.panel__sub { margin: 12px 0 0; font-size: 17px; line-height: 1.65; color: var(--ink-2); }
+.panel form { margin-top: 22px; display: flex; flex-direction: column; gap: 18px; }
+.panel input[type=text], .panel input[type=email], .panel select.field-select { min-height: 50px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--ink); font-size: 16px; font-family: inherit; box-sizing: border-box; width: 100%; }
+.panel input::placeholder { color: var(--ink-3); }
+.panel input:focus, .panel select.field-select:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: var(--green); }
+.panel input[type=text]:disabled { opacity: 0.55; cursor: not-allowed; }
+select.field-select { appearance: none; -webkit-appearance: none; padding-right: 38px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235B6478' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 15px center; }
+[hidden] { display: none !important; }
+.hint { font-size: 14px; line-height: 1.5; color: var(--ink-3); }
+.submit-row { margin-top: 4px; }
+.btn--block { width: 100%; }
+.panel .form-error { margin-top: -6px; }
+.form-success .t { font-weight: 600; }
+.form-success .s { font-size: 15px; }
+.form-success svg circle, .form-success svg path { stroke: var(--green); }
+.pricing { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); font-size: 14px; line-height: 1.55; color: var(--ink-3); }
+.pricing b { color: var(--ink); font-weight: 600; }
+.panel form + .pricing { margin-top: 24px; }

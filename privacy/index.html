@@ -6,22 +6,24 @@
   <title>Privacy Policy — AIVI Labs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #0b0f1a;
-      --surface:     #111827;
-      --border:      #1e2d45;
-      --accent:      #0ea5c9;
-      --accent-dim:  #0ea5c920;
-      --text:        #e2e8f0;
-      --text-muted:  #8898aa;
-      --text-faint:  #4a5568;
-      --heading:     #f8fafc;
-      --mono:        'DM Mono', monospace;
-      --sans:        'DM Sans', sans-serif;
+      /* AIVI Labs light look (2026-10-27): values from the brand book;
+         the wording on this page is untouched. */
+      --bg:          #ffffff;
+      --surface:     #f6f8fb;
+      --border:      #e1e6ef;
+      --accent:      #0f7a52;
+      --accent-dim:  #e7f6ef;
+      --text:        #3d4658;
+      --text-muted:  #5b6478;
+      --text-faint:  #8a93a8;
+      --heading:     #0b1220;
+      --mono:        'IBM Plex Mono', ui-monospace, monospace;
+      --sans:        'IBM Plex Sans', system-ui, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -88,7 +90,7 @@
       text-transform: uppercase;
       color: var(--accent);
       background: var(--accent-dim);
-      border: 1px solid var(--accent)30;
+      border: 1px solid var(--accent-dim);
       padding: 4px 10px;
       border-radius: 4px;
       margin-bottom: 20px;
@@ -203,7 +205,7 @@
     }
     .data-table td {
       padding: 10px 12px;
-      border-bottom: 1px solid var(--border)80;
+      border-bottom: 1px solid var(--border);
       color: var(--text-muted);
       vertical-align: top;
     }

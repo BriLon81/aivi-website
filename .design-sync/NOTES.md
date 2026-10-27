@@ -21,7 +21,7 @@ therefore *parses* values rather than embedding them:
 
 - Dark palette (primary) ← the `:root` block of `index.html`
 - Light palette (print/secondary) ← the `@media print { :root }` block of
-  `reports/a61CGcll1t.html`
+  `reports/<token>.html`
 - Font request ← the Google Fonts `<link>` in `index.html`
 - Masthead lockup CSS ← `.logo-mark` / `.wordmark` in `index.html`
 

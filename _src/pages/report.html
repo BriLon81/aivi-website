@@ -1,0 +1,261 @@
+<section class="band-alt">
+<div class="wrap pt-80 pb-72">
+<p class="eyebrow mb-20">Get your report</p>
+<h1 class="h1">See how often AI names your practice.</h1>
+<p class="lead mt-24">We measure how frequently each local practice is named across six AI surfaces, then hand you the measured facts — your mention rate, your nearest competitors, and what's readable about your site. Instant, automated delivery to your inbox.</p>
+</div>
+</section>
+
+<section>
+<div class="wrap pt-64 pb-88">
+<div class="cards">
+
+<!-- SECTION A: measured city -->
+<div class="panel panel--primary">
+<span class="panel__tag live"><span class="dot"></span>Measured now</span>
+<!-- City-aware since 2026-09-08. The city name, the practice list and the
+     copy fragments below are filled at page load from the
+     #aivi-coverage island (itself written by build_coverage.py from
+     coverage.json). Nothing city-specific is typed into this file.
+     [data-city-only] shows once a city is chosen; [data-no-city-only]
+     shows until then. With ONE city in coverage.json the picker is
+     pre-selected and hidden, and the panel reads as it did before. -->
+<h2 class="h2-26">Find your practice</h2>
+<p class="panel__sub">Choose your city, then your practice. Your results page is free to look at — the full report is $149 if you want it.</p>
+
+<form id="report-form" novalidate>
+<div class="field" id="city-field">
+<label class="label" for="city-select">Your city</label>
+<select id="city-select" class="field-select" name="city" required></select>
+</div>
+<div class="field">
+<label class="label" for="practice">Your practice</label>
+<input type="text" id="practice" name="practice_name" list="practice-list" placeholder="Start typing your practice name…" autocomplete="off" required />
+<datalist id="practice-list"></datalist>
+<div class="hint"><span data-city-only>Choose from the measured <span data-city-name></span> practices.</span><span data-no-city-only>Pick your city above to see the practices we measured there.</span></div>
+</div>
+<div class="field">
+<label class="label" for="report-email">Email</label>
+<input type="email" id="report-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
+<div class="hint">We'll email you a private link to your page.</div>
+</div>
+<div class="submit-row">
+<button type="submit" class="btn-submit btn--block">Send my report link</button>
+</div>
+<div class="form-error" role="alert"></div>
+</form>
+
+<div class="pricing">
+<b>Standard report — $149.</b> Your mention rate on each surface, nearest competitors, and a site diagnostic. <b>Competitive bundle — $299</b> adds a head-to-head scoreboard against three rivals you pick. You choose at checkout after your link arrives.
+</div>
+</div>
+
+<!-- SECTION B: everywhere else -->
+<div class="panel">
+<span class="panel__tag soon"><span class="dot"></span>Coming to your city</span>
+<h2 class="h2-26">Not in <span data-cov="text.city_names_or">Belleville or Peterborough</span>? We'll measure your city.</h2>
+<p class="panel__sub">Tell us where you are. When we measure your city, you'll be the first to know — and the first to see where you stand.</p>
+
+<form id="city-form" novalidate>
+<div class="field">
+<label class="label" for="city">Your city</label>
+<input type="text" id="city" name="city" placeholder="City, Province / State" autocomplete="address-level2" required />
+</div>
+<div class="field">
+<label class="label" for="city-email">Email</label>
+<input type="email" id="city-email" name="email" placeholder="you@yourpractice.com" autocomplete="email" required />
+</div>
+<div class="submit-row">
+<button type="submit" class="btn-submit btn--block">Notify me when it's measured</button>
+</div>
+<div class="form-error" role="alert"></div>
+</form>
+
+<div class="pricing">
+We measure cities in full, not a sample — so your city goes live all at once. No charge to join the list.
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ====================================================================
+     COVERAGE DATA ISLAND — written by build_coverage.py (aivi-delivery-state)
+     from coverage.json. Do not edit by hand; re-run the build. Public data
+     only: city facts and practice NAMES. No tokens, ids, slugs or links.
+     Practice lists are alphabetical by label so this page never publishes a
+     city's ranking (rates-file order is most-named first). Only practices
+     with a generated report are listed — a name here without a report is a
+     request that silently fails for a real practice.
+     The committed report.html holds the live island; _build/build.py copies
+     it over this placeholder on every build.
+     ==================================================================== -->
+<script id="aivi-coverage" type="application/json">
+{}
+</script>
+<script>
+(function(){
+  var COV = JSON.parse(document.getElementById('aivi-coverage').textContent || '{}');
+  var CITIES = COV.cities || [];
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var REPORT_ENDPOINT = 'https://api.aivilabs.io/report/request';
+  var CITY_ENDPOINT = 'https://api.aivilabs.io/city/request';
+  var TIMEOUT_MS = 15000;
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+  function byLabel(a,b){ return a.localeCompare(b, 'en', { sensitivity: 'base' }); }
+  // Same joins as build_coverage.context() so the text is identical before and after JS.
+  function joinNames(names, word){
+    if(names.length <= 1) return names.join('');
+    if(names.length === 2) return names[0] + ' ' + word + ' ' + names[1];
+    return names.slice(0,-1).join(', ') + ', ' + word + ' ' + names[names.length-1];
+  }
+  var names = CITIES.map(function(c){ return c.name; });
+  var CTX = {
+    totals: COV.totals || {},
+    cities: {},
+    text: { city_names_or: joinNames(names,'or'), city_names_and: joinNames(names,'and') }
+  };
+  CITIES.forEach(function(c){ CTX.cities[c.key] = c; });
+  function lookup(path){
+    var cur = CTX, parts = path.split('.');
+    for(var i=0;i<parts.length;i++){ if(cur == null || !(parts[i] in cur)) return null; cur = cur[parts[i]]; }
+    return cur;
+  }
+  // Re-render every data-cov slot from the island (the build already filled them;
+  // this keeps a hand-edited number from surviving a page load).
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cov]'), function(el){
+    var v = lookup(el.getAttribute('data-cov'));
+    if(v == null) return;
+    el.textContent = (el.getAttribute('data-cov-format') === 'comma') ? Number(v).toLocaleString('en-CA') : String(v);
+  });
+
+  // ---- city picker -> practice list ------------------------------------
+  var citySel = document.getElementById('city-select');
+  var cityField = document.getElementById('city-field');
+  var practiceInput = document.getElementById('practice');
+  var dl = document.getElementById('practice-list');
+  var current = null;      // the chosen city record from coverage.json
+  var keyForLabel = {};    // lowercased label OR key -> practice_name (the key)
+
+  function cityByKey(k){
+    for(var i=0;i<CITIES.length;i++){ if(CITIES[i].key === k) return CITIES[i]; }
+    return null;
+  }
+  function setAll(sel, fn){ Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
+
+  function setCity(key){
+    current = cityByKey(key);
+    keyForLabel = {};
+    var practices = current ? current.practices.slice() : [];
+    practices.sort(function(a,b){ return byLabel(a.label, b.label); });   // safety net; already sorted
+    practices.forEach(function(p){
+      keyForLabel[p.label.toLowerCase()] = p.key;
+      keyForLabel[p.key.toLowerCase()] = p.key;
+    });
+    // The datalist VALUE is the label (what the person sees and types); the
+    // key is recovered on submit via keyForLabel and sent as practice_name.
+    dl.innerHTML = practices.map(function(p){ return '<option value="' + esc(p.label) + '"></option>'; }).join('');
+    practiceInput.value = '';
+    practiceInput.disabled = !current;
+    practiceInput.placeholder = current ? 'Start typing your practice name…' : 'Choose your city first';
+    setAll('[data-city-name]', function(el){ el.textContent = current ? current.name : ''; });
+    setAll('[data-city-display]', function(el){ el.textContent = current ? current.display : ''; });
+    setAll('[data-city-only]', function(el){ el.hidden = !current; });
+    setAll('[data-no-city-only]', function(el){ el.hidden = !!current; });
+  }
+
+  citySel.innerHTML =
+    (CITIES.length === 1 ? '' : '<option value="">Choose your city…</option>') +
+    CITIES.map(function(c){ return '<option value="' + esc(c.key) + '">' + esc(c.display) + '</option>'; }).join('');
+  // ?city=belleville or #belleville pre-selects (letters and emails can deep-link).
+  var wanted = '';
+  try { wanted = (new URLSearchParams(location.search).get('city') || location.hash.replace(/^#/,'') || '').toLowerCase(); } catch(e){}
+  var initial = CITIES.length === 1 ? CITIES[0].key : (cityByKey(wanted) ? wanted : '');
+  citySel.value = initial;
+  if(CITIES.length === 1){ cityField.hidden = true; }
+  setCity(initial);
+  citySel.addEventListener('change', function(){ setCity(citySel.value); });
+
+  var okSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#7EE2BC" stroke-width="1.4"/><path d="M6 10.2l2.6 2.6L14 7.4" stroke="#7EE2BC" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function successHTML(title, sub){
+    return '<div class="form-success">' + okSvg +
+      '<div><div class="t">' + title + '</div><div class="s">' + sub + '</div></div></div>';
+  }
+
+  // Shared submit wiring: validate -> POST JSON -> success replaces form / error restores button.
+  // Mirrors the report landing page: AbortController timeout, inline error, button restored on failure.
+  function wire(opts){
+    var form = document.getElementById(opts.formId);
+    var btn = form.querySelector('button[type=submit]');
+    var errEl = form.querySelector('.form-error');
+    var busy = false;
+    function showErr(msg){ errEl.textContent = msg; errEl.style.display = 'block'; }
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(busy) return;
+      errEl.style.display = 'none'; errEl.textContent = '';
+      var payload = opts.build(showErr);
+      if(!payload) return;
+
+      busy = true;
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Sending…';
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT_MS);
+      fetch(opts.endpoint, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload), signal: controller.signal
+      }).then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json().catch(function(){ return {}; });
+      }).then(function(){
+        clearTimeout(timer);
+        form.innerHTML = successHTML(opts.successTitle, opts.successSub);
+      }).catch(function(err){
+        clearTimeout(timer);
+        if(window.console && console.error) console.error(opts.formId + ' failed:', err);
+        busy = false; btn.disabled = false; btn.textContent = label;
+        showErr('Something went wrong — please try again.');
+      });
+    });
+  }
+
+  // Section A — measured city: {practice_name, email, city} -> /report/request
+  // practice_name is the KEY (token_map practice_name), never the display label:
+  // the service matches on the key. `city` is the coverage.json city key; the
+  // service ignores it today and can use it to scope the lookup once deployed.
+  wire({
+    formId: 'report-form',
+    endpoint: REPORT_ENDPOINT,
+    successTitle: 'Check your inbox',
+    successSub: 'Your report link is on its way.',
+    build: function(showErr){
+      if(!current){ showErr('Please choose your city first.'); return null; }
+      var typed = (document.getElementById('practice').value || '').trim();
+      var email = (document.getElementById('report-email').value || '').trim();
+      var key = keyForLabel[typed.toLowerCase()] || null;
+      if(!key){ showErr('Please choose your practice from the list of measured practices.'); return null; }
+      if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return null; }
+      return { practice_name: key, email: email, city: current.key };
+    }
+  });
+
+  // Section B — everywhere else: {city, email} -> /city/request
+  wire({
+    formId: 'city-form',
+    endpoint: CITY_ENDPOINT,
+    successTitle: "You're on the list",
+    successSub: "We'll email you when your city is measured.",
+    build: function(showErr){
+      var city = (document.getElementById('city').value || '').trim();
+      var email = (document.getElementById('city-email').value || '').trim();
+      if(city.length < 2){ showErr('Please enter your city.'); return null; }
+      if(!EMAIL_RE.test(email)){ showErr('Please enter a valid email address.'); return null; }
+      return { city: city, email: email };
+    }
+  });
+})();
+</script>
