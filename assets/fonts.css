@@ -1,0 +1,23 @@
+/* IBM Plex, self-hosted (SIL Open Font License 1.1, see /assets/fonts/LICENSE.txt).
+   Exactly the faces the pages used to request from Google Fonts, so the text
+   renders the same: Sans 400/500/600/700, Serif 500/600, Mono 500. The three
+   legal pages (own styles, linked to this file) also declare Mono 400 inline,
+   as they used to request it; the main pages never did, and their weight-400
+   mono text falls through to the 500 face as before. No request leaves
+   aivilabs.io.
+   The ascent/descent/line-gap overrides reproduce the line-height: normal
+   metrics Chrome gave the files Google served: 1.30 em for Sans and Mono,
+   1.436 em for Serif (Google's Serif build carries usWinAscent/Descent of
+   1150/286 and no USE_TYPO_METRICS flag; IBM's own builds give 1.30 em for
+   all three). With them the pages lay out exactly as before the switch,
+   on every platform. Checked element by element on 2026-10-28. */
+
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 400; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSans-Regular.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSans-Medium.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 600; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSans-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 700; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSans-Bold.woff2") format("woff2"); }
+
+@font-face { font-family: "IBM Plex Serif"; font-style: normal; font-weight: 500; font-display: swap; ascent-override: 115%; descent-override: 28.6%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSerif-Medium.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Serif"; font-style: normal; font-weight: 600; font-display: swap; ascent-override: 115%; descent-override: 28.6%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexSerif-SemiBold.woff2") format("woff2"); }
+
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexMono-Medium.woff2") format("woff2"); }

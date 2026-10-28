@@ -8,7 +8,12 @@ GitHub Pages serves the committed output as plain HTML; the underscore
 directories (_build, _src) are not published. Each page = shared <head>
 (title, description, canonical, Open Graph, fonts, /assets/site.css) + shared
 header partial (the nav link matching the page URL gets aria-current) + the
-page body + shared footer partial.
+page body + shared footer partial. Typefaces are self-hosted (assets/fonts,
+declared in assets/fonts.css); nothing in <head> points off-site.
+
+Both modes end with the tracker guard (see TRACKER_MARKERS below) and exit 1
+if any served HTML/JS file contains a tracking, analytics or Google Fonts
+marker.
 
 report.html is special: build_coverage.py (aivi-delivery-state) rewrites its
 <script id="aivi-coverage"> island in place from coverage.json. The island in
@@ -40,9 +45,6 @@ HEAD = """<!doctype html>
 <meta property="og:description" content="{description}">
 <meta property="og:url" content="{site}{url}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap">
 <link rel="stylesheet" href="/assets/site.css">
 {extra_head}</head>
 <body>
@@ -108,8 +110,65 @@ def main(argv):
         print(f"wrote     : {page['out']}")
     if check:
         print("check: up to date" if not stale else f"check: {len(stale)} page(s) stale")
-        return 1 if stale else 0
-    return 0
+    hits = guard()
+    if hits:
+        return 1
+    return 1 if (check and stale) else 0
+
+
+# --- Tracker guard -----------------------------------------------------------
+# aivilabs.io's privacy policy promises no tracking pixels, tags or analytics,
+# and that its typefaces are served from its own site. A pixel that slips in
+# (an AI tool, a copied snippet, a CDN "feature") is a legal risk, so the build
+# refuses to pass while any served HTML or JS file contains one of these.
+# The list is documented in _build/README.md; keep the two in step.
+TRACKER_MARKERS = [
+    "connect.facebook.net", "facebook.com/tr", "fbq(",
+    "googletagmanager.com", "google-analytics.com", "gtag(",
+    "doubleclick.net", "googleadservices.com",
+    "analytics.tiktok.com",
+    "snap.licdn.com", "px.ads.linkedin.com",
+    "static.hotjar.com", "clarity.ms",
+    "cloudflareinsights.com",
+    "plausible.io", "cdn.segment.com", "mixpanel", "heapanalytics",
+]
+# Google Fonts send every visitor's IP address to Google. The site self-hosts
+# its typefaces; only report-template.html (served from get.aivilabs.io and
+# reports.aivilabs.io, and described as such in the policy) may still use them.
+FONT_MARKERS = ["fonts.googleapis.com", "fonts.gstatic.com"]
+FONT_EXEMPT = {"report-template.html"}
+# Not served by GitHub Pages: underscore and dot directories, and the
+# gitignored generated report folders.
+SKIP_DIRS = {"r", "reports", "ds-bundle", "node_modules"}
+
+
+def served_files():
+    for path in sorted(ROOT.rglob("*")):
+        if path.suffix.lower() not in (".html", ".js"):
+            continue
+        rel = path.relative_to(ROOT)
+        if any(part.startswith((".", "_")) or part in SKIP_DIRS for part in rel.parts[:-1]):
+            continue
+        yield path, rel.as_posix()
+
+
+def guard():
+    """Print every (file, marker) hit in the served tree; return the list."""
+    hits = []
+    for path, rel in served_files():
+        text = path.read_text(encoding="utf-8", errors="replace").lower()
+        markers = list(TRACKER_MARKERS)
+        if rel not in FONT_EXEMPT:
+            markers += FONT_MARKERS
+        for marker in markers:
+            if marker.lower() in text:
+                hits.append((rel, marker))
+                print(f"GUARD     : {rel}: contains {marker}")
+    if hits:
+        print(f"guard: FAIL, {len(hits)} tracker/font marker(s) in {len({h[0] for h in hits})} served file(s)")
+    else:
+        print("guard: pass, no tracker or Google Fonts markers in served HTML/JS")
+    return hits
 
 
 if __name__ == "__main__":

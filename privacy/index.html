@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — AIVI Labs</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/fonts.css" />
   <style>
+    /* Mono 400 for .section-num etc.; see /assets/fonts.css. */
+    @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; ascent-override: 102.5%; descent-override: 27.5%; line-gap-override: 0%; src: url("/assets/fonts/IBMPlexMono-Regular.woff2") format("woff2"); }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -245,7 +245,7 @@
     <div class="doc-label">Legal</div>
     <h1>Privacy Policy</h1>
     <div class="doc-meta">
-      Effective date: July 1, 2025
+      Effective date: 28 October 2026
       <span>|</span>
       AIVI Labs SEZC
       <span>|</span>
@@ -257,170 +257,204 @@
     <div class="toc-title">Contents</div>
     <ol>
       <li><a href="#overview">Overview</a></li>
-      <li><a href="#collect">Information We Collect</a></li>
-      <li><a href="#use">How We Use Your Information</a></li>
-      <li><a href="#sharing">How We Share Your Information</a></li>
-      <li><a href="#payment-data">Payment Data</a></li>
-      <li><a href="#cookies">Cookies &amp; Tracking</a></li>
-      <li><a href="#retention">Data Retention</a></li>
-      <li><a href="#rights">Your Rights</a></li>
+      <li><a href="#collect">Information we collect</a></li>
+      <li><a href="#use">How we use it</a></li>
+      <li><a href="#sharing">Who we share it with</a></li>
+      <li><a href="#payment-data">Payments</a></li>
+      <li><a href="#cookies">Cookies, pixels and tracking</a></li>
+      <li><a href="#retention">How long we keep it</a></li>
+      <li><a href="#rights">Your rights</a></li>
       <li><a href="#security">Security</a></li>
-      <li><a href="#children">Children's Privacy</a></li>
-      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes to this policy</a></li>
       <li><a href="#contact">Contact</a></li>
     </ol>
   </div>
 
   <section id="overview">
     <h2><span class="section-num">01</span> Overview</h2>
-    <p>AIVI Labs SEZC ("AIVI Labs," "we," "us," or "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains what data we collect, how we use it, and your rights in relation to it.</p>
-    <p>Our services are business-to-business in nature — we primarily collect information about dental and healthcare practices, not individual patients. If you are a practice owner, office manager, or marketing professional using our products, this policy applies to you.</p>
+    <p>AIVI Labs SEZC ("AIVI Labs", "we", "us") builds and runs software that measures what AI assistants say about businesses. This policy explains what personal information we handle, why, who we share it with, and the rights you have.</p>
+    <p>It covers our website (aivilabs.io and our report pages), the forms on it, our studies, and how we contact businesses. AIVI Labs is the data controller. We're based in the Cayman Islands and follow the Cayman Islands Data Protection Act (2021 Revision).</p>
   </section>
 
   <section id="collect">
-    <h2><span class="section-num">02</span> Information We Collect</h2>
-    <p>We collect information in two ways: information you provide directly, and the small amount of technical information your browser sends when it loads a page.</p>
+    <h2><span class="section-num">02</span> Information we collect</h2>
 
     <table class="data-table">
       <thead>
         <tr>
-          <th>Data Type</th>
+          <th>What</th>
           <th>Examples</th>
-          <th>Source</th>
+          <th>Where it comes from</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Contact information</td>
-          <td>Name, email address, phone number</td>
-          <td>Provided by you at checkout or contact form</td>
+          <td>Study requests</td>
+          <td>Name, work email, business or brand, your question</td>
+          <td>You, when you send the "Get your own study" form</td>
         </tr>
         <tr>
-          <td>Practice information</td>
-          <td>Practice name, website URL, city, country</td>
-          <td>Provided by you when ordering</td>
+          <td>Findings emails</td>
+          <td>Email address, and the consent wording you agreed to</td>
+          <td>You, when you sign up</td>
         </tr>
         <tr>
-          <td>Website content</td>
-          <td>Publicly available text, schema markup, page structure from your submitted URL</td>
-          <td>Crawled by our scanner upon order</td>
+          <td>Practice reports and city waitlist</td>
+          <td>Practice name, email address, city</td>
+          <td>You, on our report page</td>
         </tr>
         <tr>
-          <td>Order information</td>
-          <td>Product purchased, order ID, purchase date</td>
-          <td>Provided by Dodo Payments (our payment processor)</td>
+          <td>Orders</td>
+          <td>Product, order ID, purchase date, email address</td>
+          <td>Dodo Payments, our Merchant of Record</td>
         </tr>
         <tr>
-          <td>Form submissions</td>
-          <td>Whatever you type into a form on aivilabs.io (e.g., name, email, business name, your question)</td>
-          <td>Sent to AIVI Labs when you submit the form</td>
+          <td>Study data</td>
+          <td>What AI platforms and Google answered to our questions. This includes the names of businesses and sometimes of individual professionals (for example, "Dr. Lee"), plus public business details such as website, address and listing information</td>
+          <td>The AI platforms, Google and public sources</td>
         </tr>
         <tr>
-          <td>Font requests</td>
-          <td>Your IP address and browser type</td>
-          <td>Sent to Google when your browser loads our web fonts (see Section 06)</td>
+          <td>Business contact details</td>
+          <td>Name, role, business email and business address of people at businesses we study</td>
+          <td>Public sources (business websites and listings) and business data providers</td>
+        </tr>
+        <tr>
+          <td>Website checks</td>
+          <td>Publicly available content from a practice's website, for dental practice reports</td>
+          <td>The practice's public website</td>
+        </tr>
+        <tr>
+          <td>Technical data</td>
+          <td>IP address and browser details</td>
+          <td>Sent automatically when your browser loads our pages or fonts, or sends a form</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout">
-      We do <strong>not</strong> collect patient data, protected health information (PHI), or any data subject to HIPAA. Our analysis is limited to publicly accessible website content only.
+      We don't collect patient or client records from the businesses we study, and we never receive payment card details.
     </div>
   </section>
 
   <section id="use">
-    <h2><span class="section-num">03</span> How We Use Your Information</h2>
-    <p>We use the information we collect to:</p>
+    <h2><span class="section-num">03</span> How we use it</h2>
     <ul>
-      <li>Deliver your audit report and fix pack PDFs</li>
-      <li>Send transactional emails related to your order (confirmation, delivery, support)</li>
-      <li>Communicate about product updates or new offerings relevant to your practice (you may opt out at any time)</li>
-      <li>Improve the accuracy of our scoring methodology and product quality</li>
-      <li>Comply with legal obligations and resolve disputes</li>
+      <li>To reply to study requests and run the studies you order.</li>
+      <li>To send findings emails to people who signed up.</li>
+      <li>To deliver practice reports and order emails.</li>
+      <li>To measure how often businesses are named by AI, and to publish findings about how AI answers. We don't publish which businesses were named. Each business can get its own results.</li>
+      <li>To contact businesses named in our studies about their results. This is business-to-business only, and every email lets you opt out.</li>
+      <li>To keep our service secure, for example by limiting how many form submissions come from one address.</li>
+      <li>To meet legal and accounting obligations.</li>
     </ul>
-    <p>We do not use your information to make automated decisions that have legal or significant effects on you.</p>
+    <p>We don't sell personal information. We don't make automated decisions that have legal or similarly significant effects on you.</p>
   </section>
 
   <section id="sharing">
-    <h2><span class="section-num">04</span> How We Share Your Information</h2>
-    <p>We do not sell your personal information. We may share your data with:</p>
+    <h2><span class="section-num">04</span> Who we share it with</h2>
+    <p>We use service providers that handle data on our behalf:</p>
     <ul>
-      <li><strong>Dodo Payments</strong> — our online reseller, payment processor, and Merchant of Record, who receives order and transaction data</li>
-      <li><strong>Email service providers</strong> — to send you transactional and marketing emails (e.g., Google Workspace)</li>
-      <li><strong>CRM and automation tools</strong> — to manage our customer pipeline (e.g., GoHighLevel, Make.com), subject to data processing agreements</li>
-      <li><strong>Google Fonts</strong> — our pages load their typefaces from Google's servers, so Google receives your IP address and browser details with each font request</li>
-      <li><strong>Legal and compliance</strong> — if required by law, court order, or to protect our rights</li>
+      <li><strong>GitHub:</strong> hosts aivilabs.io and stores our private records.</li>
+      <li><strong>Cloudflare:</strong> runs our domain names and hosts our report pages.</li>
+      <li><strong>DigitalOcean:</strong> the servers that receive form submissions and run our measurements.</li>
+      <li><strong>Postmark:</strong> sends our emails.</li>
+      <li><strong>Google Workspace:</strong> our email and spreadsheets.</li>
+      <li><strong>Make.com:</strong> automates the delivery of orders.</li>
+      <li><strong>Dodo Payments:</strong> our Merchant of Record for purchases.</li>
+      <li><strong>Google Fonts:</strong> serves the typefaces on our report pages.</li>
+      <li><strong>AI platforms and DataForSEO:</strong> when we run a study, we send our questions to OpenAI, Google, Anthropic and Perplexity, and to DataForSEO for Google's results. These questions don't contain information about you.</li>
+      <li><strong>Business data providers:</strong> we use them to find business contact details.</li>
     </ul>
-    <p>All third-party processors are contractually required to handle your data in accordance with applicable privacy laws.</p>
+    <p>We also share information when the law requires it, or to protect our rights.</p>
+    <p>Some of these providers handle data outside the Cayman Islands, including in the United States and Canada. We only use providers that protect it appropriately.</p>
   </section>
 
   <section id="payment-data">
-    <h2><span class="section-num">05</span> Payment Data</h2>
-    <p>All payment processing is handled by <strong>Dodo Payments Inc</strong>, which acts as the Merchant of Record. AIVI Labs does not receive, store, or process your credit card details. Dodo Payments' <a href="https://dodopayments.com/legal/privacy-policy" target="_blank">Privacy Policy</a> governs how your payment data is handled.</p>
-    <p>We receive a limited confirmation from Dodo Payments upon successful payment (e.g., order ID, product purchased, email address) solely for the purpose of fulfilling your order.</p>
+    <h2><span class="section-num">05</span> Payments</h2>
+    <p>Dodo Payments Inc. is the Merchant of Record and handles all payment details. We never see your card details. Dodo sends us a short confirmation (order ID, product and email address) so we can deliver your order. <a href="https://dodopayments.com/legal/privacy-policy" target="_blank">Dodo's privacy policy</a> covers checkout.</p>
   </section>
 
   <section id="cookies">
-    <h2><span class="section-num">06</span> Cookies &amp; Tracking</h2>
-    <p>aivilabs.io does not use analytics or tracking cookies, and does not load any analytics, advertising, or tracking scripts. We do not measure page views, traffic sources, or visitor behaviour, and AIVI Labs sets no cookies. The site is hosted on GitHub Pages, which receives visitors' IP addresses when it serves the page, and neither AIVI Labs nor GitHub Pages sets cookies on this site.</p>
-    <p>Two things do leave your browser when you use the site:</p>
+    <h2><span class="section-num">06</span> Cookies, pixels and tracking</h2>
+    <p>aivilabs.io has no tracking pixels or tags of any kind:</p>
     <ul>
-      <li><strong>Web fonts</strong> — our typefaces are served by Google Fonts, so your browser requests them from Google's servers. Google receives your IP address and browser details with that request, handled under <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
-      <li><strong>Forms</strong> — when you submit a form (a study request or a findings signup), what you entered is sent to AIVI Labs so we can respond. Nothing is sent until you press the button.</li>
+      <li>no Meta Pixel;</li>
+      <li>no Google Analytics or Google Ads tags;</li>
+      <li>no session recording;</li>
+      <li>no other advertising or analytics code.</li>
     </ul>
-    <p>Checkout takes place on Dodo Payments' site, which has its own cookie practices (see Section 05).</p>
+    <p>AIVI Labs sets no cookies and stores nothing in your browser. We don't measure page views or where visitors come from. Nothing about your visit is shared with Meta, Google or any advertising network.</p>
+    <p>Our emails contain no tracking pixels either. We don't track whether you open them or click their links.</p>
+    <p>What does leave your browser:</p>
+    <ul>
+      <li><strong>Pages:</strong> GitHub, which hosts aivilabs.io, receives your IP address when it serves a page. Our typefaces are served from our own site.</li>
+      <li><strong>Report pages:</strong> our dental report pages (on get.aivilabs.io and reports.aivilabs.io) are served by Cloudflare, and they load their typefaces from Google Fonts. So Cloudflare and Google receive your IP address and browser details when you open one. Cloudflare may also set a strictly necessary security cookie.</li>
+      <li><strong>Forms:</strong> nothing is sent until you press the button. Our server records your IP address with each submission, for security and to limit abuse.</li>
+    </ul>
+    <p>Checkout happens on Dodo Payments' site, which has its own cookie and tracking practices.</p>
   </section>
 
   <section id="retention">
-    <h2><span class="section-num">07</span> Data Retention</h2>
-    <p>We retain your personal information for as long as necessary to fulfill the purposes described in this policy, or as required by law. Specifically:</p>
+    <h2><span class="section-num">07</span> How long we keep it</h2>
     <ul>
-      <li>Order records and contact details are retained for a minimum of 5 years for accounting and legal purposes</li>
-      <li>Audit scan data (crawled website content and scores) is retained for up to 24 months</li>
-      <li>Marketing email opt-out preferences are retained indefinitely</li>
+      <li><strong>Study requests and client records:</strong> while we work together, then 5 years for accounting and legal reasons.</li>
+      <li><strong>Order records:</strong> at least 5 years.</li>
+      <li><strong>Findings emails:</strong> until you unsubscribe. We keep a record of your consent and of your unsubscribe, so we don't email you again.</li>
+      <li><strong>Business contact details used for outreach:</strong> until you ask us to stop. After that, we keep only what's needed to keep you off our list.</li>
+      <li><strong>Study data:</strong> kept indefinitely as research records, so that published findings can be checked.</li>
+      <li><strong>Website checks for dental reports:</strong> up to 24 months.</li>
+      <li><strong>Server logs with IP addresses:</strong> a limited period, for security.</li>
     </ul>
-    <p>You may request deletion of your personal data subject to the exceptions noted in the Rights section below.</p>
   </section>
 
   <section id="rights">
-    <h2><span class="section-num">08</span> Your Rights</h2>
-    <p>Depending on your location, you may have the following rights regarding your personal data:</p>
+    <h2><span class="section-num">08</span> Your rights</h2>
+    <p>You can ask us to:</p>
     <ul>
-      <li><strong>Access</strong> — request a copy of the personal data we hold about you</li>
-      <li><strong>Correction</strong> — request correction of inaccurate information</li>
-      <li><strong>Deletion</strong> — request deletion of your data, subject to legal retention requirements</li>
-      <li><strong>Opt-out of marketing</strong> — unsubscribe from marketing emails at any time via the link in any email</li>
-      <li><strong>Data portability</strong> — request your data in a portable format (where applicable)</li>
+      <li>give you a copy of the personal information we hold about you;</li>
+      <li>correct anything that's wrong;</li>
+      <li>delete it, unless we have to keep it by law;</li>
+      <li>stop using it, including for outreach or in our study data;</li>
+      <li>stop sending you marketing emails (every email has an unsubscribe link);</li>
+      <li>send it to you in a portable format, where that applies.</li>
     </ul>
-    <p>To exercise these rights, contact us at <a href="mailto:privacy@aivilabs.io">privacy@aivilabs.io</a>. We will respond within 30 days.</p>
-    <p>If you are located in the European Economic Area (EEA) or United Kingdom, you may also have rights under the GDPR or UK GDPR. Our legal basis for processing is typically <em>contract performance</em> (to deliver your order) and <em>legitimate interest</em> (to improve our services).</p>
+    <p>You can also withdraw your consent at any time. Email <a href="mailto:support@aivilabs.io">support@aivilabs.io</a>. We'll reply within 30 days.</p>
+    <p>If you're unhappy with how we handle your information, you can complain:</p>
+    <ul>
+      <li><strong>Cayman Islands:</strong> to the Office of the Ombudsman (<a href="https://ombudsman.ky" target="_blank">ombudsman.ky</a>).</li>
+      <li><strong>Elsewhere:</strong> if you're in the EEA, the UK or Canada, you may also have rights under the GDPR, the UK GDPR or PIPEDA.</li>
+    </ul>
+    <p>We rely on these grounds:</p>
+    <ul>
+      <li><strong>Contract:</strong> to deliver what you ordered.</li>
+      <li><strong>Legitimate interests:</strong> to run our studies, contact businesses about their results, and keep the service secure.</li>
+      <li><strong>Consent:</strong> for findings emails.</li>
+    </ul>
   </section>
 
   <section id="security">
     <h2><span class="section-num">09</span> Security</h2>
-    <p>We implement reasonable technical and organizational measures to protect your personal information from unauthorized access, loss, or disclosure. This includes encrypted data transmission (HTTPS), access controls, and secure third-party processors.</p>
-    <p>No method of transmission over the internet is 100% secure. While we take appropriate precautions, we cannot guarantee absolute security.</p>
+    <p>We use encrypted connections (HTTPS), limit access to the people who need it, and use established service providers. No method of sending or storing data is completely secure, so we can't guarantee absolute security.</p>
   </section>
 
   <section id="children">
-    <h2><span class="section-num">10</span> Children's Privacy</h2>
-    <p>Our services are intended for business use by adults (18+). We do not knowingly collect personal information from individuals under the age of 18. If you believe a minor has provided us with personal data, please contact us immediately.</p>
+    <h2><span class="section-num">10</span> Children</h2>
+    <p>Our services are for businesses and adults. We don't knowingly collect personal information from anyone under 18. If you think a minor has given us personal information, contact us and we'll delete it.</p>
   </section>
 
   <section id="changes">
-    <h2><span class="section-num">11</span> Changes to This Policy</h2>
-    <p>We may update this Privacy Policy from time to time. When we make material changes, we will update the "Effective date" at the top of this page. For significant changes, we may also notify active customers by email.</p>
-    <p>Continued use of our services after a change constitutes acceptance of the updated policy.</p>
+    <h2><span class="section-num">11</span> Changes to this policy</h2>
+    <p>When we change this policy, we update the effective date at the top. For significant changes, we may also email our customers.</p>
   </section>
 
   <section id="contact">
     <h2><span class="section-num">12</span> Contact</h2>
-    <p>For privacy-related questions or requests, please contact:</p>
     <p>
       <strong>AIVI Labs SEZC</strong><br>
       Cayman Enterprise City, Grand Cayman, Cayman Islands<br>
-      Email: <a href="mailto:privacy@aivilabs.io">privacy@aivilabs.io</a><br>
-      Website: <a href="https://aivilabs.io">aivilabs.io</a>
+      <a href="mailto:support@aivilabs.io">support@aivilabs.io</a><br>
+      <a href="https://aivilabs.io">aivilabs.io</a>
     </p>
   </section>
 </main>
@@ -433,7 +467,7 @@
       <a href="/refund">Refund Policy</a>
       <a href="https://aivilabs.io">Home</a>
     </div>
-    <div class="footer-copy">© 2025 AIVI Labs SEZC — Cayman Islands</div>
+    <div class="footer-copy">© 2026 AIVI Labs SEZC — Cayman Islands</div>
   </div>
 </footer>
 

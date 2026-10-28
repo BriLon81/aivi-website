@@ -52,6 +52,44 @@ existing committed `report.html` on every build rather than from `_src`. Its
 form script, field names, endpoints and city picker are unchanged from the
 July 2026 site.
 
+## Typefaces
+
+IBM Plex Sans, Serif and Mono are self-hosted: the woff2 files are in
+`assets/fonts/` (from the official `@ibm/plex-*` npm packages, SIL Open Font
+License 1.1, licence file alongside) and declared in `assets/fonts.css`, which
+`site.css` imports and the three legal pages link directly. Only the weights
+the site uses are shipped (Sans 400/500/600/700, Serif 500/600, Mono 400/500).
+No page on aivilabs.io may load fonts from Google: that sends every visitor's
+IP address to Google, and the privacy policy says it does not happen.
+
+## Tracker guard
+
+`build.py` (in both modes) ends by scanning every served `.html` and `.js`
+file, i.e. everything outside the underscore/dot directories and the ignored
+`r/` and `reports/` folders, and exits 1 if any contains one of these markers:
+
+| Marker | What it is |
+|---|---|
+| `connect.facebook.net`, `facebook.com/tr`, `fbq(` | Meta Pixel |
+| `googletagmanager.com`, `google-analytics.com`, `gtag(` | Google Tag Manager / Analytics / Ads |
+| `doubleclick.net`, `googleadservices.com` | Google ad tracking |
+| `analytics.tiktok.com` | TikTok Pixel |
+| `snap.licdn.com`, `px.ads.linkedin.com` | LinkedIn Insight Tag |
+| `static.hotjar.com`, `clarity.ms` | Hotjar / Microsoft Clarity session recording |
+| `cloudflareinsights.com` | Cloudflare Web Analytics beacon |
+| `plausible.io`, `cdn.segment.com`, `mixpanel`, `heapanalytics` | other analytics |
+| `fonts.googleapis.com`, `fonts.gstatic.com` | Google Fonts (every served page except `report-template.html`) |
+
+It prints the file and the matched marker. Why: a tracking pixel on the site
+is a legal risk, and the privacy policy promises there are none. If the guard
+fires, remove the snippet; do not add an exemption. `report-template.html` is
+exempt from the fonts check only because it is served from get.aivilabs.io and
+reports.aivilabs.io, still uses Google Fonts, and the policy says so.
+
+The guard only sees the repo. Cloudflare can inject scripts on the domains it
+serves (Web Analytics beacon, Email Address Obfuscation, Rocket Loader); check
+the live pages in a browser with network capture after a deploy.
+
 ## Redirects
 
 GitHub Pages cannot redirect server-side. `methodology.html` and `about.html`

@@ -5,6 +5,12 @@
    layout details with no token. Order matters: type classes set margin:0 and the
    spacing utilities at the end override them. */
 
+/* ---- typefaces ----------------------------------------------------------- */
+/* IBM Plex is self-hosted from /assets/fonts (no Google Fonts: a visitor's IP
+   address never leaves aivilabs.io). The @font-face rules live in fonts.css so
+   the three legal pages, which do not use this stylesheet, can share them. */
+@import url("/assets/fonts.css");
+
 /* ---- tokens -------------------------------------------------------------- */
 :root {
   --surface: #ffffff;
