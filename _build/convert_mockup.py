@@ -70,6 +70,7 @@ STYLES = {
     "font-family: 'IBM Plex Serif', Georgia, serif; font-size: 27px; font-weight: 600; line-height: 1.2": "card-study__t",
     "font-family: 'IBM Plex Serif', Georgia, serif; font-size: 25px; font-weight: 600; line-height: 1.25": "card-lab__t",
     "margin-top: auto; padding-top: 8px; font-weight: 600; color: #0F7A52": "card-study__go",
+    "align-self: flex-start; padding: 4px 12px; border-radius: 999px; background: #E7F6EF; color: #0A5C3D; font-size: 13px; font-weight: 600": "card-study__tag",
     "font-family: 'IBM Plex Mono', monospace; color: #0B1220": "mono c-ink",
     "font-family: 'IBM Plex Mono', monospace; color: #0B1220; white-space: nowrap": "mono c-ink nowrap",
     "font-family: 'IBM Plex Mono', monospace; color: #0F7A52": "mono c-green",
