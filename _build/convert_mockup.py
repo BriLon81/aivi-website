@@ -34,6 +34,7 @@ PAGES = {
     "Sources": ("studies-sources", "/studies/sources/"),
     "PILaw": ("studies-injury-law-ontario", "/studies/injury-law-ontario/"),
     "AskTwice": ("studies-ask-twice", "/studies/ask-twice/"),
+    "Downtowns": ("studies-ontario-downtowns", "/studies/ontario-downtowns/"),
     "CokePepsi": ("lab-coke-or-pepsi", "/lab/coke-or-pepsi/"),
     "About": ("about", "/about/"),
 }

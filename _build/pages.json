@@ -60,6 +60,13 @@
       "description": "We asked identical questions thousands of times, on ChatGPT, Gemini, Claude, Perplexity and Google."
     },
     {
+      "source": "studies-ontario-downtowns.html",
+      "out": "studies/ontario-downtowns/index.html",
+      "url": "/studies/ontario-downtowns/",
+      "title": "Where does AI point people in an Ontario town? — AIVI Labs",
+      "description": "When people ask AI where to eat, shop or spend a day in five Ontario towns, how much of the answer points downtown? A first look, November 8–9, 2026."
+    },
+    {
       "source": "lab-coke-or-pepsi.html",
       "out": "lab/coke-or-pepsi/index.html",
       "url": "/lab/coke-or-pepsi/",
