@@ -279,6 +279,20 @@ a.card-link:hover { border-color: var(--green); color: var(--ink); }
 .form-success { flex-basis: 100%; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+/* ---- Home v2 hero chart on phones ------------------------------------------
+   The mockup's five pairs of fixed 30px bars need 378px of chart; the card has
+   about 260px at 390px wide and clips the last city. Below 560px, narrow the
+   bars, labels, gaps and padding so all five fit. Bar heights (the data) are
+   inline and untouched. !important because the mockup styles are inline. */
+@media (max-width: 560px) {
+  .hero-chart { padding: 28px 16px !important; }
+  .hero-chart > [role="img"] { gap: 6px !important; }
+  .hero-chart > [role="img"] > div { gap: 4px !important; }
+  .hero-chart > [role="img"] > div > div > div { width: min(30px, 5.2vw) !important; }
+  .hero-chart > [role="img"] span { font-size: min(13px, 3.1vw) !important; }
+  .hero-chart > [aria-hidden="true"] { gap: 6px !important; font-size: min(14px, 3vw) !important; }
+}
+
 /* ---- spacing utilities (keep last) --------------------------------------- */
 .pt-48 { padding-top: 48px; } .pt-56 { padding-top: 56px; } .pt-64 { padding-top: 64px; } .pt-72 { padding-top: 72px; } .pt-80 { padding-top: 80px; } .pt-88 { padding-top: 88px; } .pt-96 { padding-top: 96px; }
 .pb-0 { padding-bottom: 0; } .pb-24 { padding-bottom: 24px; } .pb-48 { padding-bottom: 48px; } .pb-64 { padding-bottom: 64px; } .pb-72 { padding-bottom: 72px; } .pb-80 { padding-bottom: 80px; } .pb-88 { padding-bottom: 88px; } .pb-96 { padding-bottom: 96px; }

@@ -323,6 +323,8 @@ STYLES = {
     "padding: 36px 0; border-top: 1px solid #E1E6EF": "finding",
     "padding: 36px 0; border-top: 1px solid #E1E6EF; border-bottom: 1px solid #E1E6EF": "finding finding--last",
     "flex: 1 1 320px; min-width: 0; margin: 0; padding: 24px; border-radius: 16px; background: #F6F8FB; border: 1px solid #E1E6EF": "f-320 figure",
+    # Home v2 hero chart: the class is only a hook for the phone rule in site.css; the mockup style stays inline
+    "flex: 1 1 520px; min-width: 0; margin: 0; padding: 36px 40px; background: #E7F6EF; display: flex; flex-direction: column; gap: 18px; justify-content: center": ("hero-chart", "flex: 1 1 520px; min-width: 0; margin: 0; padding: 36px 40px; background: #E7F6EF; display: flex; flex-direction: column; gap: 18px; justify-content: center"),
     "flex: 1 1 440px; min-width: 0; margin: 0; padding: 32px; border-radius: 20px; background: #F6F8FB; border: 1px solid #E1E6EF": ("f-440 figure", "padding: 32px; border-radius: 20px"),
     "margin: 28px 0 0; padding: 24px; border-radius: 16px; background: #F6F8FB; border: 1px solid #E1E6EF": "figure mt-28",
     "font-size: 14px; color: #5B6478; margin-bottom: 18px": "figure__cap",
@@ -409,6 +411,17 @@ def convert(src: Path, unmapped: dict):
                 raise SystemExit(f"{src.name}: signup form marker not found exactly once: {old!r}")
             body = body.replace(old, new)
     assert ".dc.html" not in body, f"{src.name}: unrewritten mockup link"
+
+    # 2b. phone fit for the row charts (label | bar | value). The mockups give
+    # the label a fixed pixel column, which at 390px squeezes the bar track to
+    # a few pixels (to nothing on Sources). Let the label column give way and
+    # keep at least 48px of track. Wherever the row has room for the mockup's
+    # widths (every desktop layout) the result is identical; bar widths, the
+    # data, are percentages of the track and are not touched.
+    body = re.sub(r"grid-template-columns: (\d+px|minmax\(96px, 220px\)) 1fr (\d+px)",
+                  lambda g: "grid-template-columns: "
+                            + (g.group(1) if g.group(1).startswith("minmax") else f"minmax(min-content, {g.group(1)})")
+                            + f" minmax(48px, 1fr) {g.group(2)}", body)
 
     # 3. inline styles -> classes
     def repl(mt):
