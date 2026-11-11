@@ -26,7 +26,7 @@ OUT_DIR = ROOT / "_src" / "pages"
 
 # mockup file stem -> (page slug, live URL)
 PAGES = {
-    "Main": ("index", "/"),
+    "MainV2": ("index", "/"),  # Home v2 (2026-11-11); the old Main mockup is retired
     "BrandStudy": ("study", "/study/"),
     "HowWeMeasure": ("how-we-measure", "/how-we-measure/"),
     "Dentists": ("studies-dentists", "/studies/dentists/"),
@@ -41,13 +41,33 @@ PAGES = {
 
 # href rewrites, applied in order (longest first so "Main.dc.html#x" wins over "Main.dc.html")
 LINKS = [
-    ("Main.dc.html#lab-notes", "/#lab-finds"),
+    # the Lab finds section is gone (Home v2): Coke or Pepsi is a tile in the studies grid
+    ("Main.dc.html#lab-notes", "/#studies"),
     ("Main.dc.html#studies", "/#studies"),
     ("Main.dc.html#commission", "/study/#request"),
     ("Main.dc.html", "/"),
-    ("#lab-notes", "#lab-finds"),
+    ("#lab-notes", "/#studies"),
     ("#commission", "/study/#request"),
-] + [(f"{stem}.dc.html", url) for stem, (_, url) in PAGES.items() if stem != "Main"]
+] + [(f"{stem}.dc.html", url) for stem, (_, url) in PAGES.items()]
+
+# Home: the findings signup form. The mockup has only the visible field and
+# button; assets/site.js needs the id, the field name, the hidden "website"
+# honeypot, the consent line (the CASL record it posts) and the error slot.
+HOME_FORM = [
+    ('<form style="', '<form id="findings-form" novalidate style="'),
+    ('<label for="email2"', '<label for="email"'),
+    ('<input id="email2" type="email" placeholder="you@company.com"',
+     '<input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email"'),
+    ('<button type="button" ', '<button type="submit" '),
+    ('>Send me findings</button>\n</form>', """>Send me findings</button>
+<div class="hp" aria-hidden="true">
+<label for="findings-website">Website</label>
+<input id="findings-website" name="website" type="text" tabindex="-1" autocomplete="off">
+</div>
+<p id="findings-consent" class="form-hint form-row">We'll email you when a study finds something new. Unsubscribe any time.</p>
+<p class="form-error form-row" role="alert"></p>
+</form>"""),
+]
 
 # exact inline style -> classes, or (classes, residual inline style)
 STYLES = {
@@ -383,8 +403,11 @@ def convert(src: Path, unmapped: dict):
     if stem == "Dentists":
         # the two "Find your practice's report" buttons go to the report page
         body = re.sub(r'href="/studies/dentists/"(?=[^>]*>Find your practice\'s report<)', 'href="/report.html"', body)
-    if stem == "Main":
-        body = body.replace('<section id="lab-notes"', '<section id="lab-finds"')
+    if stem == "MainV2":
+        for old, new in HOME_FORM:
+            if body.count(old) != 1:
+                raise SystemExit(f"{src.name}: signup form marker not found exactly once: {old!r}")
+            body = body.replace(old, new)
     assert ".dc.html" not in body, f"{src.name}: unrewritten mockup link"
 
     # 3. inline styles -> classes

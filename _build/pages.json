@@ -6,7 +6,7 @@
       "out": "index.html",
       "url": "/",
       "title": "AIVI Labs — Know exactly what AI says about your business",
-      "description": "We ask the questions your customers ask, hundreds or thousands of times, and show you where you're named, where you're not, and which websites the AI is reading.",
+      "description": "We ask AI what your customers ask, and publish what it says. Studies of what ChatGPT, Claude, Gemini, Perplexity and Google say about businesses.",
       "scripts": ["/assets/site.js"]
     },
     {
@@ -22,7 +22,7 @@
       "out": "how-we-measure/index.html",
       "url": "/how-we-measure/",
       "title": "How we measure — AIVI Labs",
-      "description": "Every number we publish is a rate built from many repeated questions, not a screenshot."
+      "description": "Every number we publish is how often a business was named across many repeated questions, not a screenshot."
     },
     {
       "source": "studies-dentists.html",
@@ -63,8 +63,8 @@
       "source": "studies-ontario-downtowns.html",
       "out": "studies/ontario-downtowns/index.html",
       "url": "/studies/ontario-downtowns/",
-      "title": "Where does AI point people in an Ontario town? — AIVI Labs",
-      "description": "When people ask AI where to eat, shop or spend a day in five Ontario towns, how much of the answer points downtown? A first look, November 8–9, 2026."
+      "title": "Where does AI point people in an Ontario city? — AIVI Labs",
+      "description": "When people ask AI where to eat, shop or spend a day in five Ontario cities, how much of the answer points downtown? A first look, November 8–9, 2026."
     },
     {
       "source": "lab-coke-or-pepsi.html",

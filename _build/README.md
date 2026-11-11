@@ -40,7 +40,8 @@ repeats. The mockup drop folder stays outside the repo.
 
 The home-page and /study/ forms carry a few attributes the mockups do not have
 (`id`, `name`, the hidden `website` honeypot, the consent line, the error slot).
-After re-converting `Main` or `BrandStudy`, re-apply them; `assets/site.js`
+The converter re-applies them to the home page (`MainV2`, see `HOME_FORM`); after
+re-converting `BrandStudy`, re-apply them by hand; `assets/site.js`
 documents what it expects.
 
 ## report.html
