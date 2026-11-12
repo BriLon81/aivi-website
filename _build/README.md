@@ -93,10 +93,12 @@ the live pages in a browser with network capture after a deploy.
 
 ## Redirects
 
-GitHub Pages cannot redirect server-side. `methodology.html` and `about.html`
-are small pages with `<meta http-equiv="refresh">`, a canonical link to the new
-URL and a plain link. Keep them.
-
+GitHub Pages cannot redirect server-side. `methodology.html` is a small page
+with `<meta http-equiv="refresh">`, a canonical link to the new URL and a plain
+link. Keep it. `about.html` was removed on 12 Nov 2026: it sat beside the
+`about/` folder, so automated readers asking for /about got the "has moved"
+notice instead of the About page. Never add a top-level .html file with the
+same name as a page folder.
 ## Never
 
 - Delete `CNAME`, or the `r/` and `reports/` lines in `.gitignore`.
