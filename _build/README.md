@@ -44,6 +44,39 @@ The converter re-applies them to the home page (`MainV2`, see `HOME_FORM`); afte
 re-converting `BrandStudy`, re-apply them by hand; `assets/site.js`
 documents what it expects.
 
+## Pieces the build adds (12 Nov 2026)
+
+These are not in the mockups; the build puts them in, so a re-converted page
+keeps them. Their wording was given in the brief of 12 Nov 2026; do not reword.
+
+- **Footer** (`_src/partials/footer.html`): the founders-and-contact line under
+  the company line. `report.html` keeps the earlier footer
+  (`_src/partials/footer-report.html`) through the `footer` key.
+- **Findings signup** (`_src/partials/findings-signup.html`): the one copy of
+  the "New findings by email" section, form and consent line. The build places
+  it (see `findings_signup` below). One per page: `site.js` finds the form by
+  `id`.
+- **/study/ contact line**: one line under the Send request button, in
+  `_src/pages/study.html`. After re-converting `BrandStudy`, re-apply it by
+  hand along with the form attributes; the build fails (`require`) until it is
+  back.
+- **Organisation details** (`_src/partials/org-jsonld.html`): JSON-LD in the
+  home page's `<head>`. Its logo is `/assets/favicon.svg` (`brand/` is not
+  published).
+- **sitemap.xml** is written by the build from `pages.json`. `robots.txt` is a
+  plain committed file.
+
+New `pages.json` keys:
+
+| Key | What it does |
+|---|---|
+| `findings_signup` | `"home"`: moves the signup to directly after the study tiles grid (the build takes the mockup's copy out, and fails if that copy and the partial differ). `"before-cta"`: puts it above the closing call-to-action band. The page also needs `/assets/site.js` in `scripts`. |
+| `head_partials` | Partials added to the page's `<head>`. A JSON-LD block that does not parse fails the build. |
+| `footer` | A footer partial to use instead of `footer.html`. |
+| `require` | Text the page body must contain, or the build fails. |
+| `sitemap` | `false` keeps the page out of `sitemap.xml`. |
+| `sitemap_extra` (top level) | Hand-written pages to list in `sitemap.xml` (the legal pages). |
+
 ## report.html
 
 `report.html` is built like the others, but its `<script id="aivi-coverage">`
