@@ -67,8 +67,70 @@ def header_for(url, header):
     return re.sub(r'<a href="([^"]+)"[^>]*>', mark, header)
 
 
+def partial(name):
+    return (SRC / "partials" / name).read_text(encoding="utf-8")
+
+
+# --- Findings signup ---------------------------------------------------------
+# The "New findings by email" section lives in one partial
+# (_src/partials/findings-signup.html) and is placed by the build, so a page
+# re-converted from its mockup keeps it. pages.json `findings_signup`:
+#   "home"        the home page: the section is taken out of where the mockup
+#                 has it (after the commission band) and put directly after the
+#                 study tiles grid, before the "Coming next" strip. The studies
+#                 section is closed before it and a plain section with the same
+#                 wrapper is opened after it for the strip.
+#   "before-cta"  study pages and the lab find: directly above the closing
+#                 call-to-action band (the last forest-green section).
+FINDINGS_RE = re.compile(r'<section id="findings">.*?</section>\n*', re.S)
+STUDIES_WRAP_RE = re.compile(r'<section id="studies">\s*<div style="([^"]+)">')
+COMING_NEXT = '<a href="#findings"'
+CTA_RE = re.compile(r'<section\b[^>]*(?:class="[^"]*\bband-forest\b|background: #062418)[^>]*>')
+
+
+def squash(s):
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def place_findings(page, body):
+    mode = page.get("findings_signup")
+    if not mode:
+        return body
+    signup = partial("findings-signup.html")
+    src = page["source"]
+    if mode == "home":
+        found = FINDINGS_RE.findall(body)
+        if len(found) > 1:
+            raise SystemExit(f"{src}: more than one <section id=\"findings\">")
+        if found and squash(found[0]) != squash(signup):
+            raise SystemExit(f"{src}: its findings section differs from _src/partials/findings-signup.html; "
+                             "bring the partial in step (the consent line is a legal record) and rebuild")
+        body = FINDINGS_RE.sub("", body)
+        wrap = STUDIES_WRAP_RE.search(body)
+        if not wrap or body.count(COMING_NEXT) != 1:
+            raise SystemExit(f"{src}: cannot place the findings signup (studies wrapper or Coming next strip not found)")
+        at = body.index(COMING_NEXT)
+        return (body[:at] + "</div>\n</section>\n\n" + signup + "\n<section>\n"
+                + f'<div style="{wrap.group(1)}">\n\n' + body[at:])
+    if mode == "before-cta":
+        if 'id="findings' in body or 'id="email"' in body:
+            raise SystemExit(f"{src}: already has an element with one of the signup's ids")
+        bands = list(CTA_RE.finditer(body))
+        if not bands:
+            raise SystemExit(f"{src}: no closing call-to-action band to put the findings signup above")
+        at = bands[-1].start()
+        return body[:at] + signup + "\n" + body[at:]
+    raise SystemExit(f"{src}: unknown findings_signup value {mode!r}")
+
+
 def render(page, header, footer):
     body = (SRC / "pages" / page["source"]).read_text(encoding="utf-8")
+    body = place_findings(page, body)
+    for needle in page.get("require", []):
+        if needle not in body:
+            raise SystemExit(f"{page['source']}: required text missing: {needle!r} (see _build/README.md)")
+    if page.get("footer"):
+        footer = partial(page["footer"])
     out_path = ROOT / page["out"]
     if page.get("coverage_island"):
         if not out_path.is_file():
@@ -81,11 +143,25 @@ def render(page, header, footer):
             raise SystemExit(f"{page['source']}: no island placeholder to fill")
     description_tag = page.get("description_tag") or f'<meta name="description" content="{esc(page["description"])}">'
     extra = page.get("extra_head", "")
+    for name in page.get("head_partials", []):
+        block = partial(name).strip()
+        for ld in re.findall(r'<script type="application/ld\+json">(.*?)</script>', block, re.S):
+            json.loads(ld)  # a JSON-LD block that does not parse fails the build
+        extra = (extra + "\n" + block) if extra else block
     head = HEAD.format(title=esc(page["title"]), description=esc(page["description"]),
                        description_tag=description_tag, url=page["url"], site=SITE,
                        extra_head=(extra + "\n") if extra else "")
     scripts = "".join(f'<script src="{s}"></script>\n' for s in page.get("scripts", []))
     return head + header_for(page["url"], header) + "<main>\n" + body + "</main>\n" + footer + scripts + "</body>\n</html>\n"
+
+
+def sitemap(cfg):
+    """sitemap.xml from the page map: every built page except those marked
+    `"sitemap": false`, plus `sitemap_extra` (the hand-written legal pages)."""
+    urls = [p["url"] for p in cfg["pages"] if p.get("sitemap", True)] + cfg.get("sitemap_extra", [])
+    rows = "".join(f"  <url><loc>{SITE}{esc(u)}</loc></url>\n" for u in urls)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
 
 
 def main(argv):
@@ -94,22 +170,23 @@ def main(argv):
     header = (SRC / "partials" / "header.html").read_text(encoding="utf-8")
     footer = (SRC / "partials" / "footer.html").read_text(encoding="utf-8")
     stale = []
-    for page in cfg["pages"]:
-        html = render(page, header, footer)
-        out = ROOT / page["out"]
+    outputs = [(page["out"], render(page, header, footer)) for page in cfg["pages"]]
+    outputs.append(("sitemap.xml", sitemap(cfg)))
+    for name, html in outputs:
+        out = ROOT / name
         before = out.read_text(encoding="utf-8") if out.is_file() else None
         if before == html:
-            print(f"unchanged : {page['out']}")
+            print(f"unchanged : {name}")
             continue
-        stale.append(page["out"])
+        stale.append(name)
         if check:
-            print(f"STALE     : {page['out']}")
+            print(f"STALE     : {name}")
             continue
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding="utf-8", newline="\n")
-        print(f"wrote     : {page['out']}")
+        print(f"wrote     : {name}")
     if check:
-        print("check: up to date" if not stale else f"check: {len(stale)} page(s) stale")
+        print("check: up to date" if not stale else f"check: {len(stale)} file(s) stale")
     hits = guard()
     if hits:
         return 1

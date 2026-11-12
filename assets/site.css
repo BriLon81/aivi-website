@@ -65,6 +65,7 @@ a:hover { color: var(--green-deep); }
 /* ---- footer -------------------------------------------------------------- */
 .site-footer { border-top: 1px solid var(--border); background: var(--surface-alt); }
 .site-footer__in { max-width: var(--width-page); margin: 0 auto; padding: 32px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 14px; color: var(--ink-3); }
+.site-footer__co { display: flex; flex-direction: column; gap: 6px; }
 .site-footer__links { display: flex; flex-wrap: wrap; gap: 20px; }
 .site-footer a { color: var(--ink-3); }
 

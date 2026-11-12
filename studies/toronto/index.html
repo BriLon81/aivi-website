@@ -167,6 +167,28 @@
 </div>
 </section>
 
+<section id="findings">
+<div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between">
+<div class="f-420">
+<h2 class="h2-28">New findings by email</h2>
+<p style="margin: 10px 0 0; font-size: 17px; line-height: 1.6; color: #3D4658">Only when a study turns up something new.</p>
+</div>
+<form id="findings-form" novalidate class="f-420 cols gap-12" style="align-items: flex-end">
+<div class="f-240 field">
+<label for="email" class="label">Email address</label>
+<input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" class="input">
+</div>
+<button type="submit" class="btn-submit btn-submit--s">Send me findings</button>
+<div class="hp" aria-hidden="true">
+<label for="findings-website">Website</label>
+<input id="findings-website" name="website" type="text" tabindex="-1" autocomplete="off">
+</div>
+<p id="findings-consent" class="form-hint form-row">We'll email you when a study finds something new. Unsubscribe any time.</p>
+<p class="form-error form-row" role="alert"></p>
+</form>
+</div>
+</section>
+
 <section class="band-forest">
 <div class="wrap pt-80 pb-80 cta__in">
 <div class="f-460">
@@ -185,7 +207,10 @@
 </main>
 <footer class="site-footer">
 <div class="site-footer__in">
+<div class="site-footer__co">
 <span>AIVI Labs SEZC · Grand Cayman, Cayman Islands</span>
+<span>Founded by <a href="/about/">Andrea Murray and Brian Lonergan</a>. Questions: <a href="mailto:support@aivilabs.io">support@aivilabs.io</a></span>
+</div>
 <span class="site-footer__links">
 <a href="/how-we-measure/">How we measure</a>
 <a href="/about/">About</a>
@@ -195,5 +220,6 @@
 </span>
 </div>
 </footer>
+<script src="/assets/site.js"></script>
 </body>
 </html>

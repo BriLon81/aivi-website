@@ -1,5 +1,6 @@
 /* aivilabs.io — form handlers for the study request (/study/) and the
-   findings signup (home page). Same pattern as report.html: validate, POST
+   findings signup (home page, study pages and the lab find; one per page,
+   from _src/partials/findings-signup.html). Same pattern as report.html: validate, POST
    JSON with an AbortController timeout, show the result inline, and put the
    button back on failure. Each form carries a hidden "website" honeypot that
    real visitors leave empty; it is posted as-is and the service drops any
