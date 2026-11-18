@@ -71,6 +71,47 @@ HOME_FORM = [
 </form>"""),
 ]
 
+# Row charts (label | bar | value) whose value is too long for a narrow phone.
+# mockup stem -> (pattern the value must match in full, value column width or
+# None to keep the mockup's, number of rows expected). A matching row gets the
+# class "row-stack": below 390px site.css puts its label on a line of its own
+# above the bar and the value (the value "730 of 1,177" ran out of its box, and
+# at 320px the Toronto page scrolled sideways). Where a width is given, the
+# value column is widened so the value stays on one line ("50 of 50" needs
+# 72px and the mockup gives 64px). A label column with a pixel minimum
+# (minmax(96px, 220px)) gets min-content as its minimum, as step 2b gives the
+# others: the pixel minimum would still hold the stacked row wider than a 320px
+# screen, and wherever the row has room the column is the same width as before.
+# Added 2026-11-18.
+ROW_STACK = {
+    "Toronto": (r"[\d,]+ of [\d,]+", None, 2),
+    "Sources": (r"\d+ of \d+", "76px", 2),
+}
+ROW_RE = re.compile(
+    r'<div style="display: grid; grid-template-columns: (?P<cols>[^";]*?minmax\(48px, 1fr\)) (?P<vcol>\d+px)'
+    r'(?P<rest>; align-items: center; gap: \d+px">'
+    r'<span[^>]*>[^<]*</span><div[^>]*><div[^>]*></div></div><span[^>]*>(?P<value>[^<]*)</span></div>)')
+
+
+def stack_rows(body, stem, name):
+    """Apply ROW_STACK to a page body; stop if the expected rows are not there."""
+    if stem not in ROW_STACK:
+        return body
+    value_rx, value_col, expected = ROW_STACK[stem]
+    hits = []
+
+    def stack(g):
+        if not re.fullmatch(value_rx, g.group("value")):
+            return g.group(0)
+        hits.append(g.group("value"))
+        cols = re.sub(r"^minmax\(\d+px, ", "minmax(min-content, ", g.group("cols"))
+        return (f'<div class="row-stack" style="display: grid; grid-template-columns: {cols} '
+                f'{value_col or g.group("vcol")}{g.group("rest")}')
+    body = ROW_RE.sub(stack, body)
+    if len(hits) != expected:
+        raise SystemExit(f"{name}: expected {expected} row-chart rows with a long value, found {len(hits)} (see ROW_STACK)")
+    return body
+
 # exact inline style -> classes, or (classes, residual inline style)
 STYLES = {
     # --- links and inline text
@@ -424,6 +465,10 @@ def convert(src: Path, unmapped: dict):
                   lambda g: "grid-template-columns: "
                             + (g.group(1) if g.group(1).startswith("minmax") else f"minmax(min-content, {g.group(1)})")
                             + f" minmax(48px, 1fr) {g.group(2)}", body)
+
+    # 2c. row charts with long values (ROW_STACK): class for the phone rule, and
+    # a value column wide enough to keep the value on one line.
+    body = stack_rows(body, stem, src.name)
 
     # 3. inline styles -> classes
     def repl(mt):
