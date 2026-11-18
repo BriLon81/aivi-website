@@ -35,6 +35,7 @@ PAGES = {
     "PILaw": ("studies-injury-law-ontario", "/studies/injury-law-ontario/"),
     "AskTwice": ("studies-ask-twice", "/studies/ask-twice/"),
     "Downtowns": ("studies-ontario-downtowns", "/studies/ontario-downtowns/"),
+    "Wineries": ("studies-niagara-wineries", "/studies/niagara-wineries/"),
     "CokePepsi": ("lab-coke-or-pepsi", "/lab/coke-or-pepsi/"),
     "About": ("about", "/about/"),
 }
@@ -44,6 +45,7 @@ LINKS = [
     # the Lab finds section is gone (Home v2): Coke or Pepsi is a tile in the studies grid
     ("Main.dc.html#lab-notes", "/#studies"),
     ("Main.dc.html#studies", "/#studies"),
+    ("MainV2.dc.html#studies", "/#studies"),  # Home v2 file name (Wineries, 2026-11-18)
     ("Main.dc.html#commission", "/study/#request"),
     ("Main.dc.html", "/"),
     ("#lab-notes", "/#studies"),
