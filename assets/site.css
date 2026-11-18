@@ -284,14 +284,27 @@ a.card-link:hover { border-color: var(--green); color: var(--ink); }
    The mockup's five pairs of fixed 30px bars need 378px of chart; the card has
    about 260px at 390px wide and clips the last city. Below 560px, narrow the
    bars, labels, gaps and padding so all five fit. Bar heights (the data) are
-   inline and untouched. !important because the mockup styles are inline. */
+   inline and untouched. !important because the mockup styles are inline.
+
+   From 18 Nov 2026 the chart is one series: five columns of [value, bar] with
+   a row of labels underneath (the paired-bar rule is kept for a chart of that
+   shape). A value such as "1 in 100" stays on one line at every width. On
+   phones the columns and the labels are held to equal widths (min-width: 0),
+   so each label sits under its bar; the 44px bars narrow, and the type is
+   small enough that "1 in 100" fits its column. */
+.hero-chart > [role="img"] span { white-space: nowrap; }
 @media (max-width: 560px) {
   .hero-chart { padding: 28px 16px !important; }
   .hero-chart > [role="img"] { gap: 6px !important; }
-  .hero-chart > [role="img"] > div { gap: 4px !important; }
+  .hero-chart > [role="img"] > div { gap: 4px !important; min-width: 0; }
   .hero-chart > [role="img"] > div > div > div { width: min(30px, 5.2vw) !important; }
-  .hero-chart > [role="img"] span { font-size: min(13px, 3.1vw) !important; }
-  .hero-chart > [aria-hidden="true"] { gap: 6px !important; font-size: min(14px, 3vw) !important; }
+  .hero-chart > [role="img"] > div > div:empty { width: min(44px, 11vw) !important; }
+  .hero-chart > [role="img"] span { font-size: min(13px, 2.8vw) !important; }
+  .hero-chart > [aria-hidden="true"] { gap: 6px !important; font-size: min(14px, 2.8vw) !important; }
+  .hero-chart > [aria-hidden="true"] > span { min-width: 0; }
+}
+@media (max-width: 360px) {
+  .hero-chart { padding: 28px 10px !important; }
 }
 
 /* ---- spacing utilities (keep last) --------------------------------------- */
