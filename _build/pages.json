@@ -87,7 +87,7 @@
       "out": "studies/niagara-wineries/index.html",
       "url": "/studies/niagara-wineries/",
       "title": "Where does AI send people wine tasting in Niagara-on-the-Lake? — AIVI Labs",
-      "description": "We asked ChatGPT, Claude, Gemini, Perplexity and Google where to go wine tasting in Niagara-on-the-Lake 2,304 times. Five wineries get more than 4 in 10 of the mentions, and about 1 in 7 answers names a winery that has closed. November 13–15, 2026.",
+      "description": "We asked ChatGPT, Claude, Gemini, Perplexity and Google where to go wine tasting in Niagara-on-the-Lake 2,304 times. Five wineries get more than 40% of the mentions, and about 1 in 7 answers names a winery that has closed. November 13–15, 2026.",
       "scripts": ["/assets/site.js"],
       "findings_signup": "before-cta"
     },
